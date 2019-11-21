@@ -20,7 +20,7 @@ namespace botfiona
         static TelegramBotClient Bot;
         static Dictionary<string, string> triggers = new Dictionary<string, string>();
         static List<DataItem> tempdataitems = new List<DataItem>(triggers.Count);
-
+        static string[] commands = new string[] { "список", "Список", "/list", "Удалить", "Триггер", "Фиона", "фиона" };
 
 
 
@@ -55,6 +55,7 @@ namespace botfiona
         private static async void Get_Mes(object sender, MessageEventArgs e)
         {
             var message = e.Message;
+            // Вывод кода стикера в консоль
             /*if (message.Type == MessageType.Sticker)
             {
                 var index = message.Sticker.FileId;
@@ -71,6 +72,7 @@ namespace botfiona
                             await Bot.SendTextMessageAsync(message.Chat, "Такой триггер уже существует :3");
                             await Bot.SendTextMessageAsync(message.Chat, triggers[message.Text.Split('*')[1]]);
                         }
+                        /*else if ()*/
                         else
                         {
                             if (message.ReplyToMessage.Type == MessageType.Sticker)
@@ -141,8 +143,6 @@ namespace botfiona
                             list += "\n";
                         }
                     }
-
-                    Console.WriteLine(list.Length);
                     await Bot.SendTextMessageAsync(message.Chat, list);
                 }
 
