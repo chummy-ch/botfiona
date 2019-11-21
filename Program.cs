@@ -20,7 +20,7 @@ namespace botfiona
         static TelegramBotClient Bot;
         static Dictionary<string, string> triggers = new Dictionary<string, string>();
         static List<DataItem> tempdataitems = new List<DataItem>(triggers.Count);
-        static string[] commands = new string[] { "список", "Список", "/list", "Удалить", "Триггер", "Фиона", "фиона" };
+        static string[] commands = new string[] { "список", "Список", "/list", "Удалить", "Триггер", "Фиона", "фиона", "Девочка", "девочка"};
 
 
 
@@ -56,11 +56,11 @@ namespace botfiona
         {
             var message = e.Message;
             // Вывод кода стикера в консоль
-            /*if (message.Type == MessageType.Sticker)
+            if (message.Type == MessageType.Sticker)
             {
                 var index = message.Sticker.FileId;
                 Console.WriteLine(index);
-            }*/
+            }
             if (message.Type == MessageType.Text)
             {
                 if (message.Text.Contains("Триггер"))
@@ -177,6 +177,23 @@ namespace botfiona
                     string name = message.From.FirstName;
                     string name1 = name.ToLower();
                     await Bot.SendTextMessageAsync(message.Chat, $"{name1}, не очень приятно, да? (o-_-o)");
+                }
+
+                if (message.Text == "Девочка" )
+                {
+                    await Bot.SendStickerAsync(message.Chat, "CAADAgADKwADqWElFEZQB5e23FxJFgQ");
+                    await Bot.SendStickerAsync(message.Chat, "CAADAgADyAEAArMeUCPRh9FVnGyWTRYE");
+                    await Bot.SendStickerAsync(message.Chat, "CAADAgADLAADqWElFNm7GHyxzP9LFgQ");
+                    await Bot.SendStickerAsync(message.Chat, "CAADAgAD0gEAArMeUCPGE2QnmWBiEhYE");
+
+                }
+                if (message.Text == "девочка")
+                {
+                    await Bot.SendStickerAsync(message.Chat, "CAADAgADKwADqWElFEZQB5e23FxJFgQ");
+                    await Bot.SendStickerAsync(message.Chat, "CAADAgADyAEAArMeUCPRh9FVnGyWTRYE");
+                    await Bot.SendStickerAsync(message.Chat, "CAADAgADLAADqWElFNm7GHyxzP9LFgQ");
+                    await Bot.SendStickerAsync(message.Chat, "CAADAgAD0gEAArMeUCPGE2QnmWBiEhYE");
+
                 }
 
             }
