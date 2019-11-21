@@ -1,0 +1,11 @@
+C:\Users\user\source\repos\botfiona\botfiona\bin\Debug\botfiona.exe.config
+C:\Users\user\source\repos\botfiona\botfiona\bin\Debug\botfiona.exe
+C:\Users\user\source\repos\botfiona\botfiona\bin\Debug\botfiona.pdb
+C:\Users\user\source\repos\botfiona\botfiona\bin\Debug\Newtonsoft.Json.dll
+C:\Users\user\source\repos\botfiona\botfiona\bin\Debug\Telegram.Bot.dll
+C:\Users\user\source\repos\botfiona\botfiona\bin\Debug\Newtonsoft.Json.xml
+C:\Users\user\source\repos\botfiona\botfiona\bin\Debug\Telegram.Bot.xml
+C:\Users\user\source\repos\botfiona\botfiona\obj\Debug\botfiona.csprojAssemblyReference.cache
+C:\Users\user\source\repos\botfiona\botfiona\obj\Debug\botfiona.csproj.CopyComplete
+C:\Users\user\source\repos\botfiona\botfiona\obj\Debug\botfiona.exe
+C:\Users\user\source\repos\botfiona\botfiona\obj\Debug\botfiona.pdb
