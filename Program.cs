@@ -20,7 +20,7 @@ namespace botfiona
         static TelegramBotClient Bot;
         static Dictionary<string, string> triggers = new Dictionary<string, string>();
         static List<DataItem> tempdataitems = new List<DataItem>(triggers.Count);
-        static string[] commands = new string[] { "список", "Список", "/list", "Удалить", "Триггер", "Фиона", "фиона", "Девочка", "девочка"};
+        static string[] commands = new string[] { "список", "Список", "/list", "Удалить", "Триггер", "Фиона", "фиона", "Девочка", "девочка" };
 
 
 
@@ -72,7 +72,6 @@ namespace botfiona
                             await Bot.SendTextMessageAsync(message.Chat, "Такой триггер уже существует :3");
                             await Bot.SendTextMessageAsync(message.Chat, triggers[message.Text.Split('*')[1]]);
                         }
-                        /*else if ()*/
                         else
                         {
                             if (message.ReplyToMessage.Type == MessageType.Sticker)
@@ -87,11 +86,26 @@ namespace botfiona
                             }
                             else if (message.ReplyToMessage.Text.Trim().Length > 0)
                             {
-                                string key = message.Text.Split('*')[1];
-                                triggers.Add(key, message.ReplyToMessage.Text);
-                                SaveTriggers();
-                                await Bot.SendTextMessageAsync(message.Chat, "Триггер создан!");
-                                await Bot.SendStickerAsync(message.Chat, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
+                                if (commands.Contains(message.ReplyToMessage.Text))
+                                {
+                                    await Bot.SendTextMessageAsync(message.Chat, "Команды нельзя использовать для триггера");
+
+                                }
+                                else
+                                {
+                                    string key = message.Text.Split('*')[1];
+                                    if (commands.Contains(key))
+                                    {
+                                        await Bot.SendTextMessageAsync(message.Chat, "Команды нельзя использовать для триггера");
+                                    }
+                                    else
+                                    {
+                                        triggers.Add(key, message.ReplyToMessage.Text);
+                                        SaveTriggers();
+                                        await Bot.SendTextMessageAsync(message.Chat, "Триггер создан!");
+                                        await Bot.SendStickerAsync(message.Chat, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
+                                    }
+                                }
 
                             }
                         }
@@ -146,7 +160,22 @@ namespace botfiona
                     await Bot.SendTextMessageAsync(message.Chat, list);
                 }
 
+                if (message.Text == "да" || message.Text == "Да")
+                {
+                    await Bot.ForwardMessageAsync(message.Chat, message.Chat, message.MessageId);
+                    await Bot.SendTextMessageAsync(message.Chat, "Пизда");
+                }
 
+
+                if (message.Text.Substring(message.Text.Length-2).Contains("да"))
+                {
+                    if (message.Text.Length <= 5 && message.Text.Length >= 2)
+                    {
+                        await Bot.ForwardMessageAsync(message.Chat, message.Chat, message.MessageId);
+                        await Bot.SendTextMessageAsync(message.Chat, "Пизда");
+                    }
+                    
+                }
 
                 if (triggers.ContainsKey(message.Text) == true)
                 {
@@ -164,6 +193,8 @@ namespace botfiona
                 }
 
 
+
+
                 if (message.Text == "Фиона")
                 {
                     await Bot.SendTextMessageAsync(message.Chat, "Привет, я Фиона, чат-бот Болота 4 :3");
@@ -179,7 +210,7 @@ namespace botfiona
                     await Bot.SendTextMessageAsync(message.Chat, $"{name1}, не очень приятно, да? (o-_-o)");
                 }
 
-                if (message.Text == "Девочка" )
+                if (message.Text == "Девочка")
                 {
                     await Bot.SendStickerAsync(message.Chat, "CAADAgADKwADqWElFEZQB5e23FxJFgQ");
                     await Bot.SendStickerAsync(message.Chat, "CAADAgADyAEAArMeUCPRh9FVnGyWTRYE");
