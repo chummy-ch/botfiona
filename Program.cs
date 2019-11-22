@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Telegram.Bot;
 using Telegram.Bot.Args;
-using Telegram.Bot.Requests;
 using Telegram.Bot.Types.Enums;
-using Telegram.Bot.Types.ReplyMarkups;
+using System.Threading;
+using HtmlAgilityPack;
+
 
 
 
@@ -20,7 +19,7 @@ namespace botfiona
         static TelegramBotClient Bot;
         static Dictionary<string, string> triggers = new Dictionary<string, string>();
         static List<DataItem> tempdataitems = new List<DataItem>(triggers.Count);
-        static string[] commands = new string[] { "список", "Список", "/list", "Удалить", "Триггер", "Фиона", "фиона", "Девочка", "девочка" };
+        static string[] commands = new string[] { "список", "Список", "/list", "Удалить", "Триггер", "Фиона", "фиона", "Девочка", "девочка", "погода", "Погода" };
 
 
 
@@ -192,6 +191,52 @@ namespace botfiona
                     }
                 }
 
+                if(message.Text == "погода" || message.Text == "Погода")
+                {
+                    await Bot.SendTextMessageAsync(message.Chat, "Такс, посмотрим, что у нас тут за погода на Болоте...");
+                    await Bot.SendTextMessageAsync(message.Chat, "Звоню погодной фее...  🧚‍♂️");
+
+                    string url = "https://www.gismeteo.ua/weather-kharkiv-5053/";
+                    var web = new HtmlWeb();
+                    HtmlDocument doc = web.Load(url);
+                    var t = doc.DocumentNode.SelectSingleNode("/html/body/section/div[2]/div/div[1]/div/div[2]/div[1]/div[1]/a[1]/div/div[1]/div[3]/div[2]/span/span[1]");
+                    string temp = t.InnerText;
+                    if (temp.Contains("&minus;")) temp.Replace("&minus;", "-");
+                    var c = doc.DocumentNode.SelectSingleNode("/html/body/section/div[2]/div/div[1]/div/div[2]/div[1]/div[1]/a[1]");
+                    string cond = c.Attributes["data-text"].Value;
+                    if (temp.Contains("&minus;"))
+                    {
+                        temp = temp.Replace("&minus;", "-");
+                        temp = temp.Trim();
+                        Console.WriteLine(temp);
+                        await Bot.SendTextMessageAsync(message.Chat, $"На улице сечас.... ❄️{temp}❄️");
+                        if (cond == "Ясно")
+                        {
+                            await Bot.SendStickerAsync(message.Chat, "CAADAgADOQIAAs7Y6AtiQa4j611amhYE");
+                            await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
+                        }
+                    }
+                    else if (Convert.ToInt32(temp) > -1 && Convert.ToInt32(temp) < 10)
+                    {
+                        await Bot.SendTextMessageAsync(message.Chat, $"На улице сейчас....  ✨{temp}✨");
+                        if(cond == "Ясно")
+                        {
+                            await Bot.SendStickerAsync(message.Chat, "CAADAgADOQIAAs7Y6AtiQa4j611amhYE");
+                            await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
+                        }
+                    }
+                    else
+                    {
+                        await Bot.SendTextMessageAsync(message.Chat, $"На улице сечас....  ☀️{temp}☀️");
+                        if (cond == "Ясно")
+                        {
+                            await Bot.SendStickerAsync(message.Chat, "CAADAgADOQIAAs7Y6AtiQa4j611amhYE");
+                            await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
+                        }
+
+                    }
+
+                }
 
 
 
@@ -266,6 +311,8 @@ namespace botfiona
 
             Program.triggers = triggers;
         }
+
+        
     }
 }
 

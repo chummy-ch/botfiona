@@ -9,3 +9,6 @@ C:\Users\user\source\repos\botfiona\botfiona\obj\Debug\botfiona.csprojAssemblyRe
 C:\Users\user\source\repos\botfiona\botfiona\obj\Debug\botfiona.csproj.CopyComplete
 C:\Users\user\source\repos\botfiona\botfiona\obj\Debug\botfiona.exe
 C:\Users\user\source\repos\botfiona\botfiona\obj\Debug\botfiona.pdb
+C:\Users\user\source\repos\botfiona\botfiona\bin\Debug\HtmlAgilityPack.dll
+C:\Users\user\source\repos\botfiona\botfiona\bin\Debug\HtmlAgilityPack.pdb
+C:\Users\user\source\repos\botfiona\botfiona\bin\Debug\HtmlAgilityPack.xml
