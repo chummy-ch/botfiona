@@ -146,10 +146,17 @@ namespace botfiona
 
                     for (int i = 0; i < triggers.Count; i++)
                     {
+                        
                         if (triggers.Values.ToList()[i].Contains("CAA"))
                         {
                             list += "\n";
                             list += $"{triggers.Keys.ToList()[i]} - <стикер>";
+                            list += "\n";
+                        }
+                        else if (triggers.Values.ToList()[i].Length > 40)
+                        {
+                            list += "\n";
+                            list += $"{triggers.Keys.ToList()[i]} - <Длинное значение>";
                             list += "\n";
                         }
                         else
@@ -168,17 +175,20 @@ namespace botfiona
                     await Bot.SendTextMessageAsync(message.Chat, "Пизда");
                 }
 
-
-/*                if (message.Text.Substring(message.Text.Length-2).Contains("да"))
+                if (message.Text.Length > 3)
                 {
-                    if (message.Text.Length <= 5 && message.Text.Length >= 2)
+                    if (message.Text.Substring(message.Text.Length - 2).Contains("да"))
                     {
-                        await Bot.ForwardMessageAsync(message.Chat, message.Chat, message.MessageId);
-                        await Bot.SendTextMessageAsync(message.Chat, "Пизда");
+                        if (message.Text.Length <= 5 && message.Text.Length >= 2)
+                        {
+                            await Bot.ForwardMessageAsync(message.Chat, message.Chat, message.MessageId);
+                            await Bot.SendTextMessageAsync(message.Chat, "Пизда");
+                        }
+
                     }
-                    
                 }
-*/
+                
+
                 if (triggers.ContainsKey(message.Text) == true)
                 {
 
@@ -234,7 +244,7 @@ namespace botfiona
                             temp = temp.Replace("&minus;", "-");
                             temp = temp.Trim();
                             Console.WriteLine(temp);
-                            await Bot.SendTextMessageAsync(message.Chat, $"На улице сечас.... ❄️{temp}❄️");
+                            await Bot.SendTextMessageAsync(message.Chat, $"На улице сейчас.... ❄️{temp}❄️");
                             if (cond == "Ясно")
                             {
                                 await Bot.SendStickerAsync(message.Chat, "CAADAgADOQIAAs7Y6AtiQa4j611amhYE");
@@ -310,7 +320,7 @@ namespace botfiona
                     await Bot.SendTextMessageAsync(message.Chat, "Привет, я Фиона, чат-бот Болота 4 :3");
                     await Bot.SendStickerAsync(message.Chat, "CAADAgADGQAD9OfCJRWWFn5c1beEFgQ");
 
-                    await Bot.SendTextMessageAsync(message.Chat, "Мои команды:\n /list - для просмотра всех  триггеров \n Триггер *triggger_name* - для создания нового триггера");
+                    await Bot.SendTextMessageAsync(message.Chat, "Мои команды:\n /list - для просмотра всех  триггеров \n Триггер *triggger_name* - для создания нового триггера \n Погода-показать прогноз погоды на сейчас");
                 }
 
                 if (message.Text == "фиона")
@@ -320,7 +330,7 @@ namespace botfiona
                     await Bot.SendTextMessageAsync(message.Chat, $"{name1}, не очень приятно, да? (o-_-o)");
                 }
 
-                if (message.Text.Contains("Девочка") || message.Text.Contains("деовчка"))
+                if (message.Text.Contains("Девочка") || message.Text.Contains("девочка"))
                 {
                     await Bot.SendStickerAsync(message.Chat, "CAADAgADKwADqWElFEZQB5e23FxJFgQ");
                     await Bot.SendStickerAsync(message.Chat, "CAADAgADyAEAArMeUCPRh9FVnGyWTRYE");
