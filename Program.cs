@@ -20,6 +20,7 @@ namespace botfiona
         static Dictionary<string, string> triggers = new Dictionary<string, string>();
         static List<DataItem> tempdataitems = new List<DataItem>(triggers.Count);
         static string[] commands = new string[] { "список", "Список", "/list", "Удалить", "Триггер", "Фиона", "фиона", "Девочка", "девочка", "погода", "Погода" };
+        static int counter = 38;
 
 
 
@@ -62,6 +63,8 @@ namespace botfiona
             }
             if (message.Type == MessageType.Text)
             {
+                counter++;
+
                 if (message.Text.Contains("Триггер"))
                 {
                     if (message.ReplyToMessage != null)
@@ -166,7 +169,7 @@ namespace botfiona
                 }
 
 
-                if (message.Text.Substring(message.Text.Length-2).Contains("да"))
+/*                if (message.Text.Substring(message.Text.Length-2).Contains("да"))
                 {
                     if (message.Text.Length <= 5 && message.Text.Length >= 2)
                     {
@@ -175,7 +178,7 @@ namespace botfiona
                     }
                     
                 }
-
+*/
                 if (triggers.ContainsKey(message.Text) == true)
                 {
 
@@ -193,52 +196,112 @@ namespace botfiona
 
                 if(message.Text == "погода" || message.Text == "Погода")
                 {
-
-                    string url = "https://www.gismeteo.ua/weather-kharkiv-5053/";
-                    var web = new HtmlWeb();
-                    HtmlDocument doc = web.Load(url);
-                    var t = doc.DocumentNode.SelectSingleNode("/html/body/section/div[2]/div/div[1]/div/div[2]/div[1]/div[1]/a[1]/div/div[1]/div[3]/div[2]/span/span[1]");
-                    string temp = t.InnerText;
-                    await Bot.SendTextMessageAsync(message.Chat, "Такс, посмотрим, что у нас тут за погода на Болоте...");
-
-                    if (temp.Contains("&minus;")) temp.Replace("&minus;", "-");
-                    var c = doc.DocumentNode.SelectSingleNode("/html/body/section/div[2]/div/div[1]/div/div[2]/div[1]/div[1]/a[1]");
-                    string cond = c.Attributes["data-text"].Value;
-                    await Bot.SendTextMessageAsync(message.Chat, "Звоню погодной фее...  🧚‍♂️");
-
-                    if (temp.Contains("&minus;"))
+                    if (counter > 40)
                     {
-                        temp = temp.Replace("&minus;", "-");
-                        temp = temp.Trim();
-                        Console.WriteLine(temp);
-                        await Bot.SendTextMessageAsync(message.Chat, $"На улице сечас.... ❄️{temp}❄️");
-                        if (cond == "Ясно")
+                        counter = 0;
+                        Random rnd = new Random();
+                        int rn = rnd.Next(1, 4);
+                        switch (rn)
                         {
-                            await Bot.SendStickerAsync(message.Chat, "CAADAgADOQIAAs7Y6AtiQa4j611amhYE");
-                            await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
+                            case 1:
+                                await Bot.SendTextMessageAsync(message.Chat, "Такс, посмотрим, что у нас тут за погода на Болоте...");
+                                await Bot.SendTextMessageAsync(message.Chat, "Звоню погодной фее...  🧚‍♂️");
+                                break;
+                            case 2:
+                                await Bot.SendTextMessageAsync(message.Chat, "На градусник посмотреть слабо? 🌡");
+                                await Bot.SendTextMessageAsync(message.Chat, "Ну ладно, щас зайду на Gismeteo...");
+                                break;
+                            case 3:
+                                await Bot.SendTextMessageAsync(message.Chat, "Лучше бы вы делали ВМ :3");
+                                await Bot.SendTextMessageAsync(message.Chat, "Кости ломит....");
+
+                                break;
                         }
-                    }
-                    else if (Convert.ToInt32(temp) > -1 && Convert.ToInt32(temp) < 10)
-                    {
-                        await Bot.SendTextMessageAsync(message.Chat, $"На улице сейчас....  ✨{temp}✨");
-                        if(cond == "Ясно")
+                        string url = "https://www.gismeteo.ua/weather-kharkiv-5053/";
+                        var web = new HtmlWeb();
+                        HtmlDocument doc = web.Load(url);
+                        var t = doc.DocumentNode.SelectSingleNode("/html/body/section/div[2]/div/div[1]/div/div[2]/div[1]/div[1]/a[1]/div/div[1]/div[3]/div[2]/span/span[1]");
+                        string temp = t.InnerText;
+
+
+                        if (temp.Contains("&minus;")) temp.Replace("&minus;", "-");
+                        var c = doc.DocumentNode.SelectSingleNode("/html/body/section/div[2]/div/div[1]/div/div[2]/div[1]/div[1]/a[1]");
+                        string cond = c.Attributes["data-text"].Value;
+
+
+                        if (temp.Contains("&minus;"))
                         {
-                            await Bot.SendStickerAsync(message.Chat, "CAADAgADOQIAAs7Y6AtiQa4j611amhYE");
-                            await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
+                            temp = temp.Replace("&minus;", "-");
+                            temp = temp.Trim();
+                            Console.WriteLine(temp);
+                            await Bot.SendTextMessageAsync(message.Chat, $"На улице сечас.... ❄️{temp}❄️");
+                            if (cond == "Ясно")
+                            {
+                                await Bot.SendStickerAsync(message.Chat, "CAADAgADOQIAAs7Y6AtiQa4j611amhYE");
+                                await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
+                            }
+                            else if (cond == "Переменная облачность")
+                            {
+                                await Bot.SendStickerAsync(message.Chat, "CAADAgADRwQAAs7Y6AtUgM8Qt1L1BBYE");
+                                await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
+                            }
+                            else if (cond.Contains("Пасмурно") && cond.Contains("дождь"))
+                            {
+                                await Bot.SendStickerAsync(message.Chat, "CAADAgAD8AEAAs7Y6Av_YmkSfuc8BhYE");
+                                await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
+                            }
+                            else await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
                         }
+                        else if (Convert.ToInt32(temp) > -1 && Convert.ToInt32(temp) < 10)
+                        {
+                            await Bot.SendTextMessageAsync(message.Chat, $"На улице сейчас....  ✨{temp}✨");
+                            if (cond == "Ясно")
+                            {
+                                await Bot.SendStickerAsync(message.Chat, "CAADAgADOQIAAs7Y6AtiQa4j611amhYE");
+                                await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
+                            }
+                            else if (cond == "Переменная облачность")
+                            {
+                                await Bot.SendStickerAsync(message.Chat, "CAADAgADRwQAAs7Y6AtUgM8Qt1L1BBYE");
+                                await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
+                            }
+                            else if (cond.Contains("Пасмурно") && cond.Contains("дождь"))
+                            {
+                                await Bot.SendStickerAsync(message.Chat, "CAADAgAD8AEAAs7Y6Av_YmkSfuc8BhYE");
+                                await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
+                            }
+                            else await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
+                        }
+                        else
+                        {
+                            await Bot.SendTextMessageAsync(message.Chat, $"На улице сечас....  ☀️{temp}☀️");
+                            if (cond == "Ясно")
+                            {
+                                await Bot.SendStickerAsync(message.Chat, "CAADAgADOQIAAs7Y6AtiQa4j611amhYE");
+                                await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
+                            }
+                            else if (cond == "Переменная облачность")
+                            {
+                                await Bot.SendStickerAsync(message.Chat, "CAADAgADRwQAAs7Y6AtUgM8Qt1L1BBYE");
+                                await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
+                            }
+                            else if (cond.Contains("Пасмурно") && cond.Contains("дождь"))
+                            {
+                                await Bot.SendStickerAsync(message.Chat, "CAADAgAD8AEAAs7Y6Av_YmkSfuc8BhYE");
+                                await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
+                            }
+                            else await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
+                            
+                        }
+
                     }
+                    
                     else
                     {
-                        await Bot.SendTextMessageAsync(message.Chat, $"На улице сечас....  ☀️{temp}☀️");
-                        if (cond == "Ясно")
-                        {
-                            await Bot.SendStickerAsync(message.Chat, "CAADAgADOQIAAs7Y6AtiQa4j611amhYE");
-                            await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
-                        }
-
+                        await Bot.SendTextMessageAsync(message.Chat, "Погоду можно запрашивать раз в 40 сообщений (");
                     }
-
                 }
+                    
 
 
 
@@ -257,15 +320,7 @@ namespace botfiona
                     await Bot.SendTextMessageAsync(message.Chat, $"{name1}, не очень приятно, да? (o-_-o)");
                 }
 
-                if (message.Text == "Девочка")
-                {
-                    await Bot.SendStickerAsync(message.Chat, "CAADAgADKwADqWElFEZQB5e23FxJFgQ");
-                    await Bot.SendStickerAsync(message.Chat, "CAADAgADyAEAArMeUCPRh9FVnGyWTRYE");
-                    await Bot.SendStickerAsync(message.Chat, "CAADAgADLAADqWElFNm7GHyxzP9LFgQ");
-                    await Bot.SendStickerAsync(message.Chat, "CAADAgAD0gEAArMeUCPGE2QnmWBiEhYE");
-
-                }
-                if (message.Text == "девочка")
+                if (message.Text.Contains("Девочка") || message.Text.Contains("деовчка"))
                 {
                     await Bot.SendStickerAsync(message.Chat, "CAADAgADKwADqWElFEZQB5e23FxJFgQ");
                     await Bot.SendStickerAsync(message.Chat, "CAADAgADyAEAArMeUCPRh9FVnGyWTRYE");
