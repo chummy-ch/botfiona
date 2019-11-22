@@ -193,17 +193,19 @@ namespace botfiona
 
                 if(message.Text == "погода" || message.Text == "Погода")
                 {
-                    await Bot.SendTextMessageAsync(message.Chat, "Такс, посмотрим, что у нас тут за погода на Болоте...");
-                    await Bot.SendTextMessageAsync(message.Chat, "Звоню погодной фее...  🧚‍♂️");
 
                     string url = "https://www.gismeteo.ua/weather-kharkiv-5053/";
                     var web = new HtmlWeb();
                     HtmlDocument doc = web.Load(url);
                     var t = doc.DocumentNode.SelectSingleNode("/html/body/section/div[2]/div/div[1]/div/div[2]/div[1]/div[1]/a[1]/div/div[1]/div[3]/div[2]/span/span[1]");
                     string temp = t.InnerText;
+                    await Bot.SendTextMessageAsync(message.Chat, "Такс, посмотрим, что у нас тут за погода на Болоте...");
+
                     if (temp.Contains("&minus;")) temp.Replace("&minus;", "-");
                     var c = doc.DocumentNode.SelectSingleNode("/html/body/section/div[2]/div/div[1]/div/div[2]/div[1]/div[1]/a[1]");
                     string cond = c.Attributes["data-text"].Value;
+                    await Bot.SendTextMessageAsync(message.Chat, "Звоню погодной фее...  🧚‍♂️");
+
                     if (temp.Contains("&minus;"))
                     {
                         temp = temp.Replace("&minus;", "-");
