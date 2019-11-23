@@ -32,7 +32,6 @@ namespace botfiona
         {
             Bot = new TelegramBotClient("905671296:AAFcDT4qymtle-QyUne4agx14q_97mIQMXI");
             var me = Bot.GetMeAsync().Result;
-            Console.WriteLine(me.FirstName);
             Bot.OnMessage += Get_Mes;
             Bot.OnCallbackQuery += Bot_OnCallbackQuery;
             Bot.StartReceiving();
@@ -56,11 +55,11 @@ namespace botfiona
         {
             var message = e.Message;
             // Вывод кода стикера в консоль
-            if (message.Type == MessageType.Sticker)
+            /*if (message.Type == MessageType.Sticker)
             {
                 var index = message.Sticker.FileId;
                 Console.WriteLine(index);
-            }
+            }*/
             if (message.Type == MessageType.Text)
             {
                 counter++;
