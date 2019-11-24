@@ -54,6 +54,7 @@ namespace botfiona
         private static async void Get_Mes(object sender, MessageEventArgs e)
         {
             var message = e.Message;
+            
             // Вывод кода стикера в консоль
             /*if (message.Type == MessageType.Sticker)
             {
@@ -63,8 +64,9 @@ namespace botfiona
             if (message.Type == MessageType.Text)
             {
                 counter++;
+                message.Text = message.Text.ToLower();
 
-                if (message.Text.Contains("Триггер"))
+                if (message.Text.Contains("триггер"))
                 {
                     if (message.ReplyToMessage != null)
                     {
@@ -120,7 +122,7 @@ namespace botfiona
                 }
 
 
-                if (message.Text.Contains("Удалить"))
+                if (message.Text.Contains("удалить"))
                 {
 
                     if (triggers.ContainsKey(message.Text.Split('*')[1]))
@@ -139,7 +141,7 @@ namespace botfiona
                 }
 
 
-                if (message.Text.Contains("/list") || message.Text.Contains("Список") || message.Text.Contains("список"))
+                if (message.Text.Contains("/list") || message.Text.Contains("список"))
                 {
                     string list = "Команды:";
 
@@ -168,7 +170,7 @@ namespace botfiona
                     await Bot.SendTextMessageAsync(message.Chat, list);
                 }
 
-                if (message.Text == "да" || message.Text == "Да")
+                if (message.Text == "да" )
                 {
                     await Bot.ForwardMessageAsync(message.Chat, message.Chat, message.MessageId);
                     await Bot.SendTextMessageAsync(message.Chat, "Пизда");
@@ -188,9 +190,8 @@ namespace botfiona
                 }
                 
 
-                if (triggers.ContainsKey(message.Text) == true)
+                if (triggers.ContainsKey(message.Text))
                 {
-
                     string er = "ошибка";
                     triggers.TryGetValue(message.Text, out er);
                     if (er.Contains("CAA"))
@@ -203,7 +204,7 @@ namespace botfiona
                     }
                 }
 
-                if(message.Text == "погода" || message.Text == "Погода")
+                if(message.Text == "погода" )
                 {
                     if (counter > 40)
                     {
@@ -314,7 +315,7 @@ namespace botfiona
 
 
 
-                if (message.Text == "Фиона")
+                if (message.Text == "фиона")
                 {
                     await Bot.SendTextMessageAsync(message.Chat, "Привет, я Фиона, чат-бот Болота 4 :3");
                     await Bot.SendStickerAsync(message.Chat, "CAADAgADGQAD9OfCJRWWFn5c1beEFgQ");
@@ -322,14 +323,8 @@ namespace botfiona
                     await Bot.SendTextMessageAsync(message.Chat, "Мои команды:\n /list - для просмотра всех  триггеров \n Триггер *triggger_name* - для создания нового триггера \n Погода-показать прогноз погоды на сейчас");
                 }
 
-                if (message.Text == "фиона")
-                {
-                    string name = message.From.FirstName;
-                    string name1 = name.ToLower();
-                    await Bot.SendTextMessageAsync(message.Chat, $"{name1}, не очень приятно, да? (o-_-o)");
-                }
 
-                if (message.Text.Contains("Девочка") || message.Text.Contains("девочка"))
+                if ( message.Text.Contains("девочка"))
                 {
                     await Bot.SendStickerAsync(message.Chat, "CAADAgADKwADqWElFEZQB5e23FxJFgQ");
                     await Bot.SendStickerAsync(message.Chat, "CAADAgADyAEAArMeUCPRh9FVnGyWTRYE");

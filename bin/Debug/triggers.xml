@@ -1,35 +1,35 @@
 <?xml version="1.0"?>
 <ArrayOfDataItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <DataItem>
-    <Key>Староста</Key>
+    <Key>староста</Key>
     <Value>Глава этого Болота  @sdermann  🌞</Value>
   </DataItem>
   <DataItem>
-    <Key>Влад</Key>
+    <Key>влад</Key>
     <Value>Дряблый кролик @VladyslavMartynov 🐇</Value>
   </DataItem>
   <DataItem>
-    <Key>Владик</Key>
+    <Key>владик</Key>
     <Value>Лучший кодер всея Болото @debavlad 💻</Value>
   </DataItem>
   <DataItem>
-    <Key>Нахер</Key>
+    <Key>нахер</Key>
     <Value>Ну и пошел я нахер!</Value>
   </DataItem>
   <DataItem>
-    <Key>Вау</Key>
+    <Key>вау</Key>
     <Value>👏🏻👏🏻👏🏻</Value>
   </DataItem>
   <DataItem>
-    <Key>Кто сосет?</Key>
+    <Key>кто сосет?</Key>
     <Value>Ира сосёт</Value>
   </DataItem>
   <DataItem>
-    <Key>Хуй</Key>
+    <Key>хуй</Key>
     <Value>/dick@kraft28_bot</Value>
   </DataItem>
   <DataItem>
-    <Key>Привет</Key>
+    <Key>привет</Key>
     <Value>Я долбоёб</Value>
   </DataItem>
   <DataItem>
@@ -41,11 +41,11 @@
     <Value>Кто в мафию?</Value>
   </DataItem>
   <DataItem>
-    <Key>Пи</Key>
+    <Key>пи</Key>
     <Value>Дор</Value>
   </DataItem>
   <DataItem>
-    <Key>По</Key>
+    <Key>по</Key>
     <Value>Нимаю</Value>
   </DataItem>
   <DataItem>
@@ -53,35 +53,35 @@
     <Value>Триггер создан!</Value>
   </DataItem>
   <DataItem>
-    <Key>Кто лох?</Key>
+    <Key>кто лох?</Key>
     <Value>Ты лох</Value>
   </DataItem>
   <DataItem>
-    <Key>Боль</Key>
+    <Key>боль</Key>
     <Value>Пара на 7:45</Value>
   </DataItem>
   <DataItem>
-    <Key>Шо</Key>
+    <Key>шо</Key>
     <Value>Шо</Value>
   </DataItem>
   <DataItem>
-    <Key>Юра</Key>
+    <Key>юра</Key>
     <Value>Спать</Value>
   </DataItem>
   <DataItem>
-    <Key>Споки</Key>
+    <Key>споки</Key>
     <Value>Ноки</Value>
   </DataItem>
   <DataItem>
-    <Key>Сессия</Key>
+    <Key>сессия</Key>
     <Value>Exam is coming</Value>
   </DataItem>
   <DataItem>
-    <Key>Конечно</Key>
+    <Key>конечно</Key>
     <Value>CAADBAADJwEAAmuuXgkUdheOE0evARYE</Value>
   </DataItem>
   <DataItem>
-    <Key>Нет</Key>
+    <Key>нет</Key>
     <Value>CAADAgADBwADCsj5KxMVV9JlWEjqFgQ</Value>
   </DataItem>
   <DataItem>
@@ -89,15 +89,15 @@
     <Value>CAADAgADUAADJDhNDBSBO2EDqFqmFgQ</Value>
   </DataItem>
   <DataItem>
-    <Key>А</Key>
+    <Key>а</Key>
     <Value>Ясно</Value>
   </DataItem>
   <DataItem>
-    <Key>Ты</Key>
+    <Key>ты</Key>
     <Value>CAADAgADCAADCsj5K97-SxWuxCDXFgQ</Value>
   </DataItem>
   <DataItem>
-    <Key>Бля у</Key>
+    <Key>бля у</Key>
     <Value>CAADAgADKQADqWElFB6Y3fp51eZoFgQ</Value>
   </DataItem>
   <DataItem>
@@ -105,7 +105,7 @@
     <Value>CAADAgADOwADSeU1GLzadNSGRgABlxYE</Value>
   </DataItem>
   <DataItem>
-    <Key>Святой диск</Key>
+    <Key>святой диск</Key>
     <Value>СВЯТОЙ ГУГЛ ДИСК ПЗПИ-17:
 
 https://drive.google.com/open?id=18W3jYNzc6oyVBOAA3Gm59LGajNHhHwLo
@@ -125,7 +125,7 @@ https://docs.google.com/document/d/1e29P5WuaXxf9DAGcG7Q23_vjtSciS16gv-08lWDUpkY/
 https://drive.google.com/drive/folders/0B188icrGcLsZQVZXN0IzdU1SUWM</Value>
   </DataItem>
   <DataItem>
-    <Key>Сурмин</Key>
+    <Key>сурмин</Key>
     <Value>098 332 96 81</Value>
   </DataItem>
   <DataItem>
@@ -133,19 +133,15 @@ https://drive.google.com/drive/folders/0B188icrGcLsZQVZXN0IzdU1SUWM</Value>
     <Value>CAADAgADXQADfjRIDEph3Xr83-4cFgQ</Value>
   </DataItem>
   <DataItem>
-    <Key>Без баб</Key>
-    <Value>CAADAgADZAADfjRIDOiFYLxHplDdFgQ</Value>
-  </DataItem>
-  <DataItem>
-    <Key>Как неожиданно</Key>
+    <Key>как неожиданно</Key>
     <Value>и приятно</Value>
   </DataItem>
   <DataItem>
-    <Key>Кто-то сказал "прогул"?</Key>
+    <Key>кто-то сказал "прогул"?</Key>
     <Value>Завтра на первую</Value>
   </DataItem>
   <DataItem>
-    <Key>Урий</Key>
+    <Key>урий</Key>
     <Value>Юткин</Value>
   </DataItem>
   <DataItem>
@@ -153,11 +149,55 @@ https://drive.google.com/drive/folders/0B188icrGcLsZQVZXN0IzdU1SUWM</Value>
     <Value>Hello world!</Value>
   </DataItem>
   <DataItem>
-    <Key>ОПР</Key>
+    <Key>опр</Key>
     <Value>CAADAgADFQADSeU1GHj-D4hlEtdQFgQ</Value>
   </DataItem>
   <DataItem>
-    <Key>Бонд</Key>
+    <Key>бонд</Key>
     <Value>CAADAgADFQADSeU1GHj-D4hlEtdQFgQ</Value>
+  </DataItem>
+  <DataItem>
+    <Key>олейник</Key>
+    <Value>olena.oliinik@nure.ua</Value>
+  </DataItem>
+  <DataItem>
+    <Key>вм</Key>
+    <Value>CAADAgADHQAD5vwPGR5uan0qat3nFgQ</Value>
+  </DataItem>
+  <DataItem>
+    <Key>с днём рождения!</Key>
+    <Value>🎊🎉🥳🥳🎊💫⭐❤❤🎊🎉🎊🎉🎈🎁🎈🎁</Value>
+  </DataItem>
+  <DataItem>
+    <Key>с 8 марта</Key>
+    <Value>🎊🎉🥳🥳🎊💫⭐❤❤🎊🎉🎊🎉🎈🎁🎈🎁</Value>
+  </DataItem>
+  <DataItem>
+    <Key>с новым годом</Key>
+    <Value>🎊🎉🥳🥳🎊💫⭐❤❤🎊🎉🎊🎉🎈🎁🎈🎁</Value>
+  </DataItem>
+  <DataItem>
+    <Key>с завершением сесии</Key>
+    <Value>🎊🎉🥳🥳🎊💫⭐❤❤🎊🎉🎊🎉🎈🎁🎈🎁</Value>
+  </DataItem>
+  <DataItem>
+    <Key>с днём</Key>
+    <Value>🎊🎉🥳🥳🎊💫⭐❤❤🎊🎉🎊🎉🎈🎁🎈🎁</Value>
+  </DataItem>
+  <DataItem>
+    <Key>программисты</Key>
+    <Value>Похуисты</Value>
+  </DataItem>
+  <DataItem>
+    <Key>кирилл</Key>
+    <Value>Он не хочет слететь с бюджета , @Doge8 💰</Value>
+  </DataItem>
+  <DataItem>
+    <Key>диск опр</Key>
+    <Value>https://drive.google.com/drive/u/2/folders/15JsSU6y7q7zrn14n5XZgzeI6OyiHUmSy</Value>
+  </DataItem>
+  <DataItem>
+    <Key>сделать</Key>
+    <Value>Индив</Value>
   </DataItem>
 </ArrayOfDataItem>
