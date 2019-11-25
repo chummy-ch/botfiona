@@ -30,7 +30,7 @@ namespace botfiona
 
         static void Main(string[] args)
         {
-            Bot = new TelegramBotClient("905671296:AAFcDT4qymtle-QyUne4agx14q_97mIQMXI");
+            Bot = new TelegramBotClient(Variables.BOT_KEY);
             var me = Bot.GetMeAsync().Result;
             Bot.OnMessage += Get_Mes;
             Bot.OnCallbackQuery += Bot_OnCallbackQuery;
@@ -76,7 +76,7 @@ namespace botfiona
                             await Bot.SendTextMessageAsync(message.Chat, "Такой триггер уже существует :3");
                             await Bot.SendTextMessageAsync(message.Chat, triggers[message.Text.Split('*')[1]]);
                         }
-                        else
+                        else 
                         {
                             if (message.ReplyToMessage.Type == MessageType.Sticker)
                             {
