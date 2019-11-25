@@ -43,6 +43,7 @@ namespace botfiona
                 tempdataitems.Add(new DataItem(key, triggers[key].ToString()));
 
             }
+
             Console.ReadKey();
         }
 
@@ -54,7 +55,7 @@ namespace botfiona
         private static async void Get_Mes(object sender, MessageEventArgs e)
         {
             var message = e.Message;
-            
+
             // Вывод кода стикера в консоль
             /*if (message.Type == MessageType.Sticker)
             {
@@ -70,7 +71,7 @@ namespace botfiona
                 {
                     if (message.ReplyToMessage != null)
                     {
-                        if (triggers.ContainsKey(message.Text.Split('*')[1]))
+                        if (triggers.ContainsKey(message.Text.Split('*')[1].ToLower()))
                         {
                             await Bot.SendTextMessageAsync(message.Chat, "Такой триггер уже существует :3");
                             await Bot.SendTextMessageAsync(message.Chat, triggers[message.Text.Split('*')[1]]);
@@ -147,7 +148,7 @@ namespace botfiona
 
                     for (int i = 0; i < triggers.Count; i++)
                     {
-                        
+
                         if (triggers.Values.ToList()[i].Contains("CAA"))
                         {
                             list += "\n";
@@ -170,10 +171,9 @@ namespace botfiona
                     await Bot.SendTextMessageAsync(message.Chat, list);
                 }
 
-                if (message.Text == "да" )
+                if (message.Text == "да")
                 {
-                    await Bot.ForwardMessageAsync(message.Chat, message.Chat, message.MessageId);
-                    await Bot.SendTextMessageAsync(message.Chat, "Пизда");
+                    await Bot.SendTextMessageAsync(message.Chat, "Пизда", replyToMessageId: message.MessageId);
                 }
 
                 if (message.Text.Length > 3)
@@ -182,13 +182,12 @@ namespace botfiona
                     {
                         if (message.Text.Length <= 5 && message.Text.Length >= 2)
                         {
-                            await Bot.ForwardMessageAsync(message.Chat, message.Chat, message.MessageId);
-                            await Bot.SendTextMessageAsync(message.Chat, "Пизда");
+                            await Bot.SendTextMessageAsync(message.Chat, "Пизда", replyToMessageId: message.MessageId);
                         }
 
                     }
                 }
-                
+
 
                 if (triggers.ContainsKey(message.Text))
                 {
@@ -200,11 +199,11 @@ namespace botfiona
                     }
                     else
                     {
-                        await Bot.SendTextMessageAsync(message.Chat, er);
+                        await Bot.SendTextMessageAsync(message.Chat, er, replyToMessageId: message.MessageId);
                     }
                 }
 
-                if(message.Text == "погода" )
+                if (message.Text == "погода")
                 {
                     if (counter > 40)
                     {
@@ -301,17 +300,17 @@ namespace botfiona
                                 await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
                             }
                             else await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
-                            
+
                         }
 
                     }
-                    
+
                     else
                     {
                         await Bot.SendTextMessageAsync(message.Chat, "Погоду можно запрашивать раз в 40 сообщений (");
                     }
                 }
-                    
+
 
 
 
@@ -324,7 +323,7 @@ namespace botfiona
                 }
 
 
-                if ( message.Text.Contains("девочка"))
+                if (message.Text.Contains("девочка"))
                 {
                     await Bot.SendStickerAsync(message.Chat, "CAADAgADKwADqWElFEZQB5e23FxJFgQ");
                     await Bot.SendStickerAsync(message.Chat, "CAADAgADyAEAArMeUCPRh9FVnGyWTRYE");
@@ -335,6 +334,7 @@ namespace botfiona
 
             }
         }
+
 
 
         static void SaveTriggers()
@@ -373,7 +373,7 @@ namespace botfiona
             Program.triggers = triggers;
         }
 
-        
+
     }
 }
 
