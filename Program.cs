@@ -57,11 +57,10 @@ namespace botfiona
             var message = e.Message;
 
             // Вывод кода стикера в консоль
-            /*if (message.Type == MessageType.Sticker)
+            if (message.Type == MessageType.Sticker)
             {
-                var index = message.Sticker.FileId;
-                Console.WriteLine(index);
-            }*/
+                Console.WriteLine(message.Sticker.FileId);
+            }
             if (message.Type == MessageType.Text)
             {
                 counter++;
@@ -76,7 +75,7 @@ namespace botfiona
                             await Bot.SendTextMessageAsync(message.Chat, "Такой триггер уже существует :3");
                             await Bot.SendTextMessageAsync(message.Chat, triggers[message.Text.Split('*')[1]]);
                         }
-                        else 
+                        else
                         {
                             if (message.ReplyToMessage.Type == MessageType.Sticker)
                             {
@@ -244,64 +243,37 @@ namespace botfiona
                             temp = temp.Trim();
                             Console.WriteLine(temp);
                             await Bot.SendTextMessageAsync(message.Chat, $"На улице сейчас.... ❄️{temp}❄️");
-                            if (cond == "Ясно")
-                            {
-                                await Bot.SendStickerAsync(message.Chat, "CAADAgADOQIAAs7Y6AtiQa4j611amhYE");
-                                await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
-                            }
-                            else if (cond == "Переменная облачность")
-                            {
-                                await Bot.SendStickerAsync(message.Chat, "CAADAgADRwQAAs7Y6AtUgM8Qt1L1BBYE");
-                                await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
-                            }
-                            else if (cond.Contains("Пасмурно") && cond.Contains("дождь"))
-                            {
-                                await Bot.SendStickerAsync(message.Chat, "CAADAgAD8AEAAs7Y6Av_YmkSfuc8BhYE");
-                                await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
-                            }
-                            else await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
                         }
                         else if (Convert.ToInt32(temp) > -1 && Convert.ToInt32(temp) < 10)
                         {
                             await Bot.SendTextMessageAsync(message.Chat, $"На улице сейчас....  ✨{temp}✨");
-                            if (cond == "Ясно")
-                            {
-                                await Bot.SendStickerAsync(message.Chat, "CAADAgADOQIAAs7Y6AtiQa4j611amhYE");
-                                await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
-                            }
-                            else if (cond == "Переменная облачность")
-                            {
-                                await Bot.SendStickerAsync(message.Chat, "CAADAgADRwQAAs7Y6AtUgM8Qt1L1BBYE");
-                                await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
-                            }
-                            else if (cond.Contains("Пасмурно") && cond.Contains("дождь"))
-                            {
-                                await Bot.SendStickerAsync(message.Chat, "CAADAgAD8AEAAs7Y6Av_YmkSfuc8BhYE");
-                                await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
-                            }
-                            else await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
                         }
                         else
                         {
                             await Bot.SendTextMessageAsync(message.Chat, $"На улице сечас....  ☀️{temp}☀️");
-                            if (cond == "Ясно")
-                            {
-                                await Bot.SendStickerAsync(message.Chat, "CAADAgADOQIAAs7Y6AtiQa4j611amhYE");
-                                await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
-                            }
-                            else if (cond == "Переменная облачность")
-                            {
-                                await Bot.SendStickerAsync(message.Chat, "CAADAgADRwQAAs7Y6AtUgM8Qt1L1BBYE");
-                                await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
-                            }
-                            else if (cond.Contains("Пасмурно") && cond.Contains("дождь"))
-                            {
-                                await Bot.SendStickerAsync(message.Chat, "CAADAgAD8AEAAs7Y6Av_YmkSfuc8BhYE");
-                                await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
-                            }
-                            else await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
-
                         }
+
+                        if (cond == "Ясно")
+                        {
+                            await Bot.SendStickerAsync(message.Chat, "CAADAgADOQIAAs7Y6AtiQa4j611amhYE");
+                            await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
+                        }
+                        else if (cond == "Переменная облачность")
+                        {
+                            await Bot.SendStickerAsync(message.Chat, "CAADAgADRwQAAs7Y6AtUgM8Qt1L1BBYE");
+                            await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
+                        }
+                        else if (cond.Contains("Пасмурно") && cond.Contains("дождь"))
+                        {
+                            await Bot.SendStickerAsync(message.Chat, "CAADAgAD8AEAAs7Y6Av_YmkSfuc8BhYE");
+                            await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
+                        }
+                        else if (cond.Contains("Пасмурно") || cond.Contains("Облачно"))
+                        {
+                            await Bot.SendStickerAsync(message.Chat, "CAADAgADDwIAAtzyqwflTv80MV32fhYE");
+                            await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
+                        }
+                        else await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
 
                     }
 
