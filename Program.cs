@@ -57,10 +57,7 @@ namespace botfiona
             var message = e.Message;
 
             // Вывод кода стикера в консоль
-            if (message.Type == MessageType.Sticker)
-            {
-                Console.WriteLine(message.Sticker.FileId);
-            }
+            
             if (message.Type == MessageType.Text)
             {
                 counter++;

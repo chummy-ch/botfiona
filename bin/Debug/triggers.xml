@@ -248,4 +248,9 @@ https://drive.google.com/drive/folders/0B188icrGcLsZQVZXN0IzdU1SUWM</Value>
     <Key>карта</Key>
     <Value>tss.co.ua:5560/map/</Value>
   </DataItem>
+  <DataItem>
+    <Key>етикет</Key>
+    <Value>Профорг, когда будут е-тикеты?
+За что ты доп баллы получаешь?</Value>
+  </DataItem>
 </ArrayOfDataItem>
