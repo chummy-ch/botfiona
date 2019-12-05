@@ -21,7 +21,7 @@ namespace botfiona
         static List<DataItem> tempdataitems = new List<DataItem>(triggers.Count);
         static string[] commands = new string[] { "список", "Список", "/list", "Удалить", "Триггер", "Фиона", "фиона", "Девочка", "девочка", "погода", "Погода" };
         static int counter = 38;
-
+        static int[] gamersId = new int[] {};
 
 
 
@@ -280,15 +280,27 @@ namespace botfiona
                     }
                 }
 
+                if(message.Text.Contains("кто"))
+                {
+                    string a = "список";
+                    for (int i = 0; i < gamersId.Length; i++)
+                    {
+                         a = gamersId[i].ToString();
+                    }
+                    await Bot.SendTextMessageAsync(message.Chat, a);
+                }
 
-
+                if(message.Text.Contains("/game_enter"))
+                {
+                    gamersId.Prepend(message.From.Id);
+                }
 
                 if (message.Text == "фиона")
                 {
                     await Bot.SendTextMessageAsync(message.Chat, "Привет, я Фиона, чат-бот Болота 4 :3");
                     await Bot.SendStickerAsync(message.Chat, "CAADAgADGQAD9OfCJRWWFn5c1beEFgQ");
 
-                    await Bot.SendTextMessageAsync(message.Chat, "Мои команды:\n /list - для просмотра всех  триггеров \n Триггер *triggger_name* - для создания нового триггера \n Погода-показать прогноз погоды на сейчас");
+                    await Bot.SendTextMessageAsync(message.Chat, "Мои команды: \n /game_enter - войти игру в <кто> \n /list - для просмотра всех  триггеров \n Триггер *triggger_name* - для создания нового триггера \n Погода-показать прогноз погоды на сейчас");
                 }
 
 
