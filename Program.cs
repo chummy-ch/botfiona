@@ -30,7 +30,7 @@ namespace botfiona
 
         static void Main(string[] args)
         {
-            Bot = new TelegramBotClient(Variables.BOT_KEY);
+            Bot = new TelegramBotClient("905671296:AAFcDT4qymtle - QyUne4agx14q_97mIQMXI");
             var me = Bot.GetMeAsync().Result;
             Bot.OnMessage += Get_Mes;
             Bot.OnCallbackQuery += Bot_OnCallbackQuery;
