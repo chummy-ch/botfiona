@@ -21,7 +21,7 @@ namespace botfiona
         static List<DataItem> tempdataitems = new List<DataItem>(triggers.Count);
         static string[] commands = new string[] { "список", "Список", "/list", "Удалить", "Триггер", "Фиона", "фиона", "Девочка", "девочка", "погода", "Погода" };
         static int counter = 38;
-        static int[] gamersId = new int[] {};
+        static string[] gamersId;
 
 
 
@@ -280,20 +280,6 @@ namespace botfiona
                     }
                 }
 
-                if(message.Text.Contains("кто"))
-                {
-                    string a = "список";
-                    for (int i = 0; i < gamersId.Length; i++)
-                    {
-                         a = gamersId[i].ToString();
-                    }
-                    await Bot.SendTextMessageAsync(message.Chat, a);
-                }
-
-                if(message.Text.Contains("/game_enter"))
-                {
-                    gamersId.Prepend(message.From.Id);
-                }
 
                 if (message.Text == "фиона")
                 {
