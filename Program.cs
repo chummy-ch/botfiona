@@ -8,9 +8,7 @@ using Telegram.Bot.Args;
 using Telegram.Bot.Types.Enums;
 using System.Threading;
 using HtmlAgilityPack;
-
-
-
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace botfiona
 {
@@ -21,7 +19,8 @@ namespace botfiona
         static List<DataItem> tempdataitems = new List<DataItem>(triggers.Count);
         static string[] commands = new string[] { "список", "Список", "/list", "Удалить", "Триггер", "Фиона", "фиона", "Девочка", "девочка", "погода", "Погода" };
         static int counter = 38;
-        static string[] gamersId;
+        static List<string> gamersId = new List<string>();
+        static string[] quastions = new string[] { "кто", "у кого", "кого" };
 
 
 
@@ -32,10 +31,11 @@ namespace botfiona
         {
             Bot = new TelegramBotClient("905671296:AAFcDT4qymtle-QyUne4agx14q_97mIQMXI");
             var me = Bot.GetMeAsync().Result;
+            LoadTrigers();
+            LoadUname();
             Bot.OnMessage += Get_Mes;
             Bot.OnCallbackQuery += Bot_OnCallbackQuery;
             Bot.StartReceiving();
-            LoadTrigers();
             foreach (string key in triggers.Keys)
 
             {
@@ -57,7 +57,7 @@ namespace botfiona
             var message = e.Message;
 
             // Вывод кода стикера в консоль
-            
+
             if (message.Type == MessageType.Text)
             {
                 counter++;
@@ -289,6 +289,68 @@ namespace botfiona
                     await Bot.SendTextMessageAsync(message.Chat, "Мои команды: \n /game_enter - войти игру в <кто> \n /list - для просмотра всех  триггеров \n Триггер *triggger_name* - для создания нового триггера \n Погода-показать прогноз погоды на сейчас");
                 }
 
+                if (message.Text == "игроки")
+                {
+                    string spis = "Игроки:";
+                    foreach (string s in gamersId)
+                    {
+                        spis += "\n@" + s;
+                    }
+                    await Bot.SendTextMessageAsync(message.Chat.Id, spis);
+                }
+
+                if (message.Text.Contains("/game"))
+                {
+                    if (gamersId.Contains(message.From.Username))
+                    {
+                        await Bot.SendTextMessageAsync(message.Chat.Id, "Тю, ты что, странный? Ты же уже играшеь!", replyToMessageId: message.MessageId);
+                    }
+                    else
+                    {
+
+                        gamersId.Add(message.From.Username);
+                        SaveUname();
+                        await Bot.SendTextMessageAsync(message.Chat.Id, "Фига ты крут! Ты в игре!," + message.From.FirstName, replyToMessageId: message.MessageId);
+
+                    }
+                }
+
+                if (message.Text.Contains(quastions[0]) || message.Text.Contains(quastions[1]) || message.Text.Contains(quastions[2]))
+                {
+                    if (message.Text.Contains("?"))
+                    {
+                        Random rnd = new Random();
+                        int rn = rnd.Next(0, gamersId.Count());
+                        if (message.Text.Contains(quastions[0]))
+                        {
+
+                            if (message.Text.Length > 5)
+                            {
+                                string mat = message.Text.Substring(4, message.Text.Length - 5);
+                                await Bot.SendTextMessageAsync(message.Chat.Id, mat + " @" + gamersId[rn], replyToMessageId: message.MessageId);
+                            }
+
+                        }
+                        else if (message.Text.Contains(quastions[1]))
+                        {
+                            if (message.Text.Length > 8)
+                            {
+                                string mat = message.Text.Substring(7, message.Text.Length - 8);
+                                await Bot.SendTextMessageAsync(message.Chat.Id, mat + " у" + " @" + gamersId[rn], replyToMessageId: message.MessageId);
+                            }
+                        }
+                        else if (message.Text.Contains(quastions[2]))
+                        {
+                            if (message.Text.Length > 6)
+                            {
+                                string mat = message.Text.Substring(5, message.Text.Length - 6);
+                                await Bot.SendTextMessageAsync(message.Chat.Id, mat + " @" + gamersId[rn], replyToMessageId: message.MessageId);
+                            }
+
+                        }
+
+                    }
+                }
 
                 if (message.Text.Contains("девочка"))
                 {
@@ -298,6 +360,10 @@ namespace botfiona
                     await Bot.SendStickerAsync(message.Chat, "CAADAgAD0gEAArMeUCPGE2QnmWBiEhYE");
 
                 }
+
+
+
+
 
             }
         }
@@ -340,6 +406,28 @@ namespace botfiona
             Program.triggers = triggers;
         }
 
+        static void SaveUname()
+        {
+            using (FileStream fs = new FileStream("Unames.xml", FileMode.OpenOrCreate))
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(List<string>));
+                fs.SetLength(0);
+                serializer.Serialize(fs, gamersId);
+            }
+        }
+
+        static void LoadUname()
+        {
+            XmlSerializer xs = new XmlSerializer(typeof(List<string>));
+            using (FileStream fs = new FileStream("Unames.xml", FileMode.OpenOrCreate))
+            {
+                List<string> templist = (List<string>)xs.Deserialize(fs);
+                foreach (string di in templist)
+                {
+                    gamersId.Add(di);
+                }
+            }
+        }
 
     }
 }
