@@ -167,6 +167,12 @@ namespace botfiona
                             list += $"{triggers.Keys.ToList()[i]} - <Длинное значение>";
                             list += "\n";
                         }
+                        else if (triggers.Values.ToList()[i].Contains("www.") || triggers.Values.ToList()[i].Contains("@gmail.") || triggers.Values.ToList()[i].Contains("@nure.") || triggers.Values.ToList()[i].Contains("tss."))
+                        {
+                            list += "\n";
+                            list += $"{triggers.Keys.ToList()[i]} - <url>";
+                            list += "\n";
+                        }
                         else
                         {
                             list += "\n";
