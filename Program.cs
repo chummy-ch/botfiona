@@ -23,7 +23,7 @@ namespace botfiona
         static string[] quastions = new string[] { "кто", "у кого", "кого" };
         static string[] trues = new string[] { "Да!", "Конечно!", "Без сомнений!", "Лоол, а как же иначе!" };
         static string[] falses = new string[] { "Нет", "Конечно нет!", "Такого не можут быть!", "Фейк!" };
-
+        static int[] voices = new int[] { };
 
 
 
@@ -122,6 +122,63 @@ namespace botfiona
                                 await Bot.SendStickerAsync(message.Chat, "CAADAgADBwAD9OfCJS6YbVaPHbHaFgQ");
                             }
                         }
+
+                        
+                        {
+                            if (triggers.ContainsKey(message.Text.Split('*')[1].ToLower()))
+                            {
+                                await Bot.SendTextMessageAsync(message.Chat, "Такой триггер уже существует :3");
+                                await Bot.SendTextMessageAsync(message.Chat, triggers[message.Text.Split('*')[1]]);
+                            }
+                            else
+                            {
+                                if (message.ReplyToMessage.Type == MessageType.Sticker)
+                                {
+                                    var index = message.ReplyToMessage.Sticker.FileId;
+                                    Console.WriteLine(index);
+                                    string key = message.Text.Split('*')[1];
+                                    triggers.Add(key, index);
+                                    SaveTriggers();
+                                    await Bot.SendTextMessageAsync(message.Chat, "Триггер создан!");
+                                    await Bot.SendStickerAsync(message.Chat, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
+                                }
+                                
+
+                                else if (message.ReplyToMessage.Type == MessageType.Voice)
+                                {
+                                    string key = message.Text.Split('*')[1];
+                                    triggers.Add(key, message.ReplyToMessage.MessageId.ToString());
+                                    SaveTriggers();
+                                    await Bot.SendTextMessageAsync(message.Chat, "Триггер создан!");
+
+                                }
+                                else if (message.ReplyToMessage.Text.Trim().Length > 0)
+                                {
+                                    if (commands.Contains(message.ReplyToMessage.Text))
+                                    {
+                                        await Bot.SendTextMessageAsync(message.Chat, "Команды нельзя использовать для триггера");
+
+                                    }
+                                    else
+                                    {
+                                        string key = message.Text.Split('*')[1];
+                                        if (commands.Contains(key))
+                                        {
+                                            await Bot.SendTextMessageAsync(message.Chat, "Команды нельзя использовать для триггера");
+                                        }
+                                        else
+                                        {
+                                            triggers.Add(key, message.ReplyToMessage.Text);
+                                            SaveTriggers();
+                                            await Bot.SendTextMessageAsync(message.Chat, "Триггер создан!");
+                                            await Bot.SendStickerAsync(message.Chat, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
+                                        }
+                                    }
+
+                                }
+                            }
+
+                        }
                     }
                    
                     
@@ -208,6 +265,10 @@ namespace botfiona
                     if (er.Contains("CAA"))
                     {
                         await Bot.SendStickerAsync(message.Chat, triggers[message.Text]);
+                    }
+                    else if (er.Contains("2") || er.Contains("1") || er.Contains("3"))
+                    {
+                        await Bot.ForwardMessageAsync(message.Chat, message.Chat, Convert.ToInt32(er) );
                     }
                     else
                     {
@@ -408,7 +469,7 @@ namespace botfiona
 
             }
 
-           
+            
         }
 
 
@@ -471,6 +532,8 @@ namespace botfiona
                 }
             }
         }
+
+        
 
     }
 }
