@@ -135,7 +135,6 @@ namespace botfiona
                                 if (message.ReplyToMessage.Type == MessageType.Sticker)
                                 {
                                     var index = message.ReplyToMessage.Sticker.FileId;
-                                    Console.WriteLine(index);
                                     string key = message.Text.Split('*')[1];
                                     triggers.Add(key, index);
                                     SaveTriggers();
@@ -144,10 +143,10 @@ namespace botfiona
                                 }
                                 
 
-                                else if (message.ReplyToMessage.Type == MessageType.Voice)
+                                else if (message.ReplyToMessage.Type == MessageType.Voice || message.ReplyToMessage.Type == MessageType.VideoNote)
                                 {
                                     string key = message.Text.Split('*')[1];
-                                    triggers.Add(key, message.ReplyToMessage.MessageId.ToString());
+                                    triggers.Add(key, "vov" + message.ReplyToMessage.MessageId.ToString());
                                     SaveTriggers();
                                     await Bot.SendTextMessageAsync(message.Chat, "Триггер создан!");
 
@@ -262,14 +261,16 @@ namespace botfiona
                 {
                     string er = "ошибка";
                     triggers.TryGetValue(message.Text, out er);
-                    if (er.Contains("CAA"))
+                    if (er.Substring(0,3) == "vov")
+                    {
+                        er = er.Replace("vov", "");
+                        await Bot.ForwardMessageAsync(message.Chat, message.Chat, Convert.ToInt32(er));
+                    }
+                    else if (er.Contains("CAA"))
                     {
                         await Bot.SendStickerAsync(message.Chat, triggers[message.Text]);
                     }
-                    else if (er.Contains("2") || er.Contains("1") || er.Contains("3"))
-                    {
-                        await Bot.ForwardMessageAsync(message.Chat, message.Chat, Convert.ToInt32(er) );
-                    }
+                  
                     else
                     {
                         await Bot.SendTextMessageAsync(message.Chat, er, replyToMessageId: message.MessageId);
@@ -465,13 +466,22 @@ namespace botfiona
 
                 }
 
+                /*if (message.Text == "скачать")
+                {
+                    if (message.ReplyToMessage.Type == MessageType.Voice)
+                    {
+                        string x = Convert.ToString(message.ReplyToMessage.Voice.FileId);
+                        await Bot.DownloadFileAsync(x,);
+                    }
+                }*/
 
-
+               
             }
 
             
         }
 
+        
 
 
         static void SaveTriggers()
