@@ -369,9 +369,11 @@ namespace botfiona
                 if (message.Text == "игроки")
                 {
                     string spis = "Игроки:";
+                    int i = 1;
                     foreach (string s in gamersId)
                     {
-                        spis += "\n@" + s;
+                        spis +=  "\n" +i+ ". @" + s;
+                        i += 1;
                     }
                     await Bot.SendTextMessageAsync(message.Chat.Id, spis);
                 }
