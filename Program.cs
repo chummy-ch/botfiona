@@ -28,7 +28,6 @@ namespace botfiona
 
 
 
-
         static void Main(string[] args)
         {
             Bot = new TelegramBotClient("905671296:AAFcDT4qymtle-QyUne4agx14q_97mIQMXI");
@@ -38,6 +37,7 @@ namespace botfiona
             Bot.OnMessage += Get_Mes;
             Bot.OnCallbackQuery += Bot_OnCallbackQuery;
             Bot.StartReceiving();
+            
             foreach (string key in triggers.Keys)
 
             {
@@ -57,9 +57,8 @@ namespace botfiona
         private static async void Get_Mes(object sender, MessageEventArgs e)
         {
             var message = e.Message;
-
             // Вывод кода стикера в консоль
-
+            
             if (message.Type == MessageType.Text)
             {
                 counter++;
@@ -393,7 +392,7 @@ namespace botfiona
                     }
                 }
 
-                if (message.Text.Contains(quastions[0]) || message.Text.Contains(quastions[1]) || message.Text.Contains(quastions[2]))
+                if (message.Text.Substring(0,5).Contains(quastions[0]) || message.Text.Substring(0,5).Contains(quastions[1]) || message.Text.Substring(0,5).Contains(quastions[2]))
                 {
                     if (message.Text.Contains("?"))
                     {
@@ -466,16 +465,16 @@ namespace botfiona
 
                 }
 
-                /*if (message.Text == "скачать")
+               /* if (message.Text == "голосование" && message.Text.Contains("*"))
                 {
-                    if (message.ReplyToMessage.Type == MessageType.Voice)
+                    if(message.Text.Trim().Length > 0)
                     {
-                        string x = Convert.ToString(message.ReplyToMessage.Voice.FileId);
-                        await Bot.DownloadFileAsync(x,);
+                        string tema = message.Text.Split('*')[1];
+                        await Bot.SendPollAsync(message.Chat.Id, tema, );
                     }
                 }*/
 
-               
+
             }
 
             
