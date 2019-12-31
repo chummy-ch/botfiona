@@ -393,47 +393,50 @@ namespace botfiona
 
                     }
                 }
-
-                if (message.Text.Substring(0,5).Contains(quastions[0]) || message.Text.Substring(0,5).Contains(quastions[1]) || message.Text.Substring(0,5).Contains(quastions[2]))
+                if (message.Text.Length > 5)
                 {
-                    if (message.Text.Contains("?"))
+                    if (message.Text.Substring(0, 5).Contains(quastions[0]) || message.Text.Substring(0, 5).Contains(quastions[1]) || message.Text.Substring(0, 5).Contains(quastions[2]))
                     {
-                        if (message != null)
+                        if (message.Text.Contains("?"))
                         {
-                            Random rnd = new Random();
-                            int rn = rnd.Next(0, gamersId.Count());
-                            if (message.Text.Contains(quastions[0]))
+                            if (message != null)
                             {
-
-                                if (message.Text.Length > 5)
+                                Random rnd = new Random();
+                                int rn = rnd.Next(0, gamersId.Count());
+                                if (message.Text.Contains(quastions[0]))
                                 {
-                                    string mat = message.Text.Substring(4, message.Text.Length - 5);
-                                    await Bot.SendTextMessageAsync(message.Chat.Id, mat + " @" + gamersId[rn], replyToMessageId: message.MessageId);
-                                }
 
-                            }
-                            else if (message.Text.Contains(quastions[1]))
-                            {
-                                if (message.Text.Length > 8)
-                                {
-                                    string mat = message.Text.Substring(7, message.Text.Length - 8);
-                                    await Bot.SendTextMessageAsync(message.Chat.Id, mat + " у" + " @" + gamersId[rn], replyToMessageId: message.MessageId);
-                                }
-                            }
-                            else if (message.Text.Contains(quastions[2]))
-                            {
-                                if (message.Text.Length > 6)
-                                {
-                                    string mat = message.Text.Substring(5, message.Text.Length - 6);
-                                    await Bot.SendTextMessageAsync(message.Chat.Id, mat + " @" + gamersId[rn], replyToMessageId: message.MessageId);
-                                }
+                                    if (message.Text.Length > 5)
+                                    {
+                                        string mat = message.Text.Substring(4, message.Text.Length - 5);
+                                        await Bot.SendTextMessageAsync(message.Chat.Id, mat + " @" + gamersId[rn], replyToMessageId: message.MessageId);
+                                    }
 
+                                }
+                                else if (message.Text.Contains(quastions[1]))
+                                {
+                                    if (message.Text.Length > 8)
+                                    {
+                                        string mat = message.Text.Substring(7, message.Text.Length - 8);
+                                        await Bot.SendTextMessageAsync(message.Chat.Id, mat + " у" + " @" + gamersId[rn], replyToMessageId: message.MessageId);
+                                    }
+                                }
+                                else if (message.Text.Contains(quastions[2]))
+                                {
+                                    if (message.Text.Length > 6)
+                                    {
+                                        string mat = message.Text.Substring(5, message.Text.Length - 6);
+                                        await Bot.SendTextMessageAsync(message.Chat.Id, mat + " @" + gamersId[rn], replyToMessageId: message.MessageId);
+                                    }
+
+                                }
                             }
+
+
                         }
-                        
-
                     }
                 }
+                
 
                 if (message.Text.Contains("девочка"))
                 {
