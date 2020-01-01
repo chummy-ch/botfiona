@@ -55,13 +55,7 @@ namespace botfiona
                 bron[0] = e.CallbackQuery.From.FirstName;
                
             }
-            else if (e.CallbackQuery.Data == bron[1])
-            {
-                
-            }
            
-            
-            
             
         }
 
