@@ -6,10 +6,8 @@ using System.Xml.Serialization;
 using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types.Enums;
-using System.Threading;
 using HtmlAgilityPack;
-using System.Runtime.Serialization.Formatters.Binary;
-
+using Telegram.Bot.Types.ReplyMarkups;
 namespace botfiona
 {
     class Program
@@ -24,8 +22,7 @@ namespace botfiona
         static string[] trues = new string[] { "Да!", "Конечно!", "Без сомнений!", "Лоол, а как же иначе!" };
         static string[] falses = new string[] { "Нет", "Конечно нет!", "Такого не можут быть!", "Фейк!" };
         static int[] voices = new int[] { };
-
-
+        static string[] bron = new string[] { "1.1", "2.1", "3.1", "1.2", "2.2", "3.2", "1.3", "2.3", "3.3" };
 
 
         static void Main(string[] args)
@@ -49,15 +46,31 @@ namespace botfiona
             Console.ReadKey();
         }
 
-        private static void Bot_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
+        private static async void Bot_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
         {
-            throw new NotImplementedException();
+            string name = e.CallbackQuery.From.FirstName;
+            await Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id, "ну и че");
+            if (e.CallbackQuery.Data == bron[0])
+            {
+                bron[0] = e.CallbackQuery.From.FirstName;
+               
+            }
+            else if (e.CallbackQuery.Data == bron[1])
+            {
+                
+            }
+           
+            
+            
+            
         }
 
         private static async void Get_Mes(object sender, MessageEventArgs e)
         {
+            
             var message = e.Message;
             // Вывод кода стикера в консоль
+            Console.WriteLine(message.MessageId);
             
             if (message.Type == MessageType.Text)
             {
@@ -470,14 +483,33 @@ namespace botfiona
 
                 }
 
-               /* if (message.Text == "голосование" && message.Text.Contains("*"))
+                if (message.Text == "бронь")
                 {
-                    if(message.Text.Trim().Length > 0)
+                    var  keyboard = new InlineKeyboardMarkup(new[]
                     {
-                        string tema = message.Text.Split('*')[1];
-                        await Bot.SendPollAsync(message.Chat.Id, tema, );
-                    }
-                }*/
+                        
+                        new []
+                        {
+                            InlineKeyboardButton.WithCallbackData(bron[0]),
+                            InlineKeyboardButton.WithCallbackData(bron[1]),
+                            InlineKeyboardButton.WithCallbackData(bron[2])
+                        },
+                        
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData(bron[3]),
+                            InlineKeyboardButton.WithCallbackData(bron[4]),
+                            InlineKeyboardButton.WithCallbackData(bron[5])
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData(bron[6]),
+                            InlineKeyboardButton.WithCallbackData(bron[7]),
+                            InlineKeyboardButton.WithCallbackData(bron[8])
+                        }
+                    });
+                    await Bot.SendTextMessageAsync(message.Chat.Id, "бронь", replyMarkup: keyboard);
+                }
 
 
             }
@@ -486,7 +518,7 @@ namespace botfiona
         }
 
         
-
+        
 
         static void SaveTriggers()
         {
