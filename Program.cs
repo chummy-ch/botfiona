@@ -21,13 +21,15 @@ namespace botfiona
         static string[] quastions = new string[] { "кто", "у кого", "кого" };
         static string[] trues = new string[] { "Да!", "Конечно!", "Без сомнений!", "Лоол, а как же иначе!" };
         static string[] falses = new string[] { "Нет", "Конечно нет!", "Такого не можут быть!", "Фейк!" };
-        static int[] voices = new int[] { };
         static string[] bron = new string[] { "1.1", "2.1", "3.1", "1.2", "2.2", "3.2", "1.3", "2.3", "3.3" };
+
+        static InlineKeyboardMarkup keyboard;
 
 
         static void Main(string[] args)
         {
-            Bot = new TelegramBotClient("905671296:AAFcDT4qymtle-QyUne4agx14q_97mIQMXI");
+
+            Bot = new TelegramBotClient("905671296:AAFcDT4qymtle-QyUne4agx14q_97mIQMXI") {Timeout = TimeSpan.FromSeconds(1) };
             var me = Bot.GetMeAsync().Result;
             LoadTrigers();
             LoadUname();
@@ -48,15 +50,20 @@ namespace botfiona
 
         private static async void Bot_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
         {
+            var message = e.CallbackQuery;
             string name = e.CallbackQuery.From.FirstName;
             await Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id, "ну и че");
-            if (e.CallbackQuery.Data == bron[0])
+
+            InlineKeyboardButton btn = null;
+            foreach(var row in keyboard.InlineKeyboard)
             {
-                bron[0] = e.CallbackQuery.From.FirstName;
-               
+                foreach(var button in row)
+                {
+                    if (button.CallbackData == e.CallbackQuery.Data) btn = button;
+                }
             }
-           
-            
+
+            btn.Text = "A";
         }
 
         private static async void Get_Mes(object sender, MessageEventArgs e)
@@ -64,8 +71,6 @@ namespace botfiona
             
             var message = e.Message;
             // Вывод кода стикера в консоль
-            Console.WriteLine(message.MessageId);
-            
             if (message.Type == MessageType.Text)
             {
                 counter++;
@@ -479,12 +484,12 @@ namespace botfiona
 
                 if (message.Text == "бронь")
                 {
-                    var  keyboard = new InlineKeyboardMarkup(new[]
+                    keyboard = new InlineKeyboardMarkup(new[]
                     {
                         
                         new []
                         {
-                            InlineKeyboardButton.WithCallbackData(bron[0]),
+                            InlineKeyboardButton.WithCallbackData("2"),
                             InlineKeyboardButton.WithCallbackData(bron[1]),
                             InlineKeyboardButton.WithCallbackData(bron[2])
                         },
@@ -502,7 +507,8 @@ namespace botfiona
                             InlineKeyboardButton.WithCallbackData(bron[8])
                         }
                     });
-                    await Bot.SendTextMessageAsync(message.Chat.Id, "бронь", replyMarkup: keyboard);
+                    await Bot.SendTextMessageAsync(message.Chat.Id, "Бронь парт", replyMarkup: keyboard);
+
                 }
 
 
@@ -540,11 +546,16 @@ namespace botfiona
 
             using (FileStream fs = new FileStream("triggers.xml", FileMode.OpenOrCreate))
             {
-                List<DataItem> templist = (List<DataItem>)xs.Deserialize(fs);
-                foreach (DataItem di in templist)
+                
+                if (fs.Length > 0)
                 {
-                    triggers.Add(di.Key, di.Value);
+                    List<DataItem> templist = (List<DataItem>)xs.Deserialize(fs);
+                    foreach (DataItem di in templist)
+                    {
+                        triggers.Add(di.Key, di.Value);
+                    }
                 }
+                
             }
 
             Program.triggers = triggers;
@@ -562,6 +573,7 @@ namespace botfiona
 
         static void LoadUname()
         {
+            // XML -> JSON
             XmlSerializer xs = new XmlSerializer(typeof(List<string>));
             using (FileStream fs = new FileStream("Unames.xml", FileMode.OpenOrCreate))
             {
