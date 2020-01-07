@@ -29,20 +29,17 @@ namespace botfiona
         static void Main(string[] args)
         {
 
-            Bot = new TelegramBotClient("905671296:AAFcDT4qymtle-QyUne4agx14q_97mIQMXI") {Timeout = TimeSpan.FromSeconds(1) };
+            Bot = new TelegramBotClient("905671296:AAFcDT4qymtle-QyUne4agx14q_97mIQMXI");
             var me = Bot.GetMeAsync().Result;
             LoadTrigers();
             LoadUname();
             Bot.OnMessage += Get_Mes;
             Bot.OnCallbackQuery += Bot_OnCallbackQuery;
             Bot.StartReceiving();
-            
+
             foreach (string key in triggers.Keys)
-
             {
-
                 tempdataitems.Add(new DataItem(key, triggers[key].ToString()));
-
             }
 
             Console.ReadKey();
@@ -55,9 +52,9 @@ namespace botfiona
             await Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id, "ну и че");
 
             InlineKeyboardButton btn = null;
-            foreach(var row in keyboard.InlineKeyboard)
+            foreach (var row in keyboard.InlineKeyboard)
             {
-                foreach(var button in row)
+                foreach (var button in row)
                 {
                     if (button.CallbackData == e.CallbackQuery.Data) btn = button;
                 }
@@ -68,7 +65,7 @@ namespace botfiona
 
         private static async void Get_Mes(object sender, MessageEventArgs e)
         {
-            
+
             var message = e.Message;
             // Вывод кода стикера в консоль
             if (message.Type == MessageType.Text)
@@ -77,7 +74,7 @@ namespace botfiona
                 message.Text = message.Text.ToLower();
 
                 if (message.Text.Contains("триггер"))
-                {     
+                {
                     if (message.ReplyToMessage != null)
                     {
                         if (message.ReplyToMessage.Type == MessageType.Text)
@@ -134,7 +131,7 @@ namespace botfiona
                             }
                         }
 
-                        
+
                         {
                             if (triggers.ContainsKey(message.Text.Split('*')[1].ToLower()))
                             {
@@ -152,7 +149,7 @@ namespace botfiona
                                     await Bot.SendTextMessageAsync(message.Chat, "Триггер создан!");
                                     await Bot.SendStickerAsync(message.Chat, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
                                 }
-                                
+
 
                                 else if (message.ReplyToMessage.Type == MessageType.Voice || message.ReplyToMessage.Type == MessageType.VideoNote)
                                 {
@@ -190,8 +187,8 @@ namespace botfiona
 
                         }
                     }
-                   
-                    
+
+
 
                 }
 
@@ -272,7 +269,7 @@ namespace botfiona
                 {
                     string er = "ошибка";
                     triggers.TryGetValue(message.Text, out er);
-                    if (er.Substring(0,3) == "vov")
+                    if (er.Substring(0, 3) == "vov")
                     {
                         er = er.Replace("vov", "");
                         await Bot.ForwardMessageAsync(message.Chat, message.Chat, Convert.ToInt32(er));
@@ -281,7 +278,7 @@ namespace botfiona
                     {
                         await Bot.SendStickerAsync(message.Chat, triggers[message.Text]);
                     }
-                  
+
                     else
                     {
                         await Bot.SendTextMessageAsync(message.Chat, er, replyToMessageId: message.MessageId);
@@ -384,7 +381,7 @@ namespace botfiona
                     int i = 1;
                     foreach (string s in gamersId)
                     {
-                        spis +=  "\n" +i+ ". @" + s;
+                        spis += "\n" + i + ". @" + s;
                         i += 1;
                     }
                     await Bot.SendTextMessageAsync(message.Chat.Id, spis);
@@ -448,7 +445,7 @@ namespace botfiona
                         }
                     }
                 }
-                
+
 
                 if (message.Text.Contains("девочка"))
                 {
@@ -461,9 +458,9 @@ namespace botfiona
 
                 if (message.Text.Contains("фиона,"))
                 {
-                    if( message.Text.Contains("?"))
+                    if (message.Text.Contains("?"))
                     {
-                        if(message.Text.Length > 7)
+                        if (message.Text.Length > 7)
                         {
                             string quash = message.Text.Substring(7, message.Text.Length - 8);
                             quash = quash.Replace(" ", "");
@@ -476,7 +473,7 @@ namespace botfiona
                             }
                             else await Bot.SendStickerAsync(message.Chat.Id, "CAADAgADBwAD9OfCJS6YbVaPHbHaFgQ", replyToMessageId: message.MessageId);
                         }
-                       
+
 
                     }
 
@@ -486,14 +483,14 @@ namespace botfiona
                 {
                     keyboard = new InlineKeyboardMarkup(new[]
                     {
-                        
+
                         new []
                         {
                             InlineKeyboardButton.WithCallbackData("2"),
                             InlineKeyboardButton.WithCallbackData(bron[1]),
                             InlineKeyboardButton.WithCallbackData(bron[2])
                         },
-                        
+
                         new[]
                         {
                             InlineKeyboardButton.WithCallbackData(bron[3]),
@@ -514,11 +511,11 @@ namespace botfiona
 
             }
 
-            
+
         }
 
-        
-        
+
+
 
         static void SaveTriggers()
         {
@@ -546,7 +543,6 @@ namespace botfiona
 
             using (FileStream fs = new FileStream("triggers.xml", FileMode.OpenOrCreate))
             {
-                
                 if (fs.Length > 0)
                 {
                     List<DataItem> templist = (List<DataItem>)xs.Deserialize(fs);
@@ -555,7 +551,7 @@ namespace botfiona
                         triggers.Add(di.Key, di.Value);
                     }
                 }
-                
+
             }
 
             Program.triggers = triggers;
@@ -585,7 +581,7 @@ namespace botfiona
             }
         }
 
-        
+
 
     }
 }
