@@ -22,6 +22,8 @@ namespace botfiona
         static string[] trues = new string[] { "Да!", "Конечно!", "Без сомнений!", "Лоол, а как же иначе!" };
         static string[] falses = new string[] { "Нет", "Конечно нет!", "Такого не можут быть!", "Фейк!" };
         static string[] bron = new string[] { "1.1", "2.1", "3.1", "1.2", "2.2", "3.2", "1.3", "2.3", "3.3" };
+        static List<string> story = new List<string>();
+
 
         static InlineKeyboardMarkup keyboard;
 
@@ -68,9 +70,30 @@ namespace botfiona
             var message = e.Message;
             if (message.Type == MessageType.Text)
             {
+                for (int i = 0; i < message.Text.Split().Length; i++)
+                {
+                    story.Add(message.Text.Split(' ')[i]);
+                }
+                story.Add(message.Text);
                 counter++;
                 message.Text = message.Text.ToLower();
 
+                if (message.Text == "фиона, история")
+                {
+                    Random rdn = new Random();
+                    int nr = rdn.Next(3, story.Count);
+                    Random rnd = new Random();
+                    string storys = "И так: ";
+                    for (int i = 1; i <= nr; i ++)
+                    {
+                        int rn = rnd.Next(0, story.Count - 1);
+                        storys += story[rn] + " ";
+                        story.RemoveAt(rn);
+                        i++;
+                    }
+                    await Bot.SendTextMessageAsync(message.Chat.Id, storys);
+                    storys += "";
+                }
                 if (message.Text.Contains("триггер"))
                 {
                     if (message.ReplyToMessage != null)
