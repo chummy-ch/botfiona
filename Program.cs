@@ -210,7 +210,7 @@ namespace botfiona
                 }
 
 
-                if (message.Text.Contains("/list") || message.Text.Contains("список"))
+                if (message.Text == "/list" || message.Text == "список")
                 {
                     string list = "Команды:";
 
