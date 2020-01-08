@@ -157,6 +157,10 @@ namespace botfiona
                                     await Bot.SendTextMessageAsync(message.Chat, "Триггер создан!");
 
                                 }
+                                else if (message.ReplyToMessage.Type == MessageType.Photo)
+                                {
+                                    await Bot.SendTextMessageAsync(message.Chat.Id, "Not yet");
+                                }
                                 else if (message.ReplyToMessage.Text.Trim().Length > 0)
                                 {
                                     if (commands.Contains(message.ReplyToMessage.Text))
