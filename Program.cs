@@ -65,9 +65,7 @@ namespace botfiona
 
         private static async void Get_Mes(object sender, MessageEventArgs e)
         {
-
             var message = e.Message;
-            // Вывод кода стикера в консоль
             if (message.Type == MessageType.Text)
             {
                 counter++;
@@ -131,6 +129,7 @@ namespace botfiona
                             }
                         }
 
+                        else
 
                         {
                             if (triggers.ContainsKey(message.Text.Split('*')[1].ToLower()))
@@ -269,20 +268,24 @@ namespace botfiona
                 {
                     string er = "ошибка";
                     triggers.TryGetValue(message.Text, out er);
-                    if (er.Substring(0, 3) == "vov")
+                    if ( er.Length > 3)
                     {
-                        er = er.Replace("vov", "");
-                        await Bot.ForwardMessageAsync(message.Chat, message.Chat, Convert.ToInt32(er));
-                    }
-                    else if (er.Contains("CAA"))
-                    {
-                        await Bot.SendStickerAsync(message.Chat, triggers[message.Text]);
-                    }
+                        if (er.Substring(0, 3) == "vov")
+                        {
+                            er = er.Replace("vov", "");
+                            await Bot.ForwardMessageAsync(message.Chat, message.Chat, Convert.ToInt32(er));
+                        }
+                        else if (er.Contains("CAA"))
+                        {
+                            await Bot.SendStickerAsync(message.Chat, triggers[message.Text]);
+                        }
 
-                    else
-                    {
-                        await Bot.SendTextMessageAsync(message.Chat, er, replyToMessageId: message.MessageId);
+                        else
+                        {
+                            await Bot.SendTextMessageAsync(message.Chat, er, replyToMessageId: message.MessageId);
+                        }
                     }
+                   
                 }
 
                 if (message.Text == "погода")
@@ -506,6 +509,15 @@ namespace botfiona
                     });
                     await Bot.SendTextMessageAsync(message.Chat.Id, "Бронь парт", replyMarkup: keyboard);
 
+                }
+
+                
+
+                if (message.Text == "полезная инфа")
+                {
+                    Console.WriteLine(message.MigrateFromChatId);
+                    if (message.ReplyToMessage.Text.Length < 1) return;
+                    await Bot.ForwardMessageAsync(22, -1001100135301, message.ReplyToMessage.MessageId);
                 }
 
 
