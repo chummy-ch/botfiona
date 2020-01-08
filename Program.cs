@@ -98,25 +98,24 @@ namespace botfiona
                                     }
                                     else if (message.ReplyToMessage.Text.Trim().Length > 0)
                                     {
+                                        string key = (message.Text.Split('*')[1]);
+                                        key = key.Trim();
                                         if (commands.Contains(message.ReplyToMessage.Text))
                                         {
                                             await Bot.SendTextMessageAsync(message.Chat, "Команды нельзя использовать для триггера");
 
                                         }
+                                        else if (commands.Contains(key))
+                                        {
+                                                await Bot.SendTextMessageAsync(message.Chat, "Команды нельзя использовать для триггера");
+                                        }
                                         else
                                         {
-                                            string key = message.Text.Split('*')[1];
-                                            if (commands.Contains(key))
-                                            {
-                                                await Bot.SendTextMessageAsync(message.Chat, "Команды нельзя использовать для триггера");
-                                            }
-                                            else
-                                            {
-                                                triggers.Add(key, message.ReplyToMessage.Text);
-                                                SaveTriggers();
-                                                await Bot.SendTextMessageAsync(message.Chat, "Триггер создан!");
-                                                await Bot.SendStickerAsync(message.Chat, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
-                                            }
+                                            
+                                            triggers.Add(key, message.ReplyToMessage.Text);
+                                            SaveTriggers();
+                                            await Bot.SendTextMessageAsync(message.Chat, "Триггер создан!");
+                                            await Bot.SendStickerAsync(message.Chat, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
                                         }
 
                                     }
