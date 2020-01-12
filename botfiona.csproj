@@ -52,7 +52,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CountData1.cs" />
     <Compile Include="DataItem.cs" />
+    <Compile Include="people.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserNamesData.cs" />

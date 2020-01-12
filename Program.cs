@@ -16,14 +16,15 @@ namespace botfiona
         static Dictionary<string, string> triggers = new Dictionary<string, string>();
         static List<DataItem> tempdataitems = new List<DataItem>(triggers.Count);
         static string[] commands = new string[] { "список", "Список", "/list", "Удалить", "Триггер", "Фиона", "фиона", "Девочка", "девочка", "погода", "Погода" };
-        static int counter = 38;
         static List<string> gamersId = new List<string>();
         static string[] quastions = new string[] { "кто", "у кого", "кого" };
         static string[] trues = new string[] { "Да!", "Конечно!", "Без сомнений!", "Лоол, а как же иначе!" };
         static string[] falses = new string[] { "Нет", "Конечно нет!", "Такого не можут быть!", "Фейк!" };
-        static string[] bron = new string[] { "1.1", "2.1", "3.1", "1.2", "2.2", "3.2", "1.3", "2.3", "3.3" };
         static List<string> story = new List<string>();
-
+        static List<string> people = new List<string>();
+        static List<int> count = new List<int>();
+        static string[] ranks = new string[] { "Глеб", "Конч", "Незнакомец", "Харьковчанен", "Хнурешник", "Шутник", "Болотный барт" };
+        static List<int> ranksc = new List<int> { 150, 300, 550, 900, 1500, 2000 };
 
         static InlineKeyboardMarkup keyboard;
 
@@ -35,6 +36,8 @@ namespace botfiona
             var me = Bot.GetMeAsync().Result;
             LoadTrigers();
             LoadUname();
+            LoadPeople();
+            LoadCount();
             Bot.OnMessage += Get_Mes;
             Bot.OnCallbackQuery += Bot_OnCallbackQuery;
             Bot.StartReceiving();
@@ -68,14 +71,80 @@ namespace botfiona
         private static async void Get_Mes(object sender, MessageEventArgs e)
         {
             var message = e.Message;
+            if ( message.From.Username != null)
+            {
+                if (message.Type == MessageType.Text)
+                {
+                    if(message.Text.Length > 2)
+                    {
+                        if (people.Contains(message.From.Username))
+                        {
+                            int index = people.IndexOf(message.From.Username);
+                            if (count.Count > people.IndexOf(message.From.Username))
+                            {
+                                count[index] += 1;
+                                SaveCount();
+                            }
+
+                            else
+                            {
+                                count.Add(1);
+                                SaveCount();
+                            }
+                        }
+                        else
+                        {
+                            people.Add(message.From.Username);
+                            int index = people.IndexOf(message.From.Username);
+                            count[index] += 1;
+                            SavePeople();
+                            SaveCount();
+                        }
+                        /* if (ranksc.Contains(count[people.IndexOf(message.From.Username)]))
+                         {
+                             await Bot.SendTextMessageAsync(message.Chat.Id, $"Поздравляю!🎉 Вы достигли ранга: {ranks[ranksc.IndexOf(count[people.IndexOf(message.From.Username)])]}");
+                         }*/
+                    }
+                }
+                else
+                {
+                    if (people.Contains(message.From.Username))
+                    {
+                        int index = people.IndexOf(message.From.Username);
+                        if (count.Count > people.IndexOf(message.From.Username))
+                        {
+                            count[index] += 1;
+                            SaveCount();
+                        }
+
+                        else
+                        {
+                            count.Add(1);
+                            SaveCount();
+                        }
+                    }
+                    else
+                    {
+                        people.Add(message.From.Username);
+                        int index = people.IndexOf(message.From.Username);
+                        count[index] += 1;
+                        SavePeople();
+                        SaveCount();
+                    }
+                    /* if (ranksc.Contains(count[people.IndexOf(message.From.Username)]))
+                     {
+                         await Bot.SendTextMessageAsync(message.Chat.Id, $"Поздравляю!🎉 Вы достигли ранга: {ranks[ranksc.IndexOf(count[people.IndexOf(message.From.Username)])]}");
+                     }*/
+                }
+
+            }
             if (message.Type == MessageType.Text)
             {
-                for (int i = 0; i < message.Text.Split().Length; i++)
+                for (int i = 0; i < message.Text.Split(' ').Length; i++)
                 {
                     story.Add(message.Text.Split(' ')[i]);
                 }
                 story.Add(message.Text);
-                counter++;
                 message.Text = message.Text.ToLower();
 
                 if (message.Text == "фиона, история")
@@ -316,83 +385,74 @@ namespace botfiona
 
                 if (message.Text == "погода")
                 {
-                    if (counter > 40)
+
+                    Random rnd = new Random();
+                    int rn = rnd.Next(1, 4);
+                    switch (rn)
                     {
-                        counter = 0;
-                        Random rnd = new Random();
-                        int rn = rnd.Next(1, 4);
-                        switch (rn)
-                        {
-                            case 1:
-                                await Bot.SendTextMessageAsync(message.Chat, "Такс, посмотрим, что у нас тут за погода на Болоте...");
-                                await Bot.SendTextMessageAsync(message.Chat, "Звоню погодной фее...  🧚‍♂️");
-                                break;
-                            case 2:
-                                await Bot.SendTextMessageAsync(message.Chat, "На градусник посмотреть слабо? 🌡");
-                                await Bot.SendTextMessageAsync(message.Chat, "Ну ладно, щас зайду на Gismeteo...");
-                                break;
-                            case 3:
-                                await Bot.SendTextMessageAsync(message.Chat, "Лучше бы вы делали ВМ :3");
-                                await Bot.SendTextMessageAsync(message.Chat, "Кости ломит....");
+                        case 1:
+                            await Bot.SendTextMessageAsync(message.Chat, "Такс, посмотрим, что у нас тут за погода на Болоте...");
+                            await Bot.SendTextMessageAsync(message.Chat, "Звоню погодной фее...  🧚‍♂️");
+                            break;
+                        case 2:
+                            await Bot.SendTextMessageAsync(message.Chat, "На градусник посмотреть слабо? 🌡");
+                            await Bot.SendTextMessageAsync(message.Chat, "Ну ладно, щас зайду на Gismeteo...");
+                            break;
+                        case 3:
+                            await Bot.SendTextMessageAsync(message.Chat, "Лучше бы вы делали ВМ :3");
+                            await Bot.SendTextMessageAsync(message.Chat, "Кости ломит....");
 
-                                break;
-                        }
-                        string url = "https://www.gismeteo.ua/weather-kharkiv-5053/";
-                        var web = new HtmlWeb();
-                        HtmlDocument doc = web.Load(url);
-                        var t = doc.DocumentNode.SelectSingleNode("/html/body/section/div[2]/div/div[1]/div/div[2]/div[1]/div[1]/a[1]/div/div[1]/div[3]/div[2]/span/span[1]");
-                        string temp = t.InnerText;
-
-
-                        if (temp.Contains("&minus;")) temp.Replace("&minus;", "-");
-                        var c = doc.DocumentNode.SelectSingleNode("/html/body/section/div[2]/div/div[1]/div/div[2]/div[1]/div[1]/a[1]");
-                        string cond = c.Attributes["data-text"].Value;
-
-
-                        if (temp.Contains("&minus;"))
-                        {
-                            temp = temp.Replace("&minus;", "-");
-                            temp = temp.Trim();
-                            Console.WriteLine(temp);
-                            await Bot.SendTextMessageAsync(message.Chat, $"На улице сейчас.... ❄️{temp}❄️");
-                        }
-                        else if (Convert.ToInt32(temp) > -1 && Convert.ToInt32(temp) < 10)
-                        {
-                            await Bot.SendTextMessageAsync(message.Chat, $"На улице сейчас....  ✨{temp}✨");
-                        }
-                        else
-                        {
-                            await Bot.SendTextMessageAsync(message.Chat, $"На улице сечас....  ☀️{temp}☀️");
-                        }
-
-                        if (cond == "Ясно")
-                        {
-                            await Bot.SendStickerAsync(message.Chat, "CAADAgADOQIAAs7Y6AtiQa4j611amhYE");
-                            await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
-                        }
-                        else if (cond == "Переменная облачность")
-                        {
-                            await Bot.SendStickerAsync(message.Chat, "CAADAgADRwQAAs7Y6AtUgM8Qt1L1BBYE");
-                            await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
-                        }
-                        else if (cond.Contains("Пасмурно") && cond.Contains("дождь"))
-                        {
-                            await Bot.SendStickerAsync(message.Chat, "CAADAgAD8AEAAs7Y6Av_YmkSfuc8BhYE");
-                            await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
-                        }
-                        else if (cond.Contains("Пасмурно") || cond.Contains("Облачно"))
-                        {
-                            await Bot.SendStickerAsync(message.Chat, "CAADAgADDwIAAtzyqwflTv80MV32fhYE");
-                            await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
-                        }
-                        else await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
-
+                            break;
                     }
+                    string url = "https://www.gismeteo.ua/weather-kharkiv-5053/";
+                    var web = new HtmlWeb();
+                    HtmlDocument doc = web.Load(url);
+                    var t = doc.DocumentNode.SelectSingleNode("/html/body/section/div[2]/div/div[1]/div/div[2]/div[1]/div[1]/a[1]/div/div[1]/div[3]/div[2]/span/span[1]");
+                    string temp = t.InnerText;
 
+
+                    if (temp.Contains("&minus;")) temp.Replace("&minus;", "-");
+                    var c = doc.DocumentNode.SelectSingleNode("/html/body/section/div[2]/div/div[1]/div/div[2]/div[1]/div[1]/a[1]");
+                    string cond = c.Attributes["data-text"].Value;
+
+
+                    if (temp.Contains("&minus;"))
+                    {
+                        temp = temp.Replace("&minus;", "-");
+                        temp = temp.Trim();
+                        Console.WriteLine(temp);
+                        await Bot.SendTextMessageAsync(message.Chat, $"На улице сейчас.... ❄️{temp}❄️");
+                    }
+                    else if (Convert.ToInt32(temp) > -1 && Convert.ToInt32(temp) < 10)
+                    {
+                        await Bot.SendTextMessageAsync(message.Chat, $"На улице сейчас....  ✨{temp}✨");
+                    }
                     else
                     {
-                        await Bot.SendTextMessageAsync(message.Chat, "Погоду можно запрашивать раз в 40 сообщений (");
+                        await Bot.SendTextMessageAsync(message.Chat, $"На улице сечас....  ☀️{temp}☀️");
                     }
+
+                    if (cond == "Ясно")
+                    {
+                        await Bot.SendStickerAsync(message.Chat, "CAADAgADOQIAAs7Y6AtiQa4j611amhYE");
+                        await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
+                    }
+                    else if (cond == "Переменная облачность")
+                    {
+                        await Bot.SendStickerAsync(message.Chat, "CAADAgADRwQAAs7Y6AtUgM8Qt1L1BBYE");
+                        await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
+                    }
+                    else if (cond.Contains("Пасмурно") && cond.Contains("дождь"))
+                    {
+                        await Bot.SendStickerAsync(message.Chat, "CAADAgAD8AEAAs7Y6Av_YmkSfuc8BhYE");
+                        await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
+                    }
+                    else if (cond.Contains("Пасмурно") || cond.Contains("Облачно"))
+                    {
+                        await Bot.SendStickerAsync(message.Chat, "CAADAgADDwIAAtzyqwflTv80MV32fhYE");
+                        await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
+                    }
+                    else await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
                 }
 
 
@@ -401,8 +461,8 @@ namespace botfiona
                     await Bot.SendTextMessageAsync(message.Chat, "Привет, я Фиона, чат-бот Болота 4 :3");
                     await Bot.SendStickerAsync(message.Chat, "CAADAgADGQAD9OfCJRWWFn5c1beEFgQ");
 
-                    await Bot.SendTextMessageAsync(message.Chat, "Мои команды: \n /game_enter - войти игру в <кто> \n /list - для просмотра всех  триггеров \n Триггер *triggger_name* - для создания нового триггера \n Погода - показать прогноз погоды на сейчас \n Задать мне вопрос - Фиона,<вопрос>?");
-                }
+/*                    await Bot.SendTextMessageAsync(message.Chat, "Мои команды: \n /game_enter - войти игру в <кто> \n /list - для просмотра всех  триггеров \n Триггер *triggger_name* - для создания нового триггера \n Погода - показать прогноз погоды на сейчас \n Задать мне вопрос - Фиона,<вопрос>?");
+*/                }
 
                 if (message.Text == "игроки")
                 {
@@ -516,28 +576,46 @@ namespace botfiona
                         new []
                         {
                             InlineKeyboardButton.WithCallbackData("2"),
-                            InlineKeyboardButton.WithCallbackData(bron[1]),
-                            InlineKeyboardButton.WithCallbackData(bron[2])
+                            InlineKeyboardButton.WithCallbackData("2"),
+                            InlineKeyboardButton.WithCallbackData("3")
                         },
 
                         new[]
                         {
-                            InlineKeyboardButton.WithCallbackData(bron[3]),
-                            InlineKeyboardButton.WithCallbackData(bron[4]),
-                            InlineKeyboardButton.WithCallbackData(bron[5])
+                            InlineKeyboardButton.WithCallbackData("3"),
+                            InlineKeyboardButton.WithCallbackData("3"),
+                            InlineKeyboardButton.WithCallbackData("3")
                         },
                         new[]
                         {
-                            InlineKeyboardButton.WithCallbackData(bron[6]),
-                            InlineKeyboardButton.WithCallbackData(bron[7]),
-                            InlineKeyboardButton.WithCallbackData(bron[8])
+                            InlineKeyboardButton.WithCallbackData("3"),
+                            InlineKeyboardButton.WithCallbackData("3"),
+                            InlineKeyboardButton.WithCallbackData("3")
                         }
                     });
                     await Bot.SendTextMessageAsync(message.Chat.Id, "Бронь парт", replyMarkup: keyboard);
 
                 }
 
-                
+                if(message.Text == "статус")
+                {
+                    int c = count[people.IndexOf(message.From.Username)];
+                    string r = ranks[0];
+                    if ( c > 150)
+                    {
+                        r = ranks[1];
+                    }
+                    else if (c > 300)
+                    {
+                        r = ranks[2];
+                    }
+                    else if (c > 550)
+                    {
+                        r = ranks[3];
+                    }
+                    string mes = $"\n Status: @{message.From.Username} \n Ранг: {r} \n Количесвто сообщений = {c}";
+                    await Bot.SendTextMessageAsync(message.Chat.Id, mes, replyToMessageId: message.MessageId);
+                }
 
                 if (message.Text == "полезная инфа")
                 {
@@ -619,7 +697,51 @@ namespace botfiona
             }
         }
 
+        static void SavePeople()
+        {
+            using (FileStream fs = new FileStream("People.xml", FileMode.OpenOrCreate))
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(List<string>));
+                fs.SetLength(0);
+                serializer.Serialize(fs, people);
+            }
+        }
 
+        static void LoadPeople()
+        {
+            XmlSerializer xs = new XmlSerializer(typeof(List<string>));
+            using (FileStream fs = new FileStream("Unames.xml", FileMode.OpenOrCreate))
+            {
+                List<string> templist = (List<string>)xs.Deserialize(fs);
+                foreach (string di in templist)
+                {
+                    people.Add(di);
+                }
+            }
+        }
+
+        static void SaveCount()
+        {
+            using (FileStream fs = new FileStream("Count.xml", FileMode.OpenOrCreate))
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(List<int>));
+                fs.SetLength(0);
+                serializer.Serialize(fs, count);
+            }
+        }
+
+        static void LoadCount()
+        {
+            XmlSerializer xs = new XmlSerializer(typeof(List<int>));
+            using (FileStream fs = new FileStream("Count.xml", FileMode.OpenOrCreate))
+            {
+                List<int> templist = (List<int>)xs.Deserialize(fs);
+                foreach (int di in templist)
+                {
+                    count.Add(di);
+                }
+            }
+        }
 
     }
 }
