@@ -71,83 +71,80 @@ namespace botfiona
         private static async void Get_Mes(object sender, MessageEventArgs e)
         {
             var message = e.Message;
-/*            Console.WriteLine(message.Chat.Id);
-*/            if(message.Chat.Id != -1001100135301 && message.Chat.Id != 361119003)
+            /*            Console.WriteLine(message.Chat.Id);
+            */
+            if (message.Chat.Id != -1001100135301 && message.Chat.Id != 361119003)
             {
-                await Bot.SendTextMessageAsync(361119003, message.From.Username);
+                await Bot.SendTextMessageAsync(361119003, "@" + message.From.Username);
                 await Bot.ForwardMessageAsync(361119003, message.Chat.Id, message.MessageId);
+                await Bot.SendTextMessageAsync(message.Chat.Id, "Попросите разрешения на использование  у @chummych 🤴");
             }
             if (message.Chat.Id == -1001100135301 || message.Chat.Id == 361119003)
             {
-                if (message.Chat.Id == -1001100135301)
+                if (message.Chat.Id == -1001100135301 && message.From.Username != null && message.Text.Length > 2)
                 {
-                    if (message.From.Username != null)
+                    if (message.Type == MessageType.Text)
                     {
-                        if (message.Type == MessageType.Text)
+                        if (people.Contains(message.From.Username))
                         {
-                            if (message.Text.Length > 2)
+                            int index = people.IndexOf(message.From.Username);
+                            if (count.Count > people.IndexOf(message.From.Username))
                             {
-                                if (people.Contains(message.From.Username))
-                                {
-                                    int index = people.IndexOf(message.From.Username);
-                                    if (count.Count > people.IndexOf(message.From.Username))
-                                    {
-                                        count[index] += 1;
-                                        SaveCount();
-                                    }
+                                count[index] += 1;
+                                SaveCount();
+                            }
 
-                                    else
-                                    {
-                                        count.Add(1);
-                                        SaveCount();
-                                    }
-                                }
-                                else
-                                {
-                                    people.Add(message.From.Username);
-                                    int index = people.IndexOf(message.From.Username);
-                                    count[index] += 1;
-                                    SavePeople();
-                                    SaveCount();
-                                }
-                                if (ranksc.Contains(count[people.IndexOf(message.From.Username)]))
-                                {
-                                    await Bot.SendTextMessageAsync(message.Chat.Id, $"Поздравляю!🎉 \n Вы достигли ранга: {ranks[ranksc.IndexOf(count[people.IndexOf(message.From.Username)]) + 1]}", replyToMessageId: message.MessageId);
-                                }
+                            else
+                            {
+                                count.Add(1);
+                                SaveCount();
                             }
                         }
                         else
                         {
-                            if (people.Contains(message.From.Username))
+                            people.Add(message.From.Username);
+                            int index = people.IndexOf(message.From.Username);
+                            count[index] += 1;
+                            SavePeople();
+                            SaveCount();
+                        }
+                        if (ranksc.Contains(count[people.IndexOf(message.From.Username)]))
+                        {
+                            await Bot.SendTextMessageAsync(message.Chat.Id, $"Поздравляю!🎉 \n Вы достигли ранга: {ranks[ranksc.IndexOf(count[people.IndexOf(message.From.Username)]) + 1]}", replyToMessageId: message.MessageId);
+                        }
+                    }
+                    else
+                    {
+                        if (people.Contains(message.From.Username))
+                        {
+                            int index = people.IndexOf(message.From.Username);
+                            if (count.Count > people.IndexOf(message.From.Username))
                             {
-                                int index = people.IndexOf(message.From.Username);
-                                if (count.Count > people.IndexOf(message.From.Username))
-                                {
-                                    count[index] += 1;
-                                    SaveCount();
-                                }
-
-                                else
-                                {
-                                    count.Add(1);
-                                    SaveCount();
-                                }
-                            }
-                            else
-                            {
-                                people.Add(message.From.Username);
-                                int index = people.IndexOf(message.From.Username);
                                 count[index] += 1;
-                                SavePeople();
                                 SaveCount();
                             }
-                            if (ranksc.Contains(count[people.IndexOf(message.From.Username)]))
+
+                            else
                             {
-                                await Bot.SendTextMessageAsync(message.Chat.Id, $"Поздравляю!🎉 Вы достигли ранга: {ranks[ranksc.IndexOf(count[people.IndexOf(message.From.Username)])]}");
+                                count.Add(1);
+                                SaveCount();
                             }
                         }
-
+                        else
+                        {
+                            people.Add(message.From.Username);
+                            int index = people.IndexOf(message.From.Username);
+                            count[index] += 1;
+                            SavePeople();
+                            SaveCount();
+                        }
+                        if (ranksc.Contains(count[people.IndexOf(message.From.Username)]))
+                        {
+                            await Bot.SendTextMessageAsync(message.Chat.Id, $"Поздравляю!🎉 Вы достигли ранга: {ranks[ranksc.IndexOf(count[people.IndexOf(message.From.Username)])]}");
+                        }
                     }
+
+
                 }
 
                 if (message.Type == MessageType.Text)
@@ -369,15 +366,13 @@ namespace botfiona
 
                         }
                     }
-               
+
                 }
-
-
-                if (triggers.ContainsKey(message.Text))
+                if (message.Type == MessageType.Text && triggers.ContainsKey(message.Text))
                 {
                     string er = "ошибка";
                     triggers.TryGetValue(message.Text, out er);
-                    if ( er.Length > 3)
+                    if (er.Length > 3)
                     {
                         if (er.Substring(0, 3) == "vov")
                         {
@@ -394,7 +389,7 @@ namespace botfiona
                             await Bot.SendTextMessageAsync(message.Chat, er, replyToMessageId: message.MessageId);
                         }
                     }
-                   
+
                 }
 
                 if (message.Text == "погода")
@@ -473,8 +468,9 @@ namespace botfiona
                     await Bot.SendTextMessageAsync(message.Chat, "Привет, я Фиона, чат-бот Болота 4 :3");
                     await Bot.SendStickerAsync(message.Chat, "CAADAgADGQAD9OfCJRWWFn5c1beEFgQ");
 
-/*                    await Bot.SendTextMessageAsync(message.Chat, "Мои команды: \n /game_enter - войти игру в <кто> \n /list - для просмотра всех  триггеров \n Триггер *triggger_name* - для создания нового триггера \n Погода - показать прогноз погоды на сейчас \n Задать мне вопрос - Фиона,<вопрос>?");
-*/                }
+                    /*                    await Bot.SendTextMessageAsync(message.Chat, "Мои команды: \n /game_enter - войти игру в <кто> \n /list - для просмотра всех  триггеров \n Триггер *triggger_name* - для создания нового триггера \n Погода - показать прогноз погоды на сейчас \n Задать мне вопрос - Фиона,<вопрос>?");
+                    */
+                }
 
                 if (message.Text == "игроки")
                 {
@@ -543,7 +539,7 @@ namespace botfiona
                             }
                         }
                     }
-                    
+
                 }
 
 
@@ -608,20 +604,30 @@ namespace botfiona
 
                 }
 
-                if(message.Text == "статус")
+                if (message.Text == "статус")
                 {
                     int c = count[people.IndexOf(message.From.Username)];
                     string r = ranks[0];
-                    for(int i = 0; i < ranksc.Count; i++)
+                    for (int i = 0; i < ranksc.Count; i++)
                     {
-                        if(c < ranksc[i])
+                        if (c < ranksc[i])
                         {
                             r = ranks[i];
                             i = ranksc.Count;
                         }
                     }
-                    string mes = $"\n Status: @{message.From.Username} \n Ранг: {r} \n Количесвто сообщений = {c}";
-                    await Bot.SendTextMessageAsync(message.Chat.Id, mes, replyToMessageId: message.MessageId);
+                    if(r == ranks[0])
+                    {
+                        string mes = $"\n Status: @{message.From.Username} \n Ранг: {r} \n Количесвто сообщений = {c}";
+                        await Bot.SendTextMessageAsync(message.Chat.Id, mes, replyToMessageId: message.MessageId);
+/*                        await Bot.SendPhotoAsync(message.Chat.Id, "https://st2.depositphotos.com/2001755/5408/i/950/depositphotos_54081723-stock-photo-beautiful-nature-landscape.jpg");
+*/                    }
+                    else
+                    {
+                        string mes = $"\n Status: @{message.From.Username} \n Ранг: {r} \n Количесвто сообщений = {c}";
+                        await Bot.SendTextMessageAsync(message.Chat.Id, mes, replyToMessageId: message.MessageId);
+                    }
+                    
                 }
 
                 if (message.Text == "полезная инфа")
