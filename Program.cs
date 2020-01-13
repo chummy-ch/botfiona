@@ -31,7 +31,6 @@ namespace botfiona
 
         static void Main(string[] args)
         {
-
             Bot = new TelegramBotClient("905671296:AAFcDT4qymtle-QyUne4agx14q_97mIQMXI");
             var me = Bot.GetMeAsync().Result;
             LoadTrigers();
@@ -143,8 +142,6 @@ namespace botfiona
                             await Bot.SendTextMessageAsync(message.Chat.Id, $"Поздравляю!🎉 Вы достигли ранга: {ranks[ranksc.IndexOf(count[people.IndexOf(message.From.Username)])]}");
                         }
                     }
-
-
                 }
 
                 if (message.Type == MessageType.Text)
@@ -178,57 +175,49 @@ namespace botfiona
                         {
                             if (message.ReplyToMessage.Type == MessageType.Text)
                             {
-                                if (message.ReplyToMessage != null)
+                                if (triggers.ContainsKey(message.Text.Split('*')[1].ToLower()))
                                 {
-                                    if (triggers.ContainsKey(message.Text.Split('*')[1].ToLower()))
+                                    await Bot.SendTextMessageAsync(message.Chat, "Такой триггер уже существует :3");
+                                    await Bot.SendTextMessageAsync(message.Chat, triggers[message.Text.Split('*')[1]]);
+                                }
+                                else
+                                {
+                                    if (message.ReplyToMessage.Type == MessageType.Sticker)
                                     {
-                                        await Bot.SendTextMessageAsync(message.Chat, "Такой триггер уже существует :3");
-                                        await Bot.SendTextMessageAsync(message.Chat, triggers[message.Text.Split('*')[1]]);
+                                        var index = message.ReplyToMessage.Sticker.FileId;
+                                        Console.WriteLine(index);
+                                        string key = message.Text.Split('*')[1];
+                                        triggers.Add(key, index);
+                                        SaveTriggers();
+                                        await Bot.SendTextMessageAsync(message.Chat, "Триггер создан!");
+                                        await Bot.SendStickerAsync(message.Chat, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
                                     }
-                                    else
+                                    else if (message.ReplyToMessage.Text.Trim().Length > 0)
                                     {
-                                        if (message.ReplyToMessage.Type == MessageType.Sticker)
+                                        string key = (message.Text.Split('*')[1]);
+                                        key = key.Trim();
+                                        if (commands.Contains(message.ReplyToMessage.Text))
                                         {
-                                            var index = message.ReplyToMessage.Sticker.FileId;
-                                            Console.WriteLine(index);
-                                            string key = message.Text.Split('*')[1];
-                                            triggers.Add(key, index);
+                                            await Bot.SendTextMessageAsync(message.Chat, "Команды нельзя использовать для триггера");
+
+                                        }
+                                        else if (commands.Contains(key))
+                                        {
+                                            await Bot.SendTextMessageAsync(message.Chat, "Команды нельзя использовать для триггера");
+                                        }
+                                        else
+                                        {
+
+                                            triggers.Add(key, message.ReplyToMessage.Text);
                                             SaveTriggers();
                                             await Bot.SendTextMessageAsync(message.Chat, "Триггер создан!");
                                             await Bot.SendStickerAsync(message.Chat, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
                                         }
-                                        else if (message.ReplyToMessage.Text.Trim().Length > 0)
-                                        {
-                                            string key = (message.Text.Split('*')[1]);
-                                            key = key.Trim();
-                                            if (commands.Contains(message.ReplyToMessage.Text))
-                                            {
-                                                await Bot.SendTextMessageAsync(message.Chat, "Команды нельзя использовать для триггера");
 
-                                            }
-                                            else if (commands.Contains(key))
-                                            {
-                                                await Bot.SendTextMessageAsync(message.Chat, "Команды нельзя использовать для триггера");
-                                            }
-                                            else
-                                            {
-
-                                                triggers.Add(key, message.ReplyToMessage.Text);
-                                                SaveTriggers();
-                                                await Bot.SendTextMessageAsync(message.Chat, "Триггер создан!");
-                                                await Bot.SendStickerAsync(message.Chat, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
-                                            }
-
-                                        }
                                     }
                                 }
-                                else
-                                {
-                                    await Bot.SendTextMessageAsync(message.Chat, "Какой-то шрэк забыл прикрепить сообщение");
-                                    await Bot.SendStickerAsync(message.Chat, "CAADAgADBwAD9OfCJS6YbVaPHbHaFgQ");
-                                }
-                            }
 
+                            }
                             else
 
                             {
@@ -290,15 +279,16 @@ namespace botfiona
 
                             }
                         }
-
-
-
+                        else
+                        {
+                            await Bot.SendTextMessageAsync(message.Chat, "Какой-то шрэк забыл прикрепить сообщение");
+                            await Bot.SendStickerAsync(message.Chat, "CAADAgADBwAD9OfCJS6YbVaPHbHaFgQ");
+                        }
                     }
 
 
                     if (message.Text.Contains("удалить"))
                     {
-
                         if (triggers.ContainsKey(message.Text.Split('*')[1]))
                         {
                             string key = message.Text.Split('*')[1];
@@ -311,7 +301,6 @@ namespace botfiona
                         {
                             await Bot.SendTextMessageAsync(message.Chat, "Что-то пошло не так");
                         }
-
                     }
 
 
@@ -355,16 +344,11 @@ namespace botfiona
                         await Bot.SendTextMessageAsync(message.Chat, "Пизда", replyToMessageId: message.MessageId);
                     }
 
-                    if (message.Text.Length > 3)
+                    if (message.Text.Length <= 5 && message.Text.Length >= 2 && message.Text.Substring(message.Text.Length - 2).Contains("да"))
                     {
-                        if (message.Text.Substring(message.Text.Length - 2).Contains("да"))
-                        {
-                            if (message.Text.Length <= 5 && message.Text.Length >= 2)
-                            {
-                                await Bot.SendTextMessageAsync(message.Chat, "Пизда", replyToMessageId: message.MessageId);
-                            }
 
-                        }
+                        await Bot.SendTextMessageAsync(message.Chat, "Пизда", replyToMessageId: message.MessageId);
+
                     }
 
                 }
@@ -389,10 +373,8 @@ namespace botfiona
                             await Bot.SendTextMessageAsync(message.Chat, er, replyToMessageId: message.MessageId);
                         }
                     }
-
                 }
-
-                if (message.Text == "погода")
+                if (message.Text == "погода" || message.Text == "/weather")
                 {
                     Random rnd = new Random();
                     int rn = rnd.Next(1, 4);
@@ -468,8 +450,8 @@ namespace botfiona
                     await Bot.SendTextMessageAsync(message.Chat, "Привет, я Фиона, чат-бот Болота 4 :3");
                     await Bot.SendStickerAsync(message.Chat, "CAADAgADGQAD9OfCJRWWFn5c1beEFgQ");
 
-                    /*                    await Bot.SendTextMessageAsync(message.Chat, "Мои команды: \n /game_enter - войти игру в <кто> \n /list - для просмотра всех  триггеров \n Триггер *triggger_name* - для создания нового триггера \n Погода - показать прогноз погоды на сейчас \n Задать мне вопрос - Фиона,<вопрос>?");
-                    */
+                    await Bot.SendTextMessageAsync(message.Chat, "Мои команды:\n /status - для вызова персонального статуса  \n /game_enter - войти игру в <кто> \n /list - для просмотра всех  триггеров \n Триггер *triggger_name* - для создания нового триггера \n /weather - показать прогноз погоды на сейчас \n Задать мне вопрос - Фиона,<вопрос>?");
+
                 }
 
                 if (message.Text == "игроки")
@@ -492,50 +474,45 @@ namespace botfiona
                     }
                     else
                     {
-
                         gamersId.Add(message.From.Username);
                         SaveUname();
                         await Bot.SendTextMessageAsync(message.Chat.Id, "Фига ты крут! Ты в игре!," + message.From.FirstName, replyToMessageId: message.MessageId);
-
                     }
                 }
                 if (message.Text.Length > 5)
                 {
                     if (message.Text.Substring(0, 5).Contains(quastions[0]) || message.Text.Substring(0, 5).Contains(quastions[1]) || message.Text.Substring(0, 5).Contains(quastions[2]))
                     {
-                        if (message.Text.Contains("?"))
+                        if (message.Text.Contains("?") && message != null)
                         {
-                            if (message != null)
+                            Random rnd = new Random();
+                            int rn = rnd.Next(0, gamersId.Count());
+                            if (message.Text.Contains(quastions[0]))
                             {
-                                Random rnd = new Random();
-                                int rn = rnd.Next(0, gamersId.Count());
-                                if (message.Text.Contains(quastions[0]))
-                                {
 
-                                    if (message.Text.Length > 5)
-                                    {
-                                        string mat = message.Text.Substring(4, message.Text.Length - 5);
-                                        await Bot.SendTextMessageAsync(message.Chat.Id, mat + " @" + gamersId[rn], replyToMessageId: message.MessageId);
-                                    }
-
-                                }
-                                else if (message.Text.Contains(quastions[1]))
+                                if (message.Text.Length > 5)
                                 {
-                                    if (message.Text.Length > 8)
-                                    {
-                                        string mat = message.Text.Substring(7, message.Text.Length - 8);
-                                        await Bot.SendTextMessageAsync(message.Chat.Id, mat + " у" + " @" + gamersId[rn], replyToMessageId: message.MessageId);
-                                    }
+                                    string mat = message.Text.Substring(4, message.Text.Length - 5);
+                                    await Bot.SendTextMessageAsync(message.Chat.Id, mat + " @" + gamersId[rn], replyToMessageId: message.MessageId);
                                 }
-                                else if (message.Text.Contains(quastions[2]))
-                                {
-                                    if (message.Text.Length > 6)
-                                    {
-                                        string mat = message.Text.Substring(5, message.Text.Length - 6);
-                                        await Bot.SendTextMessageAsync(message.Chat.Id, mat + " @" + gamersId[rn], replyToMessageId: message.MessageId);
-                                    }
 
+                            }
+                            else if (message.Text.Contains(quastions[1]))
+                            {
+                                if (message.Text.Length > 8)
+                                {
+                                    string mat = message.Text.Substring(7, message.Text.Length - 8);
+                                    await Bot.SendTextMessageAsync(message.Chat.Id, mat + " у" + " @" + gamersId[rn], replyToMessageId: message.MessageId);
                                 }
+                            }
+                            else if (message.Text.Contains(quastions[2]))
+                            {
+                                if (message.Text.Length > 6)
+                                {
+                                    string mat = message.Text.Substring(5, message.Text.Length - 6);
+                                    await Bot.SendTextMessageAsync(message.Chat.Id, mat + " @" + gamersId[rn], replyToMessageId: message.MessageId);
+                                }
+
                             }
                         }
                     }
@@ -552,26 +529,18 @@ namespace botfiona
 
                 }
 
-                if (message.Text.Contains("фиона,"))
+                if (message.Text.Contains("фиона,") && message.Text.Contains("?") && message.Text.Length > 7)
                 {
-                    if (message.Text.Contains("?"))
+                    string quash = message.Text.Substring(7, message.Text.Length - 8);
+                    quash = quash.Replace(" ", "");
+                    Random rnd = new Random();
+                    int rn = rnd.Next(0, 3);
+                    if (quash.Length > 0)
                     {
-                        if (message.Text.Length > 7)
-                        {
-                            string quash = message.Text.Substring(7, message.Text.Length - 8);
-                            quash = quash.Replace(" ", "");
-                            Random rnd = new Random();
-                            int rn = rnd.Next(0, 3);
-                            if (quash.Length > 0)
-                            {
-                                if (quash.Length % 2 == 0) await Bot.SendTextMessageAsync(message.Chat.Id, trues[rn], replyToMessageId: message.MessageId);
-                                else await Bot.SendTextMessageAsync(message.Chat.Id, falses[rn], replyToMessageId: message.MessageId);
-                            }
-                            else await Bot.SendStickerAsync(message.Chat.Id, "CAADAgADBwAD9OfCJS6YbVaPHbHaFgQ", replyToMessageId: message.MessageId);
-                        }
-
-
+                        if (quash.Length % 2 == 0) await Bot.SendTextMessageAsync(message.Chat.Id, trues[rn], replyToMessageId: message.MessageId);
+                        else await Bot.SendTextMessageAsync(message.Chat.Id, falses[rn], replyToMessageId: message.MessageId);
                     }
+                    else await Bot.SendStickerAsync(message.Chat.Id, "CAADAgADBwAD9OfCJS6YbVaPHbHaFgQ", replyToMessageId: message.MessageId);
 
                 }
 
@@ -604,7 +573,7 @@ namespace botfiona
 
                 }
 
-                if (message.Text == "статус")
+                if (message.Text == "статус" || message.Text == "/status")
                 {
                     int c = count[people.IndexOf(message.From.Username)];
                     string r = ranks[0];
@@ -616,18 +585,19 @@ namespace botfiona
                             i = ranksc.Count;
                         }
                     }
-                    if(r == ranks[0])
+                    if (r == ranks[0])
                     {
                         string mes = $"\n Status: @{message.From.Username} \n Ранг: {r} \n Количесвто сообщений = {c}";
                         await Bot.SendTextMessageAsync(message.Chat.Id, mes, replyToMessageId: message.MessageId);
-/*                        await Bot.SendPhotoAsync(message.Chat.Id, "https://st2.depositphotos.com/2001755/5408/i/950/depositphotos_54081723-stock-photo-beautiful-nature-landscape.jpg");
-*/                    }
+                        /*                        await Bot.SendPhotoAsync(message.Chat.Id, "https://st2.depositphotos.com/2001755/5408/i/950/depositphotos_54081723-stock-photo-beautiful-nature-landscape.jpg");
+                        */
+                    }
                     else
                     {
                         string mes = $"\n Status: @{message.From.Username} \n Ранг: {r} \n Количесвто сообщений = {c}";
                         await Bot.SendTextMessageAsync(message.Chat.Id, mes, replyToMessageId: message.MessageId);
                     }
-                    
+
                 }
 
                 if (message.Text == "полезная инфа")
