@@ -13,6 +13,7 @@ namespace botfiona
     class Program
     {
         static TelegramBotClient Bot;
+        static DateTime time1 = new DateTime(2020, 1, 1, 13, 13, 13);
         static Dictionary<string, string> triggers = new Dictionary<string, string>();
         static List<DataItem> tempdataitems = new List<DataItem>(triggers.Count);
         static string[] commands = new string[] { "список", "Список", "/list", "Удалить", "Триггер", "Фиона", "фиона", "Девочка", "девочка", "погода", "Погода" };
@@ -24,6 +25,7 @@ namespace botfiona
         static List<string> people = new List<string>();
         static List<int> count = new List<int>();
         static string[] ranks = new string[] { "Глеб", "Конч", "Мамонтов", "Харьковчанен", "Хнурешник", "Языковая шаболда", "Болотный барт" };
+        static string[] rankspic = new string[] { "https://i1.rgstatic.net/ii/profile.image/797915803029504-1567249360132_Q512/Glib_Tereshchenko.jpg" };
         static List<int> ranksc = new List<int> { 150, 800, 2000, 5000, 10000, 25000, 88888, 100000 };
 
         static InlineKeyboardMarkup keyboard;
@@ -279,10 +281,8 @@ namespace botfiona
                                                 await Bot.SendStickerAsync(message.Chat, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
                                             }
                                         }
-
                                     }
                                 }
-
                             }
                         }
                         else
@@ -388,72 +388,78 @@ namespace botfiona
                 }
                 if (message.Text == "погода" || message.Text == "/weather")
                 {
-                    Random rnd = new Random();
-                    int rn = rnd.Next(1, 4);
-                    switch (rn)
+                    if (DateTime.Now.Subtract(time1).TotalSeconds > 180)
                     {
-                        case 1:
-                            await Bot.SendTextMessageAsync(message.Chat, "Такс, посмотрим, что у нас тут за погода на Болоте...");
-                            await Bot.SendTextMessageAsync(message.Chat, "Звоню погодной фее...  🧚‍♂️");
-                            break;
-                        case 2:
-                            await Bot.SendTextMessageAsync(message.Chat, "На градусник посмотреть слабо? 🌡");
-                            await Bot.SendTextMessageAsync(message.Chat, "Ну ладно, щас зайду на Gismeteo...");
-                            break;
-                        case 3:
-                            await Bot.SendTextMessageAsync(message.Chat, "Лучше бы вы делали ВМ :3");
-                            await Bot.SendTextMessageAsync(message.Chat, "Кости ломит....");
+                        time1 = DateTime.Now;
+                        Random rnd = new Random();
+                        int rn = rnd.Next(1, 4);
+                        switch (rn)
+                        {
+                            case 1:
+                                await Bot.SendTextMessageAsync(message.Chat, "Такс, посмотрим, что у нас тут за погода на Болоте...");
+                                await Bot.SendTextMessageAsync(message.Chat, "Звоню погодной фее...  🧚‍♂️");
+                                break;
+                            case 2:
+                                await Bot.SendTextMessageAsync(message.Chat, "На градусник посмотреть слабо? 🌡");
+                                await Bot.SendTextMessageAsync(message.Chat, "Ну ладно, щас зайду на Gismeteo...");
+                                break;
+                            case 3:
+                                await Bot.SendTextMessageAsync(message.Chat, "Лучше бы вы делали ВМ :3");
+                                await Bot.SendTextMessageAsync(message.Chat, "Кости ломит....");
 
-                            break;
-                    }
-                    string url = "https://www.gismeteo.ua/weather-kharkiv-5053/";
-                    var web = new HtmlWeb();
-                    HtmlDocument doc = web.Load(url);
-                    var t = doc.DocumentNode.SelectSingleNode("/html/body/section/div[2]/div/div[1]/div/div[2]/div[1]/div[1]/a[1]/div/div[1]/div[3]/div[2]/span/span[1]");
-                    string temp = t.InnerText;
-
-
-                    if (temp.Contains("&minus;")) temp.Replace("&minus;", "-");
-                    var c = doc.DocumentNode.SelectSingleNode("/html/body/section/div[2]/div/div[1]/div/div[2]/div[1]/div[1]/a[1]");
-                    string cond = c.Attributes["data-text"].Value;
+                                break;
+                        }
+                        string url = "https://www.gismeteo.ua/weather-kharkiv-5053/";
+                        var web = new HtmlWeb();
+                        HtmlDocument doc = web.Load(url);
+                        var t = doc.DocumentNode.SelectSingleNode("/html/body/section/div[2]/div/div[1]/div/div[2]/div[1]/div[1]/a[1]/div/div[1]/div[3]/div[2]/span/span[1]");
+                        string temp = t.InnerText;
 
 
-                    if (temp.Contains("&minus;"))
-                    {
-                        temp = temp.Replace("&minus;", "-");
-                        temp = temp.Trim();
-                        await Bot.SendTextMessageAsync(message.Chat, $"На улице сейчас.... ❄️{temp}❄️");
-                    }
-                    else if (Convert.ToInt32(temp) > -1 && Convert.ToInt32(temp) < 10)
-                    {
-                        await Bot.SendTextMessageAsync(message.Chat, $"На улице сейчас....  ✨{temp}✨");
-                    }
-                    else
-                    {
-                        await Bot.SendTextMessageAsync(message.Chat, $"На улице сечас....  ☀️{temp}☀️");
-                    }
+                        if (temp.Contains("&minus;")) temp.Replace("&minus;", "-");
+                        var c = doc.DocumentNode.SelectSingleNode("/html/body/section/div[2]/div/div[1]/div/div[2]/div[1]/div[1]/a[1]");
+                        string cond = c.Attributes["data-text"].Value;
 
-                    if (cond == "Ясно")
-                    {
-                        await Bot.SendStickerAsync(message.Chat, "CAADAgADOQIAAs7Y6AtiQa4j611amhYE");
-                        await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
+
+                        if (temp.Contains("&minus;"))
+                        {
+                            temp = temp.Replace("&minus;", "-");
+                            temp = temp.Trim();
+                            await Bot.SendTextMessageAsync(message.Chat, $"На улице сейчас.... ❄️{temp}❄️");
+                        }
+                        else if (Convert.ToInt32(temp) > -1 && Convert.ToInt32(temp) < 10)
+                        {
+                            await Bot.SendTextMessageAsync(message.Chat, $"На улице сейчас....  ✨{temp}✨");
+                        }
+                        else
+                        {
+                            await Bot.SendTextMessageAsync(message.Chat, $"На улице сечас....  ☀️{temp}☀️");
+                        }
+
+                        if (cond == "Ясно")
+                        {
+                            await Bot.SendStickerAsync(message.Chat, "CAADAgADOQIAAs7Y6AtiQa4j611amhYE");
+                            await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
+                        }
+                        else if (cond == "Переменная облачность")
+                        {
+                            await Bot.SendStickerAsync(message.Chat, "CAADAgADRwQAAs7Y6AtUgM8Qt1L1BBYE");
+                            await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
+                        }
+                        else if (cond.Contains("Пасмурно") && cond.Contains("дождь"))
+                        {
+                            await Bot.SendStickerAsync(message.Chat, "CAADAgAD8AEAAs7Y6Av_YmkSfuc8BhYE");
+                            await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
+                        }
+                        else if (cond.Contains("Пасмурно") || cond.Contains("Облачно"))
+                        {
+                            await Bot.SendStickerAsync(message.Chat, "CAADAgADDwIAAtzyqwflTv80MV32fhYE");
+                            await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
+                        }
+                        else await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
                     }
-                    else if (cond == "Переменная облачность")
-                    {
-                        await Bot.SendStickerAsync(message.Chat, "CAADAgADRwQAAs7Y6AtUgM8Qt1L1BBYE");
-                        await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
-                    }
-                    else if (cond.Contains("Пасмурно") && cond.Contains("дождь"))
-                    {
-                        await Bot.SendStickerAsync(message.Chat, "CAADAgAD8AEAAs7Y6Av_YmkSfuc8BhYE");
-                        await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
-                    }
-                    else if (cond.Contains("Пасмурно") || cond.Contains("Облачно"))
-                    {
-                        await Bot.SendStickerAsync(message.Chat, "CAADAgADDwIAAtzyqwflTv80MV32fhYE");
-                        await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
-                    }
-                    else await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
+                    else await Bot.SendTextMessageAsync(message.Chat.Id, "Погоду можно запрашивать раз в 3 минуты", replyToMessageId: message.MessageId);
+                   
                 }
 
 
@@ -530,6 +536,7 @@ namespace botfiona
 
                 }
 
+                if(message.Text == "rtv") await Bot.SendPhotoAsync(message.Chat.Id, "https://ukr-web.org.ua/wp-content/uploads/2017/10/google.jpg", "Revolution!");
 
                 if (message.Type == MessageType.Text && message.Text.Contains("девочка"))
                 {
@@ -600,8 +607,8 @@ namespace botfiona
                     {
                         string mes = $"\n Status: @{message.From.Username} \n Ранг: {r} \n Количесвто сообщений = {c}";
                         await Bot.SendTextMessageAsync(message.Chat.Id, mes, replyToMessageId: message.MessageId);
-                        /*                        await Bot.SendPhotoAsync(message.Chat.Id, "https://st2.depositphotos.com/2001755/5408/i/950/depositphotos_54081723-stock-photo-beautiful-nature-landscape.jpg");
-                        */
+                        await Bot.SendPhotoAsync(message.Chat.Id, "https://i1.rgstatic.net/ii/profile.image/797915803029504-1567249360132_Q512/Glib_Tereshchenko.jpg");
+
                     }
                     else
                     {
