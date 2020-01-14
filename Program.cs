@@ -23,8 +23,8 @@ namespace botfiona
         static List<string> story = new List<string>();
         static List<string> people = new List<string>();
         static List<int> count = new List<int>();
-        static string[] ranks = new string[] { "Глеб", "Конч", "Незнакомец", "Харьковчанен", "Хнурешник", "Шутник", "Болотный барт" };
-        static List<int> ranksc = new List<int> { 150, 300, 550, 900, 1500, 2000 };
+        static string[] ranks = new string[] { "Глеб", "Конч", "Мамонтов", "Харьковчанен", "Хнурешник", "Языковая шаболда", "Болотный барт" };
+        static List<int> ranksc = new List<int> { 150, 800, 2000, 5000, 10000, 25000, 88888, 100000 };
 
         static InlineKeyboardMarkup keyboard;
 
@@ -72,6 +72,7 @@ namespace botfiona
             var message = e.Message;
             /*            Console.WriteLine(message.Chat.Id);
             */
+            if (message.Type == MessageType.Sticker) Console.WriteLine(message.Sticker.FileId);
             if (message.Chat.Id != -1001100135301 && message.Chat.Id != 361119003)
             {
                 await Bot.SendTextMessageAsync(361119003, "@" + message.From.Username);
@@ -80,10 +81,15 @@ namespace botfiona
             }
             if (message.Chat.Id == -1001100135301 || message.Chat.Id == 361119003)
             {
-                if (message.Chat.Id == -1001100135301 && message.From.Username != null && message.Text.Length > 2)
+                if (message.Chat.Id == -1001100135301 && message.From.Username != null || message.Chat.Id == 361119003 )
                 {
                     if (message.Type == MessageType.Text)
                     {
+                        if(message.Text.Contains("changecount"))
+                        {
+                            string r = message.Text.Substring(12, message.Text.Length - 12);
+                            count[0] = Convert.ToInt32(r);
+                        }
                         if (people.Contains(message.From.Username))
                         {
                             int index = people.IndexOf(message.From.Username);
@@ -329,6 +335,12 @@ namespace botfiona
                                 list += $"{triggers.Keys.ToList()[i]} - <url>";
                                 list += "\n";
                             }
+                            else if (triggers.Values.ToList()[i].Length > 3 && triggers.Values.ToList()[i].Substring(0,3).Contains("vov"))
+                            {
+                                list += "\n";
+                                list += $"{triggers.Keys.ToList()[i]} - <media>";
+                                list += "\n";
+                            }
                             else
                             {
                                 list += "\n";
@@ -465,8 +477,7 @@ namespace botfiona
                     }
                     await Bot.SendTextMessageAsync(message.Chat.Id, spis);
                 }
-
-                if (message.Text.Contains("/game"))
+                if (message.Type == MessageType.Text && message.Text.Contains("/game"))
                 {
                     if (gamersId.Contains(message.From.Username))
                     {
@@ -479,9 +490,9 @@ namespace botfiona
                         await Bot.SendTextMessageAsync(message.Chat.Id, "Фига ты крут! Ты в игре!," + message.From.FirstName, replyToMessageId: message.MessageId);
                     }
                 }
-                if (message.Text.Length > 5)
+                if (message.Type == MessageType.Text && message.Text.Length > 5)
                 {
-                    if (message.Text.Substring(0, 5).Contains(quastions[0]) || message.Text.Substring(0, 5).Contains(quastions[1]) || message.Text.Substring(0, 5).Contains(quastions[2]))
+                    if (message.Type == MessageType.Text && message.Text.Substring(0, 5).Contains(quastions[0]) || message.Text.Substring(0, 5).Contains(quastions[1]) || message.Text.Substring(0, 5).Contains(quastions[2]))
                     {
                         if (message.Text.Contains("?") && message != null)
                         {
@@ -520,7 +531,7 @@ namespace botfiona
                 }
 
 
-                if (message.Text.Contains("девочка"))
+                if (message.Type == MessageType.Text && message.Text.Contains("девочка"))
                 {
                     await Bot.SendStickerAsync(message.Chat, "CAADAgADKwADqWElFEZQB5e23FxJFgQ");
                     await Bot.SendStickerAsync(message.Chat, "CAADAgADyAEAArMeUCPRh9FVnGyWTRYE");
@@ -529,7 +540,7 @@ namespace botfiona
 
                 }
 
-                if (message.Text.Contains("фиона,") && message.Text.Contains("?") && message.Text.Length > 7)
+                if (message.Type == MessageType.Text && message.Text.Contains("фиона,") && message.Text.Contains("?") && message.Text.Length > 7)
                 {
                     string quash = message.Text.Substring(7, message.Text.Length - 8);
                     quash = quash.Replace(" ", "");
@@ -612,8 +623,6 @@ namespace botfiona
 
 
         }
-
-
 
 
         static void SaveTriggers()
