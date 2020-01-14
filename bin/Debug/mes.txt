@@ -1,0 +1,12 @@
+{
+  "sdermann": 253,
+  "VladyslavMartynov": 57,
+  "grynenko": 230,
+  "Malleficenta": 301,
+  "alina_bogolidova": 62,
+  "Lenk0v": 221,
+  "awdrallyracer": 10,
+  "chummych": 125,
+  "debavlad": 154,
+  "Yurambolo": 48
+}

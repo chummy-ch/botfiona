@@ -8,6 +8,9 @@ using Telegram.Bot.Args;
 using Telegram.Bot.Types.Enums;
 using HtmlAgilityPack;
 using Telegram.Bot.Types.ReplyMarkups;
+using Newtonsoft.Json;
+using System.Web.Script.Serialization;
+
 namespace botfiona
 {
     class Program
@@ -22,11 +25,9 @@ namespace botfiona
         static string[] trues = new string[] { "Да!", "Конечно!", "Без сомнений!", "Лоол, а как же иначе!" };
         static string[] falses = new string[] { "Нет", "Конечно нет!", "Такого не можут быть!", "Фейк!" };
         static List<string> story = new List<string>();
-        static List<string> people = new List<string>();
-        static List<int> count = new List<int>();
-        static string[] ranks = new string[] { "Глеб", "Конч", "Мамонтов", "Харьковчанен", "Хнурешник", "Языковая шаболда", "Болотный барт" };
-        static string[] rankspic = new string[] { "https://i1.rgstatic.net/ii/profile.image/797915803029504-1567249360132_Q512/Glib_Tereshchenko.jpg" };
-        static List<int> ranksc = new List<int> { 150, 800, 2000, 5000, 10000, 25000, 88888, 100000 };
+        static Dictionary<string, int> mes = new Dictionary<string, int>();
+
+        static RankManager rankManager;
 
         static InlineKeyboardMarkup keyboard;
 
@@ -37,12 +38,12 @@ namespace botfiona
             var me = Bot.GetMeAsync().Result;
             LoadTrigers();
             LoadUname();
-            LoadPeople();
-            LoadCount();
+            LoadMes();
             Bot.OnMessage += Get_Mes;
             Bot.OnCallbackQuery += Bot_OnCallbackQuery;
             Bot.StartReceiving();
 
+            rankManager = new RankManager();
             foreach (string key in triggers.Keys)
             {
                 tempdataitems.Add(new DataItem(key, triggers[key].ToString()));
@@ -65,7 +66,6 @@ namespace botfiona
                     if (button.CallbackData == e.CallbackQuery.Data) btn = button;
                 }
             }
-
             btn.Text = "A";
         }
 
@@ -83,75 +83,28 @@ namespace botfiona
             }
             if (message.Chat.Id == -1001100135301 || message.Chat.Id == 361119003)
             {
-                if (message.Chat.Id == -1001100135301 && message.From.Username != null || message.Chat.Id == 361119003 )
-                {
-                    if (message.Type == MessageType.Text)
+                if (message.Chat.Id == -1001100135301 && message.From.Username != null || message.Chat.Id == 361119003)
+                {/*
+                    if (message.Type == MessageType.Text && message.Text.Contains("popos"))
                     {
-                        if(message.Text.Contains("changecount"))
-                        {
-                            string r = message.Text.Substring(12, message.Text.Length - 12);
-                            count[0] = Convert.ToInt32(r);
-                        }
-                        if (people.Contains(message.From.Username))
-                        {
-                            int index = people.IndexOf(message.From.Username);
-                            if (count.Count > people.IndexOf(message.From.Username))
-                            {
-                                count[index] += 1;
-                                SaveCount();
-                            }
-
-                            else
-                            {
-                                count.Add(1);
-                                SaveCount();
-                            }
-                        }
-                        else
-                        {
-                            people.Add(message.From.Username);
-                            int index = people.IndexOf(message.From.Username);
-                            count[index] += 1;
-                            SavePeople();
-                            SaveCount();
-                        }
-                        if (ranksc.Contains(count[people.IndexOf(message.From.Username)]))
-                        {
-                            await Bot.SendTextMessageAsync(message.Chat.Id, $"Поздравляю!🎉 \n Вы достигли ранга: {ranks[ranksc.IndexOf(count[people.IndexOf(message.From.Username)]) + 1]}", replyToMessageId: message.MessageId);
-                        }
+                        int r = Convert.ToInt32(message.Text.Substring(6, message.Text.Length - 6));
+                        mes[message.From.Username] = r;
+                    }*/
+                    if (mes.ContainsKey(message.From.Username))
+                    {
+                        mes[message.From.Username] += 1;
                     }
                     else
                     {
-                        if (people.Contains(message.From.Username))
-                        {
-                            int index = people.IndexOf(message.From.Username);
-                            if (count.Count > people.IndexOf(message.From.Username))
-                            {
-                                count[index] += 1;
-                                SaveCount();
-                            }
-
-                            else
-                            {
-                                count.Add(1);
-                                SaveCount();
-                            }
-                        }
-                        else
-                        {
-                            people.Add(message.From.Username);
-                            int index = people.IndexOf(message.From.Username);
-                            count[index] += 1;
-                            SavePeople();
-                            SaveCount();
-                        }
-                        if (ranksc.Contains(count[people.IndexOf(message.From.Username)]))
-                        {
-                            await Bot.SendTextMessageAsync(message.Chat.Id, $"Поздравляю!🎉 Вы достигли ранга: {ranks[ranksc.IndexOf(count[people.IndexOf(message.From.Username)])]}");
-                        }
+                        mes.Add(message.From.Username, 1);
                     }
-                }
+                    SaveMes();
 
+
+                    if (rankManager.CountExists(mes[message.From.Username]))
+                        await Bot.SendTextMessageAsync(message.Chat.Id, string.Format("Поздравляю!🎉 \nВы достигли ранга: {0}", 
+                          rankManager.GetRank(mes[message.From.Username])), replyToMessageId: message.MessageId);
+                }
                 if (message.Type == MessageType.Text)
                 {
                     for (int i = 0; i < message.Text.Split(' ').Length; i++)
@@ -160,7 +113,6 @@ namespace botfiona
                     }
                     story.Add(message.Text);
                     message.Text = message.Text.ToLower();
-
                     if (message.Text == "фиона, история")
                     {
                         Random rdn = new Random();
@@ -207,7 +159,6 @@ namespace botfiona
                                         if (commands.Contains(message.ReplyToMessage.Text))
                                         {
                                             await Bot.SendTextMessageAsync(message.Chat, "Команды нельзя использовать для триггера");
-
                                         }
                                         else if (commands.Contains(key))
                                         {
@@ -215,16 +166,13 @@ namespace botfiona
                                         }
                                         else
                                         {
-
                                             triggers.Add(key, message.ReplyToMessage.Text);
                                             SaveTriggers();
                                             await Bot.SendTextMessageAsync(message.Chat, "Триггер создан!");
                                             await Bot.SendStickerAsync(message.Chat, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
                                         }
-
                                     }
                                 }
-
                             }
                             else
 
@@ -291,8 +239,6 @@ namespace botfiona
                             await Bot.SendStickerAsync(message.Chat, "CAADAgADBwAD9OfCJS6YbVaPHbHaFgQ");
                         }
                     }
-
-
                     if (message.Text.Contains("удалить"))
                     {
                         if (triggers.ContainsKey(message.Text.Split('*')[1]))
@@ -308,12 +254,9 @@ namespace botfiona
                             await Bot.SendTextMessageAsync(message.Chat, "Что-то пошло не так");
                         }
                     }
-
-
                     if (message.Text == "/list" || message.Text == "список")
                     {
                         string list = "Команды:";
-
                         for (int i = 0; i < triggers.Count; i++)
                         {
 
@@ -335,7 +278,7 @@ namespace botfiona
                                 list += $"{triggers.Keys.ToList()[i]} - <url>";
                                 list += "\n";
                             }
-                            else if (triggers.Values.ToList()[i].Length > 3 && triggers.Values.ToList()[i].Substring(0,3).Contains("vov"))
+                            else if (triggers.Values.ToList()[i].Length > 3 && triggers.Values.ToList()[i].Substring(0, 3).Contains("vov"))
                             {
                                 list += "\n";
                                 list += $"{triggers.Keys.ToList()[i]} - <media>";
@@ -358,9 +301,7 @@ namespace botfiona
 
                     if (message.Text.Length <= 5 && message.Text.Length >= 2 && message.Text.Substring(message.Text.Length - 2).Contains("да"))
                     {
-
                         await Bot.SendTextMessageAsync(message.Chat, "Пизда", replyToMessageId: message.MessageId);
-
                     }
 
                 }
@@ -459,7 +400,7 @@ namespace botfiona
                         else await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
                     }
                     else await Bot.SendTextMessageAsync(message.Chat.Id, "Погоду можно запрашивать раз в 3 минуты", replyToMessageId: message.MessageId);
-                   
+
                 }
 
 
@@ -529,14 +470,13 @@ namespace botfiona
                                     string mat = message.Text.Substring(5, message.Text.Length - 6);
                                     await Bot.SendTextMessageAsync(message.Chat.Id, mat + " @" + gamersId[rn], replyToMessageId: message.MessageId);
                                 }
-
                             }
                         }
                     }
 
                 }
 
-                if(message.Text == "rtv") await Bot.SendPhotoAsync(message.Chat.Id, "https://ukr-web.org.ua/wp-content/uploads/2017/10/google.jpg", "Revolution!");
+                if (message.Text == "rtv") await Bot.SendPhotoAsync(message.Chat.Id, "https://ukr-web.org.ua/wp-content/uploads/2017/10/google.jpg", "Revolution!");
 
                 if (message.Type == MessageType.Text && message.Text.Contains("девочка"))
                 {
@@ -593,28 +533,8 @@ namespace botfiona
 
                 if (message.Text == "статус" || message.Text == "/status")
                 {
-                    int c = count[people.IndexOf(message.From.Username)];
-                    string r = ranks[0];
-                    for (int i = 0; i < ranksc.Count; i++)
-                    {
-                        if (c < ranksc[i])
-                        {
-                            r = ranks[i];
-                            i = ranksc.Count;
-                        }
-                    }
-                    if (r == ranks[0])
-                    {
-                        string mes = $"\n Status: @{message.From.Username} \n Ранг: {r} \n Количесвто сообщений = {c}";
-                        await Bot.SendTextMessageAsync(message.Chat.Id, mes, replyToMessageId: message.MessageId);
-                        await Bot.SendPhotoAsync(message.Chat.Id, "https://i1.rgstatic.net/ii/profile.image/797915803029504-1567249360132_Q512/Glib_Tereshchenko.jpg");
-
-                    }
-                    else
-                    {
-                        string mes = $"\n Status: @{message.From.Username} \n Ранг: {r} \n Количесвто сообщений = {c}";
-                        await Bot.SendTextMessageAsync(message.Chat.Id, mes, replyToMessageId: message.MessageId);
-                    }
+                    string msg = rankManager.GetFormattedString(mes[message.From.Username], message.From.Username);
+                    await Bot.SendTextMessageAsync(message.Chat.Id, msg, replyToMessageId: message.MessageId);
 
                 }
 
@@ -696,52 +616,21 @@ namespace botfiona
             }
         }
 
-        static void SavePeople()
+        static void SaveMes()
         {
-            using (FileStream fs = new FileStream("People.xml", FileMode.OpenOrCreate))
+            using (StreamWriter writer = File.CreateText("mes.txt"))
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(List<string>));
-                fs.SetLength(0);
-                serializer.Serialize(fs, people);
+                var settings = new JsonSerializerSettings { Formatting = Formatting.Indented };
+                JsonSerializer.Create(settings).Serialize(writer, mes);
             }
         }
 
-        static void LoadPeople()
+        static void LoadMes()
         {
-            XmlSerializer xs = new XmlSerializer(typeof(List<string>));
-            using (FileStream fs = new FileStream("Unames.xml", FileMode.OpenOrCreate))
-            {
-                List<string> templist = (List<string>)xs.Deserialize(fs);
-                foreach (string di in templist)
-                {
-                    people.Add(di);
-                }
-            }
+            if (!File.Exists("mes.txt")) return;
+            string json = File.ReadAllText("mes.txt");
+            mes = new JavaScriptSerializer().Deserialize<Dictionary<string, int>>(json);
         }
-
-        static void SaveCount()
-        {
-            using (FileStream fs = new FileStream("Count.xml", FileMode.OpenOrCreate))
-            {
-                XmlSerializer serializer = new XmlSerializer(typeof(List<int>));
-                fs.SetLength(0);
-                serializer.Serialize(fs, count);
-            }
-        }
-
-        static void LoadCount()
-        {
-            XmlSerializer xs = new XmlSerializer(typeof(List<int>));
-            using (FileStream fs = new FileStream("Count.xml", FileMode.OpenOrCreate))
-            {
-                List<int> templist = (List<int>)xs.Deserialize(fs);
-                foreach (int di in templist)
-                {
-                    count.Add(di);
-                }
-            }
-        }
-
     }
 }
 
