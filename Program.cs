@@ -353,8 +353,11 @@ namespace botfiona
             string url = "https://www.gismeteo.ua/weather-kharkiv-5053/";
             var web = new HtmlWeb();
             HtmlDocument doc = web.Load(url);
-            var t = doc.DocumentNode.SelectSingleNode("/html/body/section/div[2]/div/div[1]/div/div[2]/div[1]/div[1]/a[1]/div/div[1]/div[3]/div[2]/span/span[1]");
+            var t = doc.DocumentNode.SelectSingleNode("/html/body/section/div[2]/div/div[1]/div/div[2]/div[1]/div[1]/a[1]/div/div[1]/div[3]/div[1]/span[1]/span");
             string temp = t.InnerText;
+            int index = temp.IndexOf(",");
+            temp = temp.Substring(0, index);
+            temp = temp.Trim();
 
 
             if (temp.Contains("&minus;")) temp.Replace("&minus;", "-");
@@ -366,15 +369,15 @@ namespace botfiona
             {
               temp = temp.Replace("&minus;", "-");
               temp = temp.Trim();
-              await Bot.SendTextMessageAsync(message.Chat, $"На улице сейчас.... ❄️{temp}❄️");
+              await Bot.SendTextMessageAsync(message.Chat, $"На улице сейчас.... \n ❄️{temp}❄️");
             }
             else if (Convert.ToInt32(temp) > -1 && Convert.ToInt32(temp) < 10)
             {
-              await Bot.SendTextMessageAsync(message.Chat, $"На улице сейчас....  ✨{temp}✨");
+              await Bot.SendTextMessageAsync(message.Chat, $"На улице сейчас.... \n ✨{temp}✨");
             }
             else
             {
-              await Bot.SendTextMessageAsync(message.Chat, $"На улице сечас....  ☀️{temp}☀️");
+              await Bot.SendTextMessageAsync(message.Chat, $"На улице сечас....  \n ☀️{temp}☀️");
             }
 
             if (cond == "Ясно")
