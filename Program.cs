@@ -27,8 +27,8 @@ namespace botfiona
     static List<string> story = new List<string>();
     static Dictionary<string, int> mes = new Dictionary<string, int>();
 
+    static Battle battle;
     static RankManager rankManager;
-
     static InlineKeyboardMarkup keyboard;
 
 
@@ -36,45 +36,26 @@ namespace botfiona
     {
       Bot = new TelegramBotClient("905671296:AAFcDT4qymtle-QyUne4agx14q_97mIQMXI");
       var me = Bot.GetMeAsync().Result;
+      //battle = null;
       LoadTrigers();
       LoadUname();
       LoadMes();
       Bot.OnMessage += Get_Mes;
       Bot.OnCallbackQuery += Bot_OnCallbackQuery;
       Bot.StartReceiving();
-
+      //battle = new Battle(Bot);
+      //battlePlayers = new BattlePlayers(firstp, secondp);
       rankManager = new RankManager();
       foreach (string key in triggers.Keys)
       {
         tempdataitems.Add(new DataItem(key, triggers[key].ToString()));
       }
-
       Console.ReadKey();
     }
 
-    private static async void Bot_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
-    {
-      var message = e.CallbackQuery;
-      string name = e.CallbackQuery.From.FirstName;
-      await Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id, "ну и че");
-
-      InlineKeyboardButton btn = null;
-      foreach (var row in keyboard.InlineKeyboard)
-      {
-        foreach (var button in row)
-        {
-          if (button.CallbackData == e.CallbackQuery.Data) btn = button;
-        }
-      }
-      btn.Text = "A";
-    }
-
-    private static async void Get_Mes(object sender, MessageEventArgs e)
+    public static async void Get_Mes(object sender, MessageEventArgs e)
     {
       var message = e.Message;
-      /*            Console.WriteLine(message.Chat.Id);
-      */
-      if (message.Type == MessageType.Sticker) Console.WriteLine(message.Sticker.FileId);
       if (message.Chat.Id != -1001100135301 && message.Chat.Id != 361119003)
       {
         await Bot.SendTextMessageAsync(361119003, "@" + message.From.Username);
@@ -355,8 +336,12 @@ namespace botfiona
             HtmlDocument doc = web.Load(url);
             var t = doc.DocumentNode.SelectSingleNode("/html/body/section/div[2]/div/div[1]/div/div[2]/div[1]/div[1]/a[1]/div/div[1]/div[3]/div[1]/span[1]/span");
             string temp = t.InnerText;
-            int index = temp.IndexOf(",");
-            temp = temp.Substring(0, index);
+            if (temp.Contains(","))
+            {
+              int index = temp.IndexOf(",");
+              temp = temp.Substring(0, index);
+            }
+
             temp = temp.Trim();
 
 
@@ -406,7 +391,21 @@ namespace botfiona
 
         }
 
+        if (message.From.Username != null &&  message.Text == "/battle" || message.Text == "бой")
+        {
+          battle = new Battle(Bot, e);
+          battle.SetFirstPlayer(message.From.Username);
+          InlineKeyboardMarkup markup = new InlineKeyboardMarkup(new[]
+          {
+            new[]
+            {
+              InlineKeyboardButton.WithCallbackData(message.From.FirstName),
+              InlineKeyboardButton.WithCallbackData("Второй боец")
+            }
 
+          });
+          await Bot.SendTextMessageAsync(message.Chat.Id, "Великая битва!", replyMarkup: markup);
+        }
         if (message.Text == "фиона")
         {
           await Bot.SendTextMessageAsync(message.Chat, "Привет, я Фиона, чат-бот Болота 4 :3");
@@ -505,6 +504,7 @@ namespace botfiona
 
         }
 
+
         if (message.Text == "бронь")
         {
           keyboard = new InlineKeyboardMarkup(new[]
@@ -551,6 +551,27 @@ namespace botfiona
       }
 
 
+    }
+
+
+    private static async void Bot_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
+    {
+      var keyboard = e.CallbackQuery.Message.ReplyMarkup;
+      var content = e.CallbackQuery.Data;
+      var message = e.CallbackQuery;
+      /*if (e.CallbackQuery.From.FirstName == keyboard.InlineKeyboard.ElementAt(0).ElementAt(0).Text)
+      {
+        await Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id, "Ты и так участвуешь, чучело...");
+        return;
+      }*/
+      if (e.CallbackQuery.Data == "Второй боец" && battle != null)
+      {
+        battle.SetSecondPlayer(e.CallbackQuery.From.Username);
+        //secondp = e.CallbackQuery.From.Username;
+        keyboard.InlineKeyboard.ElementAt(0).ElementAt(1).Text = e.CallbackQuery.From.FirstName;
+        await Bot.EditMessageTextAsync(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message.MessageId, "Великий битва!", replyMarkup: keyboard);
+        battle.Start();
+      }
     }
 
 
@@ -633,6 +654,8 @@ namespace botfiona
       string json = File.ReadAllText("mes.txt");
       mes = new JavaScriptSerializer().Deserialize<Dictionary<string, int>>(json);
     }
+
   }
+
 }
 
