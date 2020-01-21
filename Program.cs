@@ -26,7 +26,6 @@ namespace botfiona
     static string[] falses = new string[] { "Нет", "Конечно нет!", "Такого не можут быть!", "Фейк!" };
     static List<string> story = new List<string>();
     static Dictionary<string, int> mes = new Dictionary<string, int>();
-
     static Battle battle;
     static RankManager rankManager;
     static InlineKeyboardMarkup keyboard;
@@ -53,16 +52,45 @@ namespace botfiona
       Console.ReadKey();
     }
 
+    private static async void Bot_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
+    {
+      var keyboard = e.CallbackQuery.Message.ReplyMarkup;
+      var content = e.CallbackQuery.Data;
+      var message = e.CallbackQuery;
+
+      if (e.CallbackQuery.From.FirstName == keyboard.InlineKeyboard.ElementAt(0).ElementAt(0).Text)
+      {
+        await Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id, "Ты и так участвуешь, чучело...");
+        return;
+      }
+      if (e.CallbackQuery.Data.Equals("Второй боец") && battle != null)
+      {
+        battle.SetSecondPlayer(e.CallbackQuery.From.Username);
+        //secondp = e.CallbackQuery.From.Username;
+        keyboard.InlineKeyboard.ElementAt(0).ElementAt(1).Text = e.CallbackQuery.From.FirstName;
+        await Bot.EditMessageTextAsync(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message.MessageId, "Великий битва!", replyMarkup: keyboard);
+        battle.PreStart();
+      }
+    }
+    
     public static async void Get_Mes(object sender, MessageEventArgs e)
     {
       var message = e.Message;
-      if (message.Chat.Id != -1001100135301 && message.Chat.Id != 361119003)
+      if (message.Chat.Id != -1001100135301 && message.Chat.Id != 361119003 && message.Chat.Id != -357466637)
       {
         await Bot.SendTextMessageAsync(361119003, "@" + message.From.Username);
         await Bot.ForwardMessageAsync(361119003, message.Chat.Id, message.MessageId);
         await Bot.SendTextMessageAsync(message.Chat.Id, "Попросите разрешения на использование  у @chummych 🤴");
       }
-      if (message.Chat.Id == -1001100135301 || message.Chat.Id == 361119003)
+      /*if(message.Chat.Id == 361119003)
+      {
+        if (online == 1)
+        {
+          battle.CheckMes(message.Text, message.MessageId, message.From.Username);
+          return;
+        }
+      }*/
+      if (message.Chat.Id == -1001100135301 || message.Chat.Id == 361119003 || message.Chat.Id == -357466637)
       {
         if (message.Chat.Id == -1001100135301 && message.From.Username != null || message.Chat.Id == 361119003)
         {/*
@@ -80,7 +108,6 @@ namespace botfiona
             mes.Add(message.From.Username, 1);
           }
           SaveMes();
-
 
           if (rankManager.CountExists(mes[message.From.Username]))
             await Bot.SendTextMessageAsync(message.Chat.Id, string.Format("Поздравляю!🎉 \nВы достигли ранга: {0}",
@@ -126,7 +153,6 @@ namespace botfiona
                   if (message.ReplyToMessage.Type == MessageType.Sticker)
                   {
                     var index = message.ReplyToMessage.Sticker.FileId;
-                    Console.WriteLine(index);
                     string key = message.Text.Split('*')[1];
                     triggers.Add(key, index);
                     SaveTriggers();
@@ -554,25 +580,7 @@ namespace botfiona
     }
 
 
-    private static async void Bot_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
-    {
-      var keyboard = e.CallbackQuery.Message.ReplyMarkup;
-      var content = e.CallbackQuery.Data;
-      var message = e.CallbackQuery;
-      /*if (e.CallbackQuery.From.FirstName == keyboard.InlineKeyboard.ElementAt(0).ElementAt(0).Text)
-      {
-        await Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id, "Ты и так участвуешь, чучело...");
-        return;
-      }*/
-      if (e.CallbackQuery.Data == "Второй боец" && battle != null)
-      {
-        battle.SetSecondPlayer(e.CallbackQuery.From.Username);
-        //secondp = e.CallbackQuery.From.Username;
-        keyboard.InlineKeyboard.ElementAt(0).ElementAt(1).Text = e.CallbackQuery.From.FirstName;
-        await Bot.EditMessageTextAsync(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message.MessageId, "Великий битва!", replyMarkup: keyboard);
-        battle.Start();
-      }
-    }
+    
 
 
     static void SaveTriggers()
