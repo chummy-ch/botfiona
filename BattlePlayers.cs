@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Threading;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types.ReplyMarkups;
+using Newtonsoft.Json;
+using System.Web.Script.Serialization;
+using System.IO;
 
 namespace botfiona
 {
@@ -13,17 +15,18 @@ namespace botfiona
   {
     private TelegramBotClient bot;
     private MessageEventArgs e;
+    public static Dictionary<string, int> wins = new Dictionary<string, int>();
     private string p1 = "", p2 = "";
     private Dictionary<string, int> hp = new Dictionary<string, int>();
     private string act1 = "", act2 = "";
     private string def1 = "", def2 = "";
-    string at = "⚔️";
-    string def = " 🛡";
-    private int x = 0;
+    readonly string at = "⚔️";
+    readonly string def = " 🛡";
+    private int x;
     private int index = 0;
-    private Dictionary<string, double> atdef = new Dictionary<string, double>()
+    private Dictionary<string, int> atdef = new Dictionary<string, int>()
     {
-      { "Голова", 1.9 }, {"Туловище", 1.5}, {"Ноги", 0.9}
+      { "Голова", 3}, {"Туловище", 2}, {"Ноги", 1}
     };
     public Battle(TelegramBotClient bot, MessageEventArgs e)
     {
@@ -35,26 +38,27 @@ namespace botfiona
     public void SetFirstPlayer(string p)
     {
       p1 = p;
-      hp.Add(p1, 3);
+      hp.Add(p1, 10);
     }
 
     public void SetSecondPlayer(string p)
     {
       p2 = p;
-      hp.Add(p2, 3);
+      hp.Add(p2, 10);
     }
 
     public void PreStart()
     {
       bot.OnCallbackQuery += bot_OnCallbackQuery;
+      LoadWins();
       Start();
     }
     
-    public  void Start()
+    public async void Start()
     {
-      Console.WriteLine("Start");
       var message = e.Message;
       if (hp[p1] == 0 || hp[p2] == 0) return;
+      x = 0;
 
       InlineKeyboardMarkup choice = new InlineKeyboardMarkup(new[]
       {
@@ -64,15 +68,14 @@ namespace botfiona
         },
         new[]
         {
-          InlineKeyboardButton.WithCallbackData("Туловище " + at, "Тело")
+          InlineKeyboardButton.WithCallbackData("Туловище " + at, "Туловище")
         },
         new[]
         {
           InlineKeyboardButton.WithCallbackData("Ноги " + at, "Ноги")
         }
       });
-      x = 0;
-       bot.SendTextMessageAsync(message.Chat.Id, "Атака", replyMarkup: choice);
+        await bot.SendTextMessageAsync(message.Chat.Id, "Атака", replyMarkup: choice);
     }
 
     private async void bot_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
@@ -80,10 +83,8 @@ namespace botfiona
       var choice = e.CallbackQuery.Message.ReplyMarkup;
       string c = e.CallbackQuery.Data;
       index = e.CallbackQuery.Message.MessageId;
-      Console.WriteLine("Вход");
       if (x == 0)
       {
-        Console.WriteLine("x = 0");
         if (e.CallbackQuery.From.Username == p1)
         {
           act1 = e.CallbackQuery.Data;
@@ -98,7 +99,7 @@ namespace botfiona
           await bot.EditMessageTextAsync(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message.MessageId, "Защита", replyMarkup: KeyboatdToDeffend(choice));
         }
       }
-      else
+      else if (x == 1)
       {
         if (e.CallbackQuery.From.Username == p1)
         {
@@ -114,26 +115,16 @@ namespace botfiona
           await bot.DeleteMessageAsync(e.CallbackQuery.Message.Chat.Id, index);
           int z = BattleRes(act1, def2, p2) ;
           z = BattleRes(act2, def1, p1) + 1;
-          Console.WriteLine(z);
           act1 = "";
           def1 = act1;
           act2 = act1;
           def2 = act1;
+          Thread.Sleep(1000);
           Start();
         }
       }
     }
 
-
-    /*private InlineKeyboardMarkup KeyboatdToAttack(InlineKeyboardMarkup choice, int InlineMessageId)
-    {
-      for (int i = 0; i < 3; i++)
-      {
-        choice.InlineKeyboard.ElementAt(i).ElementAt(0).Text = atdef.ElementAt(i).Key + at;
-      }
-      x = 0;
-      return choice;
-    }*/
 
     private InlineKeyboardMarkup KeyboatdToDeffend(InlineKeyboardMarkup choice)
     {
@@ -141,16 +132,16 @@ namespace botfiona
       {
         choice.InlineKeyboard.ElementAt(i).ElementAt(0).Text = atdef.ElementAt(i).Key + def;
       }
-      x = 1;
+      x += 1;
       return choice;
     }
 
 
     private int BattleRes(string attack, string deffend, string UNameDeffender)
     {
-      if (deffend != attack) hp[UNameDeffender] -= 1;
+      if (deffend != attack) hp[UNameDeffender] -= atdef[attack];
        bot.SendTextMessageAsync(e.Message.Chat.Id, $"{UNameDeffender} = {hp[UNameDeffender]}");
-      if (hp[UNameDeffender] == 0)
+      if (hp[UNameDeffender] <= 0)
       {
         bot.DeleteMessageAsync(e.Message.Chat.Id, index);
         FinishBattle();
@@ -158,13 +149,41 @@ namespace botfiona
       }
       else return 0;
     }
-    private  void FinishBattle()
+    private async void FinishBattle()
     {
-      string winner = "";
-      if (hp[p1] > 0) winner = "@" + p1;
-      else winner = "@" + p2;
-       bot.SendTextMessageAsync(e.Message.Chat.Id, $"{winner} победил в этом бою!");
-       bot.SendStickerAsync(e.Message.Chat.Id, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
+      if (hp[p1] <= 0 && hp[p2] <= 0)
+      {
+        await bot.SendTextMessageAsync(e.Message.Chat.Id, "Ничья!");
+      }
+      else
+      {
+        string winner;
+        if (hp[p1] <= 0) winner = "@" + p2;
+        else winner = "@" + p1;
+        await bot.SendTextMessageAsync(e.Message.Chat.Id, $"{winner} победил в этом бою!");
+        await bot.SendStickerAsync(e.Message.Chat.Id, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
+        if (wins.ContainsKey(winner)) wins[winner] += 1;
+        else wins.Add(winner, 1);
+        SaveWins();
+      }
+      
+    }
+    static void SaveWins()
+    {
+      using (StreamWriter writer = File.CreateText("wins.txt"))
+      {
+        var settings = new JsonSerializerSettings { Formatting = Formatting.Indented };
+        JsonSerializer.Create(settings).Serialize(writer, wins);
+      }
+    }
+
+    static void LoadWins()
+    {
+      if (!File.Exists("wins.txt")) return;
+      string json = File.ReadAllText("wins.txt");
+      wins = new JavaScriptSerializer().Deserialize<Dictionary<string, int>>(json);
     }
   }
+
+  
 }
