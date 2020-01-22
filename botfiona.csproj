@@ -55,6 +55,8 @@
   <ItemGroup>
     <Compile Include="BattlePlayers.cs" />
     <Compile Include="DataItem.cs" />
+    <Compile Include="Person.cs" />
+    <Compile Include="PersonManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RankManager.cs" />

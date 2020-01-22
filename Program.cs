@@ -29,22 +29,22 @@ namespace botfiona
     static Battle battle;
     static RankManager rankManager;
     static InlineKeyboardMarkup keyboard;
-
+    static Person person;
+    static public bool online = false;
+    static PersonManager personManager;
 
     static void Main(string[] args)
     {
       Bot = new TelegramBotClient("905671296:AAFcDT4qymtle-QyUne4agx14q_97mIQMXI");
       var me = Bot.GetMeAsync().Result;
-      //battle = null;
       LoadTrigers();
       LoadUname();
       LoadMes();
       Bot.OnMessage += Get_Mes;
       Bot.OnCallbackQuery += Bot_OnCallbackQuery;
       Bot.StartReceiving();
-      //battle = new Battle(Bot);
-      //battlePlayers = new BattlePlayers(firstp, secondp);
       rankManager = new RankManager();
+      personManager = new PersonManager();
       foreach (string key in triggers.Keys)
       {
         tempdataitems.Add(new DataItem(key, triggers[key].ToString()));
@@ -76,6 +76,15 @@ namespace botfiona
     public static async void Get_Mes(object sender, MessageEventArgs e)
     {
       var message = e.Message;
+      if (message.Text == "rere")
+      {
+        Battle.LoadWins();
+        string name = message.From.Username; 
+        Person p = new Person(name, mes[name], Battle.pwins[name]);
+        personManager.AddPerson(p);
+
+      }
+    
       if (message.Chat.Id != -1001100135301 && message.Chat.Id != 361119003 && message.Chat.Id != -357466637)
       {
         await Bot.SendTextMessageAsync(361119003, "@" + message.From.Username);
@@ -90,9 +99,9 @@ namespace botfiona
           return;
         }
       }*/
-      if (message.Chat.Id == -1001100135301 || message.Chat.Id == 361119003 || message.Chat.Id == -357466637)
+      if (message.Chat.Id == -1001100135301 || message.Chat.Id == 361119003 || message.Chat.Id == -357466637 || message.From.Username == "gendalfiona")
       {
-        if (message.Chat.Id == -1001100135301 && message.From.Username != null || message.Chat.Id == 361119003)
+        if (message.Chat.Id == -1001100135301 && message.From.Username != null || message.Chat.Id == 361119003 || message.From.Username == "gendalfiona")
         {/*
                     if (message.Type == MessageType.Text && message.Text.Contains("popos"))                                                 чит-код
                     {                                                                 
@@ -417,8 +426,9 @@ namespace botfiona
 
         }
 
-        if (message.From.Username != null &&  message.Text == "/battle" || message.Text == "бой")
+        if (message.From.Username != null &&  message.Text == "/battle" || message.Text == "бой" && online == false)
         {
+          online = true;
           battle = new Battle(Bot, e);
           battle.SetFirstPlayer(message.From.Username);
           InlineKeyboardMarkup markup = new InlineKeyboardMarkup(new[]
