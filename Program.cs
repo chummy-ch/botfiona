@@ -15,9 +15,10 @@ namespace botfiona
 {
   class Program
   {
-    static TelegramBotClient Bot;
+    static public TelegramBotClient Bot;
+    static public MessageEventArgs ames;
     static DateTime time1 = new DateTime(2020, 1, 1, 13, 13, 13);
-    static Dictionary<string, string> triggers = new Dictionary<string, string>();
+    static public Dictionary<string, string> triggers = new Dictionary<string, string>();
     static List<DataItem> tempdataitems = new List<DataItem>(triggers.Count);
     static string[] commands = new string[] { "список", "Список", "/list", "Удалить", "Триггер", "Фиона", "фиона", "Девочка", "девочка", "погода", "Погода" };
     static List<string> gamersId = new List<string>();
@@ -25,13 +26,14 @@ namespace botfiona
     static string[] trues = new string[] { "Да!", "Конечно!", "Без сомнений!", "Лоол, а как же иначе!" };
     static string[] falses = new string[] { "Нет", "Конечно нет!", "Такого не можут быть!", "Фейк!" };
     static List<string> story = new List<string>();
-    static Dictionary<string, int> mes = new Dictionary<string, int>();
+    static public Dictionary<string, int> mes = new Dictionary<string, int>();
     static Battle battle;
     static RankManager rankManager;
     static InlineKeyboardMarkup keyboard;
-    static Person person;
+    static public DateTime w8 = new DateTime();
     static public bool online = false;
     static PersonManager personManager;
+    static public int index1 = 0;
 
     static void Main(string[] args)
     {
@@ -40,6 +42,7 @@ namespace botfiona
       LoadTrigers();
       LoadUname();
       LoadMes();
+      LoadStory();
       Bot.OnMessage += Get_Mes;
       Bot.OnCallbackQuery += Bot_OnCallbackQuery;
       Bot.StartReceiving();
@@ -57,7 +60,7 @@ namespace botfiona
       var keyboard = e.CallbackQuery.Message.ReplyMarkup;
       var content = e.CallbackQuery.Data;
       var message = e.CallbackQuery;
-
+      index1 = e.CallbackQuery.Message.MessageId;
       if (e.CallbackQuery.From.FirstName == keyboard.InlineKeyboard.ElementAt(0).ElementAt(0).Text)
       {
         await Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id, "Ты и так участвуешь, чучело...");
@@ -76,6 +79,12 @@ namespace botfiona
     public static async void Get_Mes(object sender, MessageEventArgs e)
     {
       var message = e.Message;
+      if (message.Type == MessageType.Text) ames = e;
+      if (message.Type == MessageType.Text && message.Text.Substring(0, 1) == "/")
+      {
+        CommandManager commandManager = new CommandManager();
+        commandManager.CheckCommand(message.Text);
+      }
       if (message.Text == "rere")
       {
         Battle.LoadWins();
@@ -124,12 +133,12 @@ namespace botfiona
         }
         if (message.Type == MessageType.Text)
         {
+          message.Text = message.Text.ToLower();
           for (int i = 0; i < message.Text.Split(' ').Length; i++)
           {
             story.Add(message.Text.Split(' ')[i]);
           }
-          story.Add(message.Text);
-          message.Text = message.Text.ToLower();
+          SaveStory();
           if (message.Text == "фиона, история")
           {
             Random rdn = new Random();
@@ -270,50 +279,6 @@ namespace botfiona
               await Bot.SendTextMessageAsync(message.Chat, "Что-то пошло не так");
             }
           }
-          if (message.Text == "/list" || message.Text == "список")
-          {
-            string list = "Команды:";
-            for (int i = 0; i < triggers.Count; i++)
-            {
-
-              if (triggers.Values.ToList()[i].Contains("CAA"))
-              {
-                list += "\n";
-                list += $"{triggers.Keys.ToList()[i]} - <стикер>";
-                list += "\n";
-              }
-              else if (triggers.Values.ToList()[i].Length > 40)
-              {
-                list += "\n";
-                list += $"{triggers.Keys.ToList()[i]} - <Длинное значение>";
-                list += "\n";
-              }
-              else if (triggers.Values.ToList()[i].Contains("www.") || triggers.Values.ToList()[i].Contains("@gmail.") || triggers.Values.ToList()[i].Contains("@nure.") || triggers.Values.ToList()[i].Contains("tss."))
-              {
-                list += "\n";
-                list += $"{triggers.Keys.ToList()[i]} - <url>";
-                list += "\n";
-              }
-              else if (triggers.Values.ToList()[i].Length > 3 && triggers.Values.ToList()[i].Substring(0, 3).Contains("vov"))
-              {
-                list += "\n";
-                list += $"{triggers.Keys.ToList()[i]} - <media>";
-                list += "\n";
-              }
-              else
-              {
-                list += "\n";
-                list += $"{triggers.Keys.ToList()[i]} - {triggers.Values.ToList()[i]}";
-                list += "\n";
-              }
-            }
-            await Bot.SendTextMessageAsync(message.Chat, list);
-          }
-
-          if (message.Text == "да")
-          {
-            await Bot.SendTextMessageAsync(message.Chat, "Пизда", replyToMessageId: message.MessageId);
-          }
 
           if (message.Text.Length <= 5 && message.Text.Length >= 2 && message.Text.Substring(message.Text.Length - 2).Contains("да"))
           {
@@ -343,91 +308,13 @@ namespace botfiona
             }
           }
         }
-        if (message.Text == "погода" || message.Text == "/weather")
+        
+
+        
+
+        if (message.From.Username != null &&  message.Text == "/battle" && online == false && message.Chat.Title.Contains("arena"))
         {
-          if (DateTime.Now.Subtract(time1).TotalSeconds > 180)
-          {
-            time1 = DateTime.Now;
-            Random rnd = new Random();
-            int rn = rnd.Next(1, 4);
-            switch (rn)
-            {
-              case 1:
-                await Bot.SendTextMessageAsync(message.Chat, "Такс, посмотрим, что у нас тут за погода на Болоте...");
-                await Bot.SendTextMessageAsync(message.Chat, "Звоню погодной фее...  🧚‍♂️");
-                break;
-              case 2:
-                await Bot.SendTextMessageAsync(message.Chat, "На градусник посмотреть слабо? 🌡");
-                await Bot.SendTextMessageAsync(message.Chat, "Ну ладно, щас зайду на Gismeteo...");
-                break;
-              case 3:
-                await Bot.SendTextMessageAsync(message.Chat, "Лучше бы вы делали ВМ :3");
-                await Bot.SendTextMessageAsync(message.Chat, "Кости ломит....");
-
-                break;
-            }
-            string url = "https://www.gismeteo.ua/weather-kharkiv-5053/";
-            var web = new HtmlWeb();
-            HtmlDocument doc = web.Load(url);
-            var t = doc.DocumentNode.SelectSingleNode("/html/body/section/div[2]/div/div[1]/div/div[2]/div[1]/div[1]/a[1]/div/div[1]/div[3]/div[1]/span[1]/span");
-            string temp = t.InnerText;
-            if (temp.Contains(","))
-            {
-              int index = temp.IndexOf(",");
-              temp = temp.Substring(0, index);
-            }
-
-            temp = temp.Trim();
-
-
-            if (temp.Contains("&minus;")) temp.Replace("&minus;", "-");
-            var c = doc.DocumentNode.SelectSingleNode("/html/body/section/div[2]/div/div[1]/div/div[2]/div[1]/div[1]/a[1]");
-            string cond = c.Attributes["data-text"].Value;
-
-
-            if (temp.Contains("&minus;"))
-            {
-              temp = temp.Replace("&minus;", "-");
-              temp = temp.Trim();
-              await Bot.SendTextMessageAsync(message.Chat, $"На улице сейчас.... \n ❄️{temp}❄️");
-            }
-            else if (Convert.ToInt32(temp) > -1 && Convert.ToInt32(temp) < 10)
-            {
-              await Bot.SendTextMessageAsync(message.Chat, $"На улице сейчас.... \n ✨{temp}✨");
-            }
-            else
-            {
-              await Bot.SendTextMessageAsync(message.Chat, $"На улице сечас....  \n ☀️{temp}☀️");
-            }
-
-            if (cond == "Ясно")
-            {
-              await Bot.SendStickerAsync(message.Chat, "CAADAgADOQIAAs7Y6AtiQa4j611amhYE");
-              await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
-            }
-            else if (cond == "Переменная облачность")
-            {
-              await Bot.SendStickerAsync(message.Chat, "CAADAgADRwQAAs7Y6AtUgM8Qt1L1BBYE");
-              await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
-            }
-            else if (cond.Contains("Пасмурно") && cond.Contains("дождь"))
-            {
-              await Bot.SendStickerAsync(message.Chat, "CAADAgAD8AEAAs7Y6Av_YmkSfuc8BhYE");
-              await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
-            }
-            else if (cond.Contains("Пасмурно") || cond.Contains("Облачно"))
-            {
-              await Bot.SendStickerAsync(message.Chat, "CAADAgADDwIAAtzyqwflTv80MV32fhYE");
-              await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
-            }
-            else await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
-          }
-          else await Bot.SendTextMessageAsync(message.Chat.Id, "Погоду можно запрашивать раз в 3 минуты", replyToMessageId: message.MessageId);
-
-        }
-
-        if (message.From.Username != null &&  message.Text == "/battle" || message.Text == "бой" && online == false)
-        {
+          w8 = DateTime.Now; 
           online = true;
           battle = new Battle(Bot, e);
           battle.SetFirstPlayer(message.From.Username);
@@ -440,6 +327,7 @@ namespace botfiona
             }
 
           });
+          
           await Bot.SendTextMessageAsync(message.Chat.Id, "Великая битва!", replyMarkup: markup);
         }
         if (message.Text == "фиона")
@@ -451,7 +339,7 @@ namespace botfiona
 
         }
 
-        if (message.Text == "игроки")
+        if (message.Text == "/players")
         {
           string spis = "Игроки:";
           int i = 1;
@@ -514,8 +402,6 @@ namespace botfiona
 
         }
 
-        if (message.Text == "rtv") await Bot.SendPhotoAsync(message.Chat.Id, "https://ukr-web.org.ua/wp-content/uploads/2017/10/google.jpg", "Revolution!");
-
         if (message.Type == MessageType.Text && message.Text.Contains("девочка"))
         {
           await Bot.SendStickerAsync(message.Chat, "CAADAgADKwADqWElFEZQB5e23FxJFgQ");
@@ -568,12 +454,6 @@ namespace botfiona
                     });
           await Bot.SendTextMessageAsync(message.Chat.Id, "Бронь парт", replyMarkup: keyboard);
 
-        }
-
-        if (message.Text == "статус" || message.Text == "/status")
-        {
-          string msg = rankManager.GetFormattedString(mes[message.From.Username], message.From.Username);
-          await Bot.SendPhotoAsync(message.Chat.Id, rankManager.GetPic(mes[message.From.Username]), msg, replyToMessageId: message.MessageId);
         }
 
         if (message.Text == "полезная инфа")
@@ -671,6 +551,22 @@ namespace botfiona
       if (!File.Exists("mes.txt")) return;
       string json = File.ReadAllText("mes.txt");
       mes = new JavaScriptSerializer().Deserialize<Dictionary<string, int>>(json);
+    }
+
+    static void SaveStory()
+    {
+      using (StreamWriter writer = File.CreateText("Story.txt"))
+      {
+        var settings = new JsonSerializerSettings { Formatting = Formatting.Indented };
+        JsonSerializer.Create(settings).Serialize(writer, story);
+      }
+    }
+
+    static void LoadStory()
+    {
+      if (!File.Exists("Story.txt")) return;
+      string json = File.ReadAllText("Story.txt");
+      story = new JavaScriptSerializer().Deserialize<List<string>>(json);
     }
 
   }

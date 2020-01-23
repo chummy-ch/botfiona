@@ -35,6 +35,10 @@ namespace botfiona
       this.bot = bot;
     }
 
+    public Battle()
+    {
+
+    }
     public void SetFirstPlayer(string p)
     {
       p1 = p;
@@ -57,6 +61,11 @@ namespace botfiona
     public  void Start()
     {
       var message = e.Message;
+      if(DateTime.Now.Subtract(Program.w8).TotalSeconds > 62)
+      {
+        StopBattle();
+        return;
+      }
       if (hp[p1] == 0 || hp[p2] == 0) return;
       x = 0;
       Thread.Sleep(100);
@@ -81,7 +90,7 @@ namespace botfiona
       round++;
     }
 
-    private   void bot_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
+    private void bot_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
     {
       var choice = e.CallbackQuery.Message.ReplyMarkup;
       string c = e.CallbackQuery.Data;
@@ -149,10 +158,12 @@ namespace botfiona
       if (deffend != attack)
       {
         hp[UNameDeffender] -= atdef[attack];
+        if (hp[UNameDeffender] < 0) hp[UNameDeffender] = 0;
         bot.SendTextMessageAsync(e.Message.Chat.Id, CreatMessage(attack, UNameDeffender));
         Thread.Sleep(150);
       }
-       bot.SendTextMessageAsync(e.Message.Chat.Id, $" У {UNameDeffender}  {hp[UNameDeffender]} ❤️");
+      if (hp[UNameDeffender] < 0) hp[UNameDeffender] = 0;
+      bot.SendTextMessageAsync(e.Message.Chat.Id, $" У {UNameDeffender}  {hp[UNameDeffender]} ❤️");
       if (hp[UNameDeffender] <= 0)
       {
         Thread.Sleep(150);
@@ -171,6 +182,7 @@ namespace botfiona
       else  UNameAttacker = hp.ElementAt(1).Key;
       Random rnd = new Random();
       int rn = rnd.Next(1, 4);
+      if (hp[UNameDeffender] < 0) hp[UNameDeffender] = 0;
       switch (rn)
       {
         case 1:
@@ -190,9 +202,17 @@ namespace botfiona
       return mes;
     }
 
+    public static int GetWins(string UserName)
+    {
+      LoadWins();
+      if (pwins.ContainsKey(UserName)) return pwins[UserName];
+      else return 0;
+    }
+
     private async void FinishBattle()
     {
       Program.online = false;
+      Thread.Sleep(2000);
       if (hp[p1] <= 0 && hp[p2] <= 0)
       {
         await bot.SendTextMessageAsync(e.Message.Chat.Id, "Ничья!");
@@ -207,8 +227,19 @@ namespace botfiona
         if (pwins.ContainsKey(winner)) pwins[winner] += 1;
         else pwins.Add(winner, 1);
         SaveWins();
+        hp = new Dictionary<string, int>();
       }
       
+    }
+
+    public async void StopBattle()
+    {
+      Program.online = false;
+      hp = new Dictionary<string, int>();
+      if (index != 0) await bot.DeleteMessageAsync(e.Message.Chat.Id, index);
+      await bot.SendTextMessageAsync(e.Message.Chat.Id, "Бой остановлен.");
+      await bot.DeleteMessageAsync(e.Message.Chat.Id, Program.index1);
+      return;
     }
 
     static void SaveWins()

@@ -53,13 +53,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BattlePlayers.cs" />
+    <Compile Include="AccessManager.cs" />
+    <Compile Include="Battle.cs" />
+    <Compile Include="CommandManager.cs" />
     <Compile Include="DataItem.cs" />
+    <Compile Include="ListGen.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="PersonManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RankManager.cs" />
+    <Compile Include="TriggerManager.cs" />
+    <Compile Include="Weather.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

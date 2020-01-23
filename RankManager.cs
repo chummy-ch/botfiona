@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Telegram.Bot;
+using Telegram.Bot.Args;
 
 namespace botfiona
 {
   class RankManager
   {
-    Dictionary<int, string> numRanks;
-    Dictionary<string, string> ranksPics;
+    private Dictionary<int, string> numRanks;
+    private Dictionary<string, string> ranksPics;
+    private TelegramBotClient Bot = Program.Bot;
+    private MessageEventArgs m = Program.ames;
 
     public RankManager()
     {
@@ -64,6 +68,13 @@ namespace botfiona
         }
       }
       return ranksPics[rank];
+    }
+
+    public async void Status()
+    {
+      var message = m.Message;
+      string msg = GetFormattedString(Program.mes[message.From.Username], message.From.Username) + $"\nКоличество побед:  {Battle.GetWins(message.From.Username)}";
+      await Bot.SendPhotoAsync(message.Chat.Id, GetPic(Program.mes[message.From.Username]), msg, replyToMessageId: message.MessageId);
     }
   }
 

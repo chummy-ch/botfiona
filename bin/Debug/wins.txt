@@ -1,4 +1,3 @@
 {
-  "chummych": 3,
-  "debavlad": 1
+  "chummych": 1
 }
