@@ -22,7 +22,7 @@ namespace botfiona
 
     public void CheckCommand(string command)
     {
-
+      if (command.Contains("@Fionaa_bot")) command = command.Replace("@Fionaa_bot", "");
       if(commands.Contains(command))
       {
         switch (command)
@@ -38,7 +38,7 @@ namespace botfiona
           case "/stopb":
             Battle battle = new Battle();
             Program.online = false;
-            battle.StopBattle();
+            battle.FinishBattle();
             break;
           case "/list":
             ListGen listGen = new ListGen();

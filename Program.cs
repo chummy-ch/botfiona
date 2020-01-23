@@ -20,7 +20,7 @@ namespace botfiona
     static DateTime time1 = new DateTime(2020, 1, 1, 13, 13, 13);
     static public Dictionary<string, string> triggers = new Dictionary<string, string>();
     static List<DataItem> tempdataitems = new List<DataItem>(triggers.Count);
-    static string[] commands = new string[] { "список", "Список", "/list", "Удалить", "Триггер", "Фиона", "фиона", "Девочка", "девочка", "погода", "Погода" };
+    static string[] commands = new string[] { "список", "Список", "/list", "Удалить", "Триггер", "Фиона", "фиона", "Девочка", "девочка", "/status", "/weather"};
     static List<string> gamersId = new List<string>();
     static string[] quastions = new string[] { "кто", "у кого", "кого" };
     static string[] trues = new string[] { "Да!", "Конечно!", "Без сомнений!", "Лоол, а как же иначе!" };
@@ -71,7 +71,7 @@ namespace botfiona
         battle.SetSecondPlayer(e.CallbackQuery.From.Username);
         //secondp = e.CallbackQuery.From.Username;
         keyboard.InlineKeyboard.ElementAt(0).ElementAt(1).Text = e.CallbackQuery.From.FirstName;
-        await Bot.EditMessageTextAsync(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message.MessageId, "Великий битва!", replyMarkup: keyboard);
+        await Bot.EditMessageTextAsync(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message.MessageId, "Великая битва!", replyMarkup: keyboard);
         battle.PreStart();
       }
     }
@@ -85,14 +85,14 @@ namespace botfiona
         CommandManager commandManager = new CommandManager();
         commandManager.CheckCommand(message.Text);
       }
-      if (message.Text == "rere")
+      /*if (message.Text == "rere")
       {
         Battle.LoadWins();
         string name = message.From.Username; 
         Person p = new Person(name, mes[name], Battle.pwins[name]);
         personManager.AddPerson(p);
 
-      }
+      }*/
     
       if (message.Chat.Id != -1001100135301 && message.Chat.Id != 361119003 && message.Chat.Id != -357466637)
       {
@@ -108,9 +108,9 @@ namespace botfiona
           return;
         }
       }*/
-      if (message.Chat.Id == -1001100135301 || message.Chat.Id == 361119003 || message.Chat.Id == -357466637 || message.From.Username == "gendalfiona")
+      if (message.Chat.Id == -1001100135301 || message.Chat.Id == 361119003 || message.Chat.Id == -357466637 || message.From.Username == "gendalfiona" || message.Chat.Title.Contains("arena"))
       {
-        if (message.Chat.Id == -1001100135301 && message.From.Username != null || message.Chat.Id == 361119003 || message.From.Username == "gendalfiona")
+        if (message.Chat.Id == -1001100135301 && message.From.Username != null || message.Chat.Id == 361119003 || message.From.Username == "gendalfiona" || message.Chat.Title.Contains("arena"))
         {/*
                     if (message.Type == MessageType.Text && message.Text.Contains("popos"))                                                 чит-код
                     {                                                                 
@@ -134,10 +134,14 @@ namespace botfiona
         if (message.Type == MessageType.Text)
         {
           message.Text = message.Text.ToLower();
-          for (int i = 0; i < message.Text.Split(' ').Length; i++)
+          if (message.Text.Length > 15)
           {
-            story.Add(message.Text.Split(' ')[i]);
+            for (int i = 0; i < message.Text.Split(' ').Length; i++)
+            {
+              story.Add(message.Text.Split(' ')[i]);
+            }
           }
+          else story.Add(message.Text);
           SaveStory();
           if (message.Text == "фиона, история")
           {

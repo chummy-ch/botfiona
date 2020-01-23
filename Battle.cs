@@ -60,15 +60,14 @@ namespace botfiona
     
     public  void Start()
     {
-      var message = e.Message;
-      if(DateTime.Now.Subtract(Program.w8).TotalSeconds > 62)
+      var message = e.Message;/*
+      if (DateTime.Now.Subtract(Program.w8).TotalSeconds > 62)
       {
-        StopBattle();
+        FinishBattle();
         return;
-      }
-      if (hp[p1] == 0 || hp[p2] == 0) return;
+      }*/
       x = 0;
-      Thread.Sleep(100);
+      Thread.Sleep(1000);
       InlineKeyboardMarkup choice = new InlineKeyboardMarkup(new[]
       {
         new[]
@@ -85,17 +84,16 @@ namespace botfiona
         }
       });
       bot.SendTextMessageAsync(message.Chat.Id, $"Раунд № {round} ✨ ");
-      Thread.Sleep(200);
+      Thread.Sleep(1000);
       bot.SendTextMessageAsync(message.Chat.Id, "Атака", replyMarkup: choice);
       round++;
     }
 
     private void bot_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
     {
+      Program.w8 = DateTime.Now;
       var choice = e.CallbackQuery.Message.ReplyMarkup;
-      string c = e.CallbackQuery.Data;
       index = e.CallbackQuery.Message.MessageId;
-      Thread.Sleep(100);
       if (x == 0)
       {
         if (e.CallbackQuery.From.Username == p1)
@@ -111,11 +109,9 @@ namespace botfiona
         {
            bot.EditMessageTextAsync(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message.MessageId, "Защита", replyMarkup: KeyboatdToDeffend(choice));
         }
-        Thread.Sleep(100);
       }
       else if (x == 1)
       {
-        Thread.Sleep(100);
         if (e.CallbackQuery.From.Username == p1)
         {
           def1 = e.CallbackQuery.Data;
@@ -127,16 +123,10 @@ namespace botfiona
          bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id, $"Вы выбрали {e.CallbackQuery.Data}");
         if (def1.Length > 0 && def2.Length > 0)
         {
-          Thread.Sleep(100);
-           bot.DeleteMessageAsync(e.CallbackQuery.Message.Chat.Id, index);
-          int z = BattleRes(act1, def2, p2) ;
-          z = BattleRes(act2, def1, p1) + 1;
-          act1 = "";
-          def1 = act1;
-          act2 = act1;
-          def2 = act1;
-          Thread.Sleep(800);
-          Start();
+          Thread.Sleep(500);
+          bot.DeleteMessageAsync(e.CallbackQuery.Message.Chat.Id, index);
+          BattleRes(act1, def2, p2) ;
+          BattleRes(act2, def1, p1) ;
         }
       }
     }
@@ -153,25 +143,30 @@ namespace botfiona
     }
 
 
-    private  int BattleRes(string attack, string deffend, string UNameDeffender)
+    private void BattleRes(string attack, string deffend, string UNameDeffender)
     {
+      act1 = "";
+      def1 = "";
+      act2 = "";
+      def2 = "";
+      Thread.Sleep(1000);
       if (deffend != attack)
       {
         hp[UNameDeffender] -= atdef[attack];
         if (hp[UNameDeffender] < 0) hp[UNameDeffender] = 0;
+        Thread.Sleep(700);
         bot.SendTextMessageAsync(e.Message.Chat.Id, CreatMessage(attack, UNameDeffender));
-        Thread.Sleep(150);
       }
-      if (hp[UNameDeffender] < 0) hp[UNameDeffender] = 0;
-      bot.SendTextMessageAsync(e.Message.Chat.Id, $" У {UNameDeffender}  {hp[UNameDeffender]} ❤️");
+      if (hp[UNameDeffender] <= 0) hp[UNameDeffender] = 0;
+      Thread.Sleep(700);
+      bot.SendTextMessageAsync(e.Message.Chat.Id, $" У @{UNameDeffender}  {hp[UNameDeffender]} ❤️");
       if (hp[UNameDeffender] <= 0)
       {
-        Thread.Sleep(150);
+        Thread.Sleep(1000);
         bot.DeleteMessageAsync(e.Message.Chat.Id, index);
         FinishBattle();
-        return 0;
       }
-      else return 0;
+      else Start();
     }
 
     private string CreatMessage(string attack,  string UNameDeffender)
@@ -189,13 +184,13 @@ namespace botfiona
           mes = $"@{UNameDeffender} пропустил удар в {attack} ";
           break;
         case 3:
-          mes = $"@{UNameDeffender} не защититил {attack} и потерял {hp[UNameDeffender]} hp";
+          mes = $"@{UNameDeffender} не защититил {attack} и потерял {atdef[attack]} hp";
           break;
         case 2:
           mes = $"@{UNameAttacker} пробил защиту противника и нанес удар в {attack}";
           break;
         case 4:
-          mes = $"@{UNameAttacker} обманом ударил @{UNameDeffender} в {attack} и отнял {hp[UNameDeffender]} hp";
+          mes = $"@{UNameAttacker} обманом ударил @{UNameDeffender} в {attack} и отнял {atdef[attack]} hp";
           break;
       }
       Thread.Sleep(250);
@@ -209,15 +204,14 @@ namespace botfiona
       else return 0;
     }
 
-    private async void FinishBattle()
+    public async void FinishBattle()
     {
-      Program.online = false;
-      Thread.Sleep(2000);
-      if (hp[p1] <= 0 && hp[p2] <= 0)
+      Thread.Sleep(3000);
+      if (hp.Count == 2 && hp[p1] <= 0 && hp[p2] <= 0)
       {
         await bot.SendTextMessageAsync(e.Message.Chat.Id, "Ничья!");
       }
-      else
+      else if (hp.Count == 2)
       {
         string winner;
         if (hp[p1] <= 0) winner =  p2;
@@ -227,20 +221,12 @@ namespace botfiona
         if (pwins.ContainsKey(winner)) pwins[winner] += 1;
         else pwins.Add(winner, 1);
         SaveWins();
-        hp = new Dictionary<string, int>();
       }
-      
-    }
-
-    public async void StopBattle()
-    {
       Program.online = false;
       hp = new Dictionary<string, int>();
-      if (index != 0) await bot.DeleteMessageAsync(e.Message.Chat.Id, index);
-      await bot.SendTextMessageAsync(e.Message.Chat.Id, "Бой остановлен.");
-      await bot.DeleteMessageAsync(e.Message.Chat.Id, Program.index1);
-      return;
+      await bot.SendTextMessageAsync(e.Message.Chat.Id, "Бой завершен.");
     }
+
 
     static void SaveWins()
     {

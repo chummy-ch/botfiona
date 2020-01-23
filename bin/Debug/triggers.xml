@@ -25,10 +25,6 @@
     <Value>Ира сосет!</Value>
   </DataItem>
   <DataItem>
-    <Key>привет</Key>
-    <Value>Я долбоёб</Value>
-  </DataItem>
-  <DataItem>
     <Key>😉</Key>
     <Value>@sdermann, мы валим, не отмечай 😚</Value>
   </DataItem>
@@ -352,5 +348,9 @@ https://drive.google.com/drive/folders/0B188icrGcLsZQVZXN0IzdU1SUWM</Value>
   <DataItem>
     <Key>usb</Key>
     <Value>Никита Стас и Дюша метелкин</Value>
+  </DataItem>
+  <DataItem>
+    <Key>голова ⚔️</Key>
+    <Value>Великая битва!</Value>
   </DataItem>
 </ArrayOfDataItem>

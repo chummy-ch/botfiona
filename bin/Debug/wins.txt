@@ -1,3 +1,6 @@
 {
-  "chummych": 1
+  "chummych": 6,
+  "Malleficenta": 1,
+  "grynenko": 1,
+  "debavlad": 6
 }
