@@ -15,12 +15,17 @@ namespace botfiona
     public int Wins { get; set; }
     public string Name { get; set; }
     public int Mes { get; set; }
+/*    public string Weapon { get; set; }
+*/
+    public List<Person> people = new List<Person>();
 
-    public Person(string name, int mes, int wins)
+    public Person(string name, int mes, int wins/*, string weapon*/)
     {
       this.Name = name;
       this.Mes = mes;
       this.Wins = wins;
+/*      this.Weapon = weapon;
+*/      
     }
 
     public Person()
@@ -28,10 +33,27 @@ namespace botfiona
 
     }
 
-    public  void MakePerson(string UName, int mesC, int winsc)
+    public  void MakePerson(string UName, int mesC, int winsc/*, string weapons*/)
     {
-      Person person = new Person( UName,  mesC, winsc );
-      
+      LoadPeople();
+      Person person = new Person(UName, mesC, winsc);
+
+    }
+
+    public void SavePeople()
+    {
+      using (StreamWriter writer = File.CreateText("persons.txt"))
+      {
+        var settings = new JsonSerializerSettings { Formatting = Formatting.Indented };
+        JsonSerializer.Create(settings).Serialize(writer, people);
+      }
+    }
+
+    public void LoadPeople()
+    {
+      if (!File.Exists("persons.txt")) return;
+      string json = File.ReadAllText("persons.txt");
+      people = new JavaScriptSerializer().Deserialize<List<Person>>(json);
     }
 
   }

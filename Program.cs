@@ -33,8 +33,8 @@ namespace botfiona
     static InlineKeyboardMarkup keyboard;
     static public DateTime w8 = new DateTime();
     static public bool online = false;
-    static PersonManager personManager;
-    static public int index1 = 0;
+/*    static PersonManager personManager;
+*/    static public int index1 = 0;
 
     static void Main(string[] args)
     {
@@ -48,8 +48,8 @@ namespace botfiona
       Bot.OnCallbackQuery += Bot_OnCallbackQuery;
       Bot.StartReceiving();
       rankManager = new RankManager();
-      personManager = new PersonManager();
-      foreach (string key in triggers.Keys)
+/*      personManager = new PersonManager();
+*/      foreach (string key in triggers.Keys)
       {
         tempdataitems.Add(new DataItem(key, triggers[key].ToString()));
       }
@@ -86,16 +86,16 @@ namespace botfiona
         CommandManager commandManager = new CommandManager();
         commandManager.CheckCommand(message.Text);
       }
-      /*if (message.Text == "rere")
+      if (message.Text == "rerre")
       {
         Battle.LoadWins();
-        string name = message.From.Username; 
-        Person p = new Person(name, mes[name], Battle.pwins[name]);
-        personManager.AddPerson(p);
+        Battle battle = new Battle();
+        string name = message.From.Username;
+        Person p = new Person();
+        p.MakePerson(name, mes[name], Battle.pwins[name]);
+      }
 
-      }*/
-    
-      if (message.Chat.Id != -1001100135301 && message.Chat.Id != 361119003 && message.Chat.Id != -357466637)
+      if (message.Chat.Id != -1001100135301 && message.Chat.Id != 361119003 && message.Chat.Id != -357466637 && !message.Chat.Title.Contains("arena"))
       {
         await Bot.SendTextMessageAsync(361119003, "@" + message.From.Username);
         await Bot.ForwardMessageAsync(361119003, message.Chat.Id, message.MessageId);

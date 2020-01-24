@@ -59,10 +59,10 @@
     <Compile Include="DataItem.cs" />
     <Compile Include="ListGen.cs" />
     <Compile Include="Person.cs" />
-    <Compile Include="PersonManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RankManager.cs" />
+    <Compile Include="Roulette.cs" />
     <Compile Include="TriggerManager.cs" />
     <Compile Include="Weather.cs" />
   </ItemGroup>
