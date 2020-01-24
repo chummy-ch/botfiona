@@ -835,5 +835,14 @@
   "/roulette",
   "/roulette",
   "/roulette",
-  "/roulette"
+  "/roulette",
+  "/roulette",
+  "/roulette",
+  "/roulette",
+  "/roulette",
+  "/roulette",
+  "/roulette",
+  "/roulette",
+  "/roulette",
+  "roulette"
 ]

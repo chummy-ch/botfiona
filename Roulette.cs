@@ -15,8 +15,11 @@ namespace botfiona
     private MessageEventArgs m = Program.ames;
     private long id1;
     private int id2;
+    private bool status = false;
     private Dictionary<string, string> presents = new Dictionary<string, string>() { { "3 💰", "2,3,6,8,10,11,14,16,18,19,20,21" }, { "Рапира", "1" }, { "Короткий меч", "4,7,9,13,15" }, { "Длинный меч", "5,12,17" } };
     InlineKeyboardMarkup roulette = new InlineKeyboardMarkup(new[] { new[] { InlineKeyboardButton.WithCallbackData("PP") } });
+    private string namenow;
+    private string unamenow;
     public Roulette()
     {
 
@@ -24,13 +27,16 @@ namespace botfiona
 
     private async void bot_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
     {
-      if (e.CallbackQuery.Data == "Крутить")
+      if (e.CallbackQuery.Data == "Крутить" && status != true)
       {
+        namenow = e.CallbackQuery.From.FirstName;
+        unamenow = e.CallbackQuery.From.Username;
         await Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id, "Удачи!");
         id1 = e.CallbackQuery.Message.Chat.Id;
         id2 = e.CallbackQuery.Message.MessageId;
         Roll(roulette);
       }
+      else if (status == true) await Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id, $"Сейчас крутит {namenow}");
       else await Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id, "Не хитри! Нажми кнопку <Крутить>");
 
 
@@ -68,6 +74,8 @@ namespace botfiona
 
     private async void Roll(InlineKeyboardMarkup roulette1)
     {
+      if (status == true) return;
+      status = true;
       int x = 1;
       int win = 0;
       Random rnd = new Random();
@@ -77,7 +85,6 @@ namespace botfiona
         if (presents.ElementAt(i).Value.Contains(rn.ToString()))
         {
           win = i ;
-          Console.WriteLine(presents.ElementAt(i).Key);
           break;
         }
       }
@@ -103,8 +110,10 @@ namespace botfiona
         Thread.Sleep(200 * x );
         roulette1.InlineKeyboard.ElementAt(i).ElementAt(0).Text = roulette1.InlineKeyboard.ElementAt(i).ElementAt(0).Text.Replace("⬅️", "");
       }
+      await Bot.SendTextMessageAsync(m.Message.Chat.Id, $"@{unamenow} выиграл {presents.ElementAt(win).Key}, поздравляю!");
+      Thread.Sleep(3000);
       await Bot.EditMessageTextAsync(id1, id2, "Roulette", replyMarkup: roulette);
-      await Bot.SendTextMessageAsync(m.Message.Chat.Id, $"Твой приз - {presents.ElementAt(win).Key}");
+      status = false;
     }
   }
 }
