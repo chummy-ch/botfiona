@@ -38,7 +38,7 @@ namespace botfiona
           case "/stopb":
             Battle battle = new Battle();
             Program.online = false;
-            battle.FinishBattle();
+            battle.StopBattle();
             break;
           case "/list":
             ListGen listGen = new ListGen();

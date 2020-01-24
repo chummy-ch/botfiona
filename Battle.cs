@@ -13,6 +13,7 @@ namespace botfiona
 {
   public class Battle
   {
+    Program program = new Program();
     private TelegramBotClient bot;
     private MessageEventArgs e;
     public static Dictionary<string, int> pwins = new Dictionary<string, int>();
@@ -26,6 +27,7 @@ namespace botfiona
     private int index = 0;
     private int round = 1;
     private Dictionary<string, int> atdef = new Dictionary<string, int>()
+    
     {
       { "Голову", 3}, {"Туловище", 2}, {"Ноги", 1}
     };
@@ -61,12 +63,12 @@ namespace botfiona
     public void Start()
     {
       var message = e.Message;
-      if (DateTime.Now.Subtract(Program.w8).TotalSeconds > 62)
+      /*if (DateTime.Now.Subtract(Program.w8).TotalSeconds > 62)
       {
         StopBattle();
         return;
-      }
-      if (hp[p1] == 0 || hp[p2] == 0) return;
+      }*/
+      if (hp.Count != 2 || hp[p1] == 0 || hp[p2] == 0) return;
       x = 0;
       Thread.Sleep(100);
       InlineKeyboardMarkup choice = new InlineKeyboardMarkup(new[]
@@ -84,8 +86,9 @@ namespace botfiona
           InlineKeyboardButton.WithCallbackData("Ноги " + at, "Ноги")
         }
       });
+      Thread.Sleep(1000);
       bot.SendTextMessageAsync(message.Chat.Id, $"Раунд № {round} ✨ ");
-      Thread.Sleep(200);
+      Thread.Sleep(800);
       bot.SendTextMessageAsync(message.Chat.Id, "Атака", replyMarkup: choice);
       round++;
     }
@@ -95,7 +98,7 @@ namespace botfiona
       var choice = e.CallbackQuery.Message.ReplyMarkup;
       string c = e.CallbackQuery.Data;
       index = e.CallbackQuery.Message.MessageId;
-      Thread.Sleep(100);
+      Thread.Sleep(700);
       if (x == 0)
       {
         if (e.CallbackQuery.From.Username == p1)
@@ -111,11 +114,11 @@ namespace botfiona
         {
           bot.EditMessageTextAsync(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message.MessageId, "Защита", replyMarkup: KeyboatdToDeffend(choice));
         }
-        Thread.Sleep(100);
+        Thread.Sleep(300);
       }
       else if (x == 1)
       {
-        Thread.Sleep(100);
+        Thread.Sleep(300);
         if (e.CallbackQuery.From.Username == p1)
         {
           def1 = e.CallbackQuery.Data;
@@ -127,7 +130,7 @@ namespace botfiona
         bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id, $"Вы выбрали {e.CallbackQuery.Data}");
         if (def1.Length > 0 && def2.Length > 0)
         {
-          Thread.Sleep(100);
+          Thread.Sleep(600);
           bot.DeleteMessageAsync(e.CallbackQuery.Message.Chat.Id, index);
           int z = BattleRes(act1, def2, p2);
           z = BattleRes(act2, def1, p1) + 1;
@@ -159,15 +162,18 @@ namespace botfiona
       {
         hp[UNameDeffender] -= atdef[attack];
         if (hp[UNameDeffender] < 0) hp[UNameDeffender] = 0;
+        Thread.Sleep(1000);
         bot.SendTextMessageAsync(e.Message.Chat.Id, CreatMessage(attack, UNameDeffender));
-        Thread.Sleep(150);
+        Thread.Sleep(350);
       }
       if (hp[UNameDeffender] < 0) hp[UNameDeffender] = 0;
+      Thread.Sleep(1000);
       bot.SendTextMessageAsync(e.Message.Chat.Id, $" У {UNameDeffender}  {hp[UNameDeffender]} ❤️");
       if (hp[UNameDeffender] <= 0)
       {
-        Thread.Sleep(150);
+        Thread.Sleep(450);
         bot.DeleteMessageAsync(e.Message.Chat.Id, index);
+        index = 0;
         FinishBattle();
         return 0;
       }
@@ -212,7 +218,7 @@ namespace botfiona
     public async void FinishBattle()
     {
       Program.online = false;
-      Thread.Sleep(2000);
+      Thread.Sleep(1000);
       if (hp[p1] <= 0 && hp[p2] <= 0)
       {
         await bot.SendTextMessageAsync(e.Message.Chat.Id, "Ничья!");
@@ -237,7 +243,7 @@ namespace botfiona
       Program.online = false;
       hp = new Dictionary<string, int>();
       if (index != 0) await bot.DeleteMessageAsync(e.Message.Chat.Id, index);
-      await bot.SendTextMessageAsync(e.Message.Chat.Id, "Бой остановлен.");
+      await bot.SendTextMessageAsync(Program.chatid, "Бой остановлен.");
       await bot.DeleteMessageAsync(e.Message.Chat.Id, Program.index1);
       return;
     }

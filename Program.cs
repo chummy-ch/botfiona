@@ -17,6 +17,7 @@ namespace botfiona
   {
     static public TelegramBotClient Bot;
     static public MessageEventArgs ames;
+    static public Telegram.Bot.Types.ChatId chatid;
     static DateTime time1 = new DateTime(2020, 1, 1, 13, 13, 13);
     static public Dictionary<string, string> triggers = new Dictionary<string, string>();
     static List<DataItem> tempdataitems = new List<DataItem>(triggers.Count);
@@ -318,6 +319,7 @@ namespace botfiona
 
         if (message.From.Username != null &&  message.Text == "/battle" && online == false && message.Chat.Title.Contains("arena"))
         {
+          chatid = message.Chat.Id;
           w8 = DateTime.Now; 
           online = true;
           battle = new Battle(Bot, e);
