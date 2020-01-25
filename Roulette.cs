@@ -7,6 +7,10 @@ using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types.ReplyMarkups;
 using System.Threading;
+using System.IO;
+using Newtonsoft.Json;
+using System.Web.Script.Serialization;
+
 namespace botfiona
 {
   class Roulette
@@ -18,6 +22,8 @@ namespace botfiona
     private bool status = false;
     private Dictionary<string, string> presents = new Dictionary<string, string>() { { "3 💰", "2,3,6,8,10,11,14,16,18,19,20,21" }, { "Рапира", "1" }, { "Короткий меч", "4,7,9,13,15" }, { "Длинный меч", "5,12,17" } };
     InlineKeyboardMarkup roulette = new InlineKeyboardMarkup(new[] { new[] { InlineKeyboardButton.WithCallbackData("PP") } });
+    public Dictionary<string, string> totalwin = new Dictionary<string, string>();
+    private Dictionary<string, DateTime> rolls = new Dictionary<string, DateTime>();
     private string namenow;
     private string unamenow;
     public Roulette()
@@ -34,7 +40,7 @@ namespace botfiona
         await Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id, "Удачи!");
         id1 = e.CallbackQuery.Message.Chat.Id;
         id2 = e.CallbackQuery.Message.MessageId;
-        Roll(roulette);
+        CanRoll();
       }
       else if (status == true) await Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id, $"Сейчас крутит {namenow}");
       else await Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id, "Не хитри! Нажми кнопку <Крутить>");
@@ -74,6 +80,7 @@ namespace botfiona
 
     private async void Roll(InlineKeyboardMarkup roulette1)
     {
+      LoadTotalWin();
       if (status == true) return;
       status = true;
       int x = 1;
@@ -111,9 +118,68 @@ namespace botfiona
         roulette1.InlineKeyboard.ElementAt(i).ElementAt(0).Text = roulette1.InlineKeyboard.ElementAt(i).ElementAt(0).Text.Replace("⬅️", "");
       }
       await Bot.SendTextMessageAsync(m.Message.Chat.Id, $"@{unamenow} выиграл {presents.ElementAt(win).Key}, поздравляю!");
+      if (totalwin.ContainsKey(unamenow))
+      {
+        string t = totalwin[unamenow] + $":{presents.ElementAt(win).Key}:";
+        totalwin[unamenow] = t;
+      }
+      else totalwin.Add(unamenow, $":{presents.ElementAt(win).Key}:");
+      SaveTotalWin();
       Thread.Sleep(3000);
       await Bot.EditMessageTextAsync(id1, id2, "Roulette", replyMarkup: roulette);
       status = false;
     }
+
+    public void Presents()
+    {
+      LoadTotalWin();
+      Console.WriteLine(1);
+      string uName = m.Message.From.Username;
+      if (!totalwin.ContainsKey(uName)) return;
+      Console.WriteLine(2);
+      string[] arr = totalwin[uName].Split(':');
+      string t = "Призы за все время:";
+      for(int i = 0; i < arr.Length; i++)
+      {
+        t += $"\n{arr[i]}";
+      }
+      Bot.SendTextMessageAsync(m.Message.Chat.Id, t);
+    }
+    private void CanRoll()
+    {
+      if (status == true) return;
+      if (rolls.ContainsKey(unamenow))
+      {
+        if (rolls[unamenow].Subtract(DateTime.Now).TotalMilliseconds >= 120)
+        {
+          Console.WriteLine(1);
+          Roll(roulette);
+          rolls[unamenow] = DateTime.Now;
+        }
+        else Bot.SendTextMessageAsync(m.Message.From.Id, "Крутить можно раз в 2 часа :3");
+      }
+      else
+      {
+        rolls.Add(unamenow, DateTime.Now);
+        Roll(roulette);
+      }
+    }
+
+    private void SaveTotalWin()
+    {
+      using (StreamWriter writer = File.CreateText("TotalWin.txt"))
+      {
+        var settings = new JsonSerializerSettings { Formatting = Formatting.Indented };
+        JsonSerializer.Create(settings).Serialize(writer, totalwin);
+      }
+    }
+
+    private void LoadTotalWin()
+    {
+      if (!File.Exists("TotalWin.txt")) return;
+      string json = File.ReadAllText("TotalWin.txt");
+      totalwin = new JavaScriptSerializer().Deserialize<Dictionary<string, string>>(json);
+    }
+   
   }
 }
