@@ -14,7 +14,7 @@ namespace botfiona
   public class CommandManager
   {
 /*    TelegramBotClient bot = Program.Bot;
-*/    private List<string> commands = new List<string>() { "/weather", "/status", "/battle", "/stopb", "/list", "/roulette", "/presents" };
+*/    private List<string> commands = new List<string>() { "/weather", "/status", "/battle", "/stopb", "/list", "/roulette", "/inv" };
     public CommandManager()
     {
 
@@ -48,9 +48,9 @@ namespace botfiona
             Roulette roulette = new Roulette();
             roulette.CreateRoul();
             break;
-          case "/presents":
+          case "/inv":
             Roulette roulette2 = new Roulette();
-            roulette2.Presents();
+            roulette2.Inventory();
             break;
         }
       }
