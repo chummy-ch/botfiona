@@ -46,7 +46,7 @@ namespace botfiona
             break;
           case "/roulette":
             Roulette roulette = new Roulette();
-            roulette.CreateRoul();
+            roulette.CreateRoll();
             break;
           case "/inv":
             Roulette roulette2 = new Roulette();

@@ -26,12 +26,16 @@ namespace botfiona
     private Dictionary<string, DateTime> rolls = new Dictionary<string, DateTime>();
     private string namenow;
     private string unamenow;
+    private bool online = false;
+    private int keyboard = 0;
+    private DateTime timeMade; 
     public Roulette()
     {
     }
 
     private async void bot_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
     {
+      keyboard = e.CallbackQuery.Message.MessageId;
       if (e.CallbackQuery.Data == "Крутить" && status != true)
       {
         namenow = e.CallbackQuery.From.FirstName;
@@ -45,7 +49,13 @@ namespace botfiona
       else await Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id, "Не хитри! Нажми кнопку <Крутить>");
     }
 
-    public void CreateRoul()
+   /* public void CheckRoll()
+    {
+      if (online == true) return;
+      if (DateTime.Now.Subtract(timeMade).TotalMinutes < 3)
+    }
+*/
+    public void CreateRoll()
     {
       Bot.OnCallbackQuery += bot_OnCallbackQuery;
       var message = m.Message;
@@ -73,6 +83,7 @@ namespace botfiona
         }
       });
       Bot.SendTextMessageAsync(message.Chat.Id, "Roulette", replyMarkup: roulette);
+      online = true;
     }
 
     private async void Roll(InlineKeyboardMarkup roulette1)
@@ -145,12 +156,16 @@ namespace botfiona
       if (status == true) return;
       if (rolls.ContainsKey(unamenow))
       {
-        if (rolls[unamenow].Subtract(DateTime.Now).TotalMilliseconds >= 120)
+        if (rolls[unamenow].Subtract(DateTime.Now).TotalMilliseconds > 30)
         {
           Roll(roulette);
           rolls[unamenow] = DateTime.Now;
         }
-        else Bot.SendTextMessageAsync(m.Message.From.Id, "Крутить можно раз в 2 часа :3");
+        else
+        {
+          Bot.SendTextMessageAsync(m.Message.From.Id, "Крутить можно раз в 2 часа :3");
+          return;
+        }
       }
       else
       {
@@ -166,9 +181,12 @@ namespace botfiona
         if (totalwin[name].Contains("💰") && presents.ElementAt(winId).Key.Contains("💰"))
         {
           int index = totalwin[name].IndexOf("💰");
-          string old = totalwin[name].Substring(index - 2, 2);
-          old = old.Trim();
-          string new1 = Convert.ToString(Convert.ToInt32(old) + 3);
+          string old = totalwin[name].Substring(index - 3, 4);
+          if (old[0].ToString() == ":") old = old.Substring(1, 3);
+          string oldn = totalwin[name].Substring(index + 1 - old.Length, 2);
+          oldn = oldn.Trim();
+          string newn = Convert.ToString(Convert.ToInt32(oldn) + 3) + " ";
+          string new1 = old.Replace(oldn.ToString(), newn.ToString());
           totalwin[name] = totalwin[name].Replace(old, new1);
         }
         else if (presents.ElementAt(winId).Key.Contains("💰") && !totalwin[name].Contains("💰"))
