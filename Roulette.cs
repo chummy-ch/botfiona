@@ -181,11 +181,18 @@ namespace botfiona
         if (totalwin[name].Contains("💰") && presents.ElementAt(winId).Key.Contains("💰"))
         {
           int index = totalwin[name].IndexOf("💰");
-          string old = totalwin[name].Substring(index - 3, 4);
-          if (old[0].ToString() == ":") old = old.Substring(1, 3);
-          string oldn = totalwin[name].Substring(index + 1 - old.Length, 2);
+          string old = totalwin[name].Substring(index - 4, 5);
+          if (old[0].ToString() == ":")
+          {
+            old = old.Substring(1, 4);
+          }
+          else if (old[1].ToString() == ":")
+          {
+            old = old.Substring(2, 3);
+          }
+          string oldn = old.Substring(0, old.Length - 2);
           oldn = oldn.Trim();
-          string newn = Convert.ToString(Convert.ToInt32(oldn) + 3) + " ";
+          string newn = Convert.ToString(Convert.ToInt32(oldn) + 3);
           string new1 = old.Replace(oldn.ToString(), newn.ToString());
           totalwin[name] = totalwin[name].Replace(old, new1);
         }

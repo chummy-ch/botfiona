@@ -287,6 +287,7 @@ namespace botfiona
 
           if (message.Text.Length <= 5 && message.Text.Length >= 2 && message.Text.Substring(message.Text.Length - 2).Contains("да"))
           {
+            if (message.ReplyMarkup == null) return;
             await Bot.SendTextMessageAsync(message.Chat, "Пизда", replyToMessageId: message.MessageId);
           }
 
