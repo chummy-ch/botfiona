@@ -6,7 +6,6 @@ using System.Xml.Serialization;
 using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types.Enums;
-using HtmlAgilityPack;
 using Telegram.Bot.Types.ReplyMarkups;
 using Newtonsoft.Json;
 using System.Web.Script.Serialization;
@@ -85,8 +84,9 @@ namespace botfiona
       {
         CommandManager commandManager = new CommandManager();
         commandManager.CheckCommand(message.Text);
+        return;
       }
-      if (message.Text == "rerre")
+      if (message.Text == "rerre")          // доделать список типа Person
       {
         Battle.LoadWins();
         Battle battle = new Battle();
@@ -94,13 +94,15 @@ namespace botfiona
         Person p = new Person();
         p.MakePerson(name, mes[name], Battle.pwins[name]);
       }
-
-      if (message.Chat.Id != -1001100135301 && message.Chat.Id != 361119003 && message.Chat.Id != -357466637 && !message.Chat.Title.Contains("arena"))
+/*        Проверка на использование бота
+ *        
+ *        
+      if (message.Chat.Id != -1001100135301 && message.Chat.Id != 361119003 && message.Chat.Id != -357466637 && !message.Chat.Title.Contains("arena"))  
       {
         await Bot.SendTextMessageAsync(361119003, "@" + message.From.Username);
         await Bot.ForwardMessageAsync(361119003, message.Chat.Id, message.MessageId);
         await Bot.SendTextMessageAsync(message.Chat.Id, "Попросите разрешения на использование  у @chummych 🤴");
-      }
+      }*/
       /*if(message.Chat.Id == 361119003)
       {
         if (online == 1)
@@ -109,6 +111,7 @@ namespace botfiona
           return;
         }
       }*/
+
       if (message.Chat.Id == -1001100135301 || message.Chat.Id == 361119003 || message.Chat.Id == -357466637 || message.From.Username == "gendalfiona" || message.Chat.Title.Contains("arena"))
       {
         if (message.Chat.Id == -1001100135301 && message.From.Username != null || message.Chat.Id == 361119003 || message.From.Username == "gendalfiona" || message.Chat.Title.Contains("arena"))
