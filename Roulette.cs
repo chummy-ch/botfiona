@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types.ReplyMarkups;
@@ -82,7 +80,7 @@ namespace botfiona
           InlineKeyboardButton.WithCallbackData("🎰Крутить🎰", "Крутить")
         }
       });
-      Bot.SendTextMessageAsync(message.Chat.Id, "Roulette", replyMarkup: roulette);
+      Bot.SendTextMessageAsync(message.From.Id, "Roulette", replyMarkup: roulette);
       online = true;
     }
 
@@ -148,7 +146,7 @@ namespace botfiona
       {
         t += $"\n{arr[i]}";
       }
-      Bot.SendTextMessageAsync(m.Message.Chat.Id, t);
+      Bot.SendTextMessageAsync(m.Message.From.Id, t);
     }
 
     private void CanRoll()

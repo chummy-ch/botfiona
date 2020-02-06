@@ -195,13 +195,13 @@ namespace botfiona
           mes = $"@{UNameDeffender} пропустил удар в {attack} ";
           break;
         case 3:
-          mes = $"@{UNameDeffender} не защититил {attack} и потерял {hp[UNameDeffender]} hp";
+          mes = $"@{UNameDeffender} не защититил {attack} и потерял {atdef[attack]} hp";
           break;
         case 2:
           mes = $"@{UNameAttacker} пробил защиту противника и нанес удар в {attack}";
           break;
         case 4:
-          mes = $"@{UNameAttacker} обманом ударил @{UNameDeffender} в {attack} и отнял {hp[UNameDeffender]} hp";
+          mes = $"@{UNameAttacker} обманом ударил @{UNameDeffender} в {attack} и отнял {atdef[attack]} hp";
           break;
       }
       Thread.Sleep(250);

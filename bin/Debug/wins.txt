@@ -1,5 +1,5 @@
 {
-  "chummych": 8,
+  "chummych": 9,
   "Malleficenta": 1,
   "grynenko": 1,
   "debavlad": 6,
