@@ -70,6 +70,23 @@ namespace botfiona
       return ranksPics[rank];
     }
 
+    public void TopRank()
+    {
+      var items = from pair in Program.mes
+                  orderby pair.Value descending
+                  select pair;
+      string top = "Топ 10:\n";
+      List<string> tops = new List<string>();
+      int counter = 1;
+      foreach (KeyValuePair<string, int> pair in items)
+      {
+        if (counter > 10) break;
+          top += $"\n({counter}) " + pair.Key + " - " + pair.Value + "\n";
+        counter++;
+      }
+      Bot.SendTextMessageAsync(m.Message.Chat.Id, top);
+    }
+
     public async void Status()
     {
       var message = m.Message;

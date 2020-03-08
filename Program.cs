@@ -9,6 +9,7 @@ using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using Newtonsoft.Json;
 using System.Web.Script.Serialization;
+using System.Threading;
 
 namespace botfiona
 {
@@ -36,7 +37,7 @@ namespace botfiona
 
     static void Main(string[] args)
     {
-      Bot = new TelegramBotClient("905671296:AAFcDT4qymtle-QyUne4agx14q_97mIQMXI");
+      Bot = new TelegramBotClient("905671296:AAExzN80dNrlGv3KE_R6_6ta-rsi7Fpi7Y0");
       var me = Bot.GetMeAsync().Result;
       LoadTrigers();
       LoadUname();
@@ -575,7 +576,7 @@ namespace botfiona
     {
       if (!File.Exists("Story.txt")) return;
       string json = File.ReadAllText("Story.txt");
-      story = new JavaScriptSerializer().Deserialize<List<string>>(json);
+      /*story = new JavaScriptSerializer().Deserialize<List<string>>(json);*/
     }
 
   }
