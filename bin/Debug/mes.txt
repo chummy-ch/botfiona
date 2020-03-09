@@ -1,16 +1,16 @@
 {
-  "sdermann": 927,
-  "VladyslavMartynov": 889,
-  "grynenko": 1552,
-  "Malleficenta": 1722,
+  "sdermann": 945,
+  "VladyslavMartynov": 894,
+  "grynenko": 1628,
+  "Malleficenta": 1800,
   "alina_bogolidova": 104,
-  "Lenk0v": 824,
+  "Lenk0v": 864,
   "awdrallyracer": 49,
-  "chummych": 1574,
+  "chummych": 1584,
   "debavlad": 10220,
   "Yurambolo": 218,
   "Doge8": 38,
-  "Madvillain00": 366,
+  "Madvillain00": 367,
   "Yu_172": 22,
   "yurec4": 79,
   "ppineappleee": 8,
@@ -18,5 +18,5 @@
   "gendalfiona": 15,
   "ghost1331": 10,
   "avojjarot": 45,
-  "ir_ock": 88
+  "ir_ock": 95
 }
