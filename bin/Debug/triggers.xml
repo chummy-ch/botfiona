@@ -366,4 +366,8 @@ https://drive.google.com/drive/folders/0B188icrGcLsZQVZXN0IzdU1SUWM</Value>
     <Value>http://physic.nure.ua/studentu
 Внизу методички на пз и лабы по физике</Value>
   </DataItem>
+  <DataItem>
+    <Key>тест</Key>
+    <Value>vadom.cc.ua/test1 vadom.cc.ua/test2</Value>
+  </DataItem>
 </ArrayOfDataItem>
