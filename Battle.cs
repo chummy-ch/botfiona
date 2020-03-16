@@ -235,7 +235,6 @@ namespace botfiona
         SaveWins();
         hp = new Dictionary<string, int>();
       }
-
     }
 
     public async void StopBattle()
