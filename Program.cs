@@ -111,10 +111,8 @@ namespace botfiona
           return;
         }
       }*/
-      if (message.Chat.Id == -1001100135301 || message.Chat.Id == 361119003 || message.Chat.Id == -357466637 || message.From.Username == "gendalfiona" || message.Chat.Title.Contains("arena"))
-      {
-        if (message.Chat.Id == -1001100135301 && message.From.Username != null || message.Chat.Id == 361119003 || message.From.Username == "gendalfiona" || message.Chat.Title.Contains("arena"))
-        {/*
+      
+        /*
                     if (message.Type == MessageType.Text && message.Text.Contains("popos"))                                                 чит-код
                     {                                                                 
                         int r = Convert.ToInt32(message.Text.Substring(6, message.Text.Length - 6));
@@ -133,7 +131,7 @@ namespace botfiona
           if (rankManager.CountExists(mes[message.From.Username]))
             await Bot.SendTextMessageAsync(message.Chat.Id, string.Format("Поздравляю!🎉 \nВы достигли ранга: {0}",
               rankManager.GetRank(mes[message.From.Username])), replyToMessageId: message.MessageId);
-        }
+        
         if (message.Type == MessageType.Text)
         {
           message.Text = message.Text.ToLower();
@@ -472,11 +470,6 @@ namespace botfiona
           if (message.ReplyToMessage.Text.Length < 1) return;
           await Bot.ForwardMessageAsync(22, -1001100135301, message.ReplyToMessage.MessageId);
         }
-
-
-      }
-
-
     }
 
 
