@@ -79,9 +79,10 @@ namespace botfiona
 
     public static async void Get_Mes(object sender, MessageEventArgs e)
     {
+     
       var message = e.Message;
-/*      if (message.Type == MessageType.Text) ames = e;
-*/      if (message.Type == MessageType.Text && message.Text.Substring(0, 1) == "/")
+      if (message.Type == MessageType.Text) ames = e;
+      if (message.Type == MessageType.Text && message.Text.Substring(0, 1) == "/")
       {
         CommandManager commandManager = new CommandManager();
         commandManager.CheckCommand(message.Text);
@@ -95,24 +96,32 @@ namespace botfiona
         Person p = new Person();
         p.MakePerson(name, mes[name], Battle.pwins[name]);
       }
-     
-      string un = message.From.Username.Trim();
-      if (un.Length > 0 && mes.ContainsKey(un))
-      {
-        mes[message.From.Username] += 1;
-        if (rankManager.CountExists(mes[message.From.Username]))
-        {
-          await Bot.SendTextMessageAsync(message.Chat.Id, string.Format("Поздравляю!🎉 \nВы достигли ранга: {0}",
-            rankManager.GetRank(mes[message.From.Username])), replyToMessageId: message.MessageId);
-        }
 
-      }
-      else
+      try
       {
-        if(un.Length > 0)
-        mes.Add(message.From.Username, 1);
+        string un = message.From.Username.Trim();
+        if (un.Length > 0 && mes.ContainsKey(un))
+        {
+          mes[message.From.Username] += 1;
+          if (rankManager.CountExists(mes[message.From.Username]))
+          {
+            await Bot.SendTextMessageAsync(message.Chat.Id, string.Format("Поздравляю!🎉 \nВы достигли ранга: {0}",
+              rankManager.GetRank(mes[message.From.Username])), replyToMessageId: message.MessageId);
+          }
+
+        }
+        else
+        {
+          if (un.Length > 0)
+            mes.Add(message.From.Username, 1);
+        }
+        SaveMes();
       }
-      SaveMes();
+      catch
+      {
+        Console.WriteLine("No username");
+      }
+      
 
      
 
