@@ -25,7 +25,6 @@ namespace botfiona
     static string[] falses = new string[] { "Нет", "Конечно нет!", "Такого не можут быть!", "Фейк!" };
     static List<string> story = new List<string>();
     static public Dictionary<string, int> mes = new Dictionary<string, int>();
-    static Battle battle;
     static RankManager rankManager;
 
     static void Main(string[] args)
@@ -91,9 +90,12 @@ namespace botfiona
 
       Triggers trig = new Triggers(message, Bot);
       trig.FindTrigger();
-     
 
-    /*  if (message.Type == MessageType.Text)
+      TextManager textManager = new TextManager(message, Bot);
+      textManager.Selecter();
+
+
+/*      if (message.Type == MessageType.Text)
       {
         message.Text = message.Text.ToLower();
         if (message.Text.Length > 15)
@@ -122,31 +124,8 @@ namespace botfiona
           await Bot.SendTextMessageAsync(message.Chat.Id, storys);
           storys += "";
         }
-        
-      
-
-        if (message.Text.Length <= 5 && message.Text.Length >= 2 && message.Text.Substring(message.Text.Length - 2).Contains("да") || message.Text == "да") 
-        {
-          if (message == null) return;
-          await Bot.SendTextMessageAsync(message.Chat, "Пизда", replyToMessageId: message.MessageId);
-        }
-
-      }*/
-     
-
-      
-
-
-      
-
-      if (message.Text == "фиона")
-      {
-        await Bot.SendTextMessageAsync(message.Chat, "Привет, я Фиона, чат-бот Болота 4 :3");
-        await Bot.SendStickerAsync(message.Chat, "CAADAgADGQAD9OfCJRWWFn5c1beEFgQ");
-
-        await Bot.SendTextMessageAsync(message.Chat, "Мои команды:\n /status - для вызова персонального статуса  \n /game_enter - войти игру в <кто> \n /list - для просмотра всех  триггеров \n Триггер *triggger_name* - для создания нового триггера \n /weather - показать прогноз погоды на сейчас \n Задать мне вопрос - Фиона,<вопрос>?");
-
       }
+*/
 
       if (message.Text == "/players")
       {
@@ -213,14 +192,7 @@ namespace botfiona
 
       }
 
-      if (message.Type == MessageType.Text && message.Text.Contains("девочка"))
-      {
-        await Bot.SendStickerAsync(message.Chat, "CAADAgADKwADqWElFEZQB5e23FxJFgQ");
-        await Bot.SendStickerAsync(message.Chat, "CAADAgADyAEAArMeUCPRh9FVnGyWTRYE");
-        await Bot.SendStickerAsync(message.Chat, "CAADAgADLAADqWElFNm7GHyxzP9LFgQ");
-        await Bot.SendStickerAsync(message.Chat, "CAADAgAD0gEAArMeUCPGE2QnmWBiEhYE");
-
-      }
+     
 
       if (message.Type == MessageType.Text && message.Text.Contains("фиона,") && message.Text.Contains("?") && message.Text.Length > 7)
       {

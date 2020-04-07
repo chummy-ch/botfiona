@@ -60,7 +60,6 @@ namespace Bot_Fiona
 
     public async void DeleteTrigger()
     {
-
       if (triggers.ContainsKey(message.Text.Split('*')[1]))
       {
         string key = message.Text.Split('*')[1];
