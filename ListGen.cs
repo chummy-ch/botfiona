@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bot_Fiona;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,44 +16,43 @@ namespace botfiona
 
     public ListGen()
     {
-
     }
 
     public async void GetList()
     {
       var message = m.Message;
       string list = "Команды:";
-      for (int i = 0; i < Program.triggers.Count; i++)
+      for (int i = 0; i < Triggers.triggers.Count; i++)
       {
 
-        if (Program.triggers.Values.ToList()[i].Contains("CAA"))
+        if (Triggers.triggers.Values.ToList()[i].Contains("CAA"))
         {
           list += "\n";
-          list += $"{Program.triggers.Keys.ToList()[i]} - <стикер>";
+          list += $"{Triggers.triggers.Keys.ToList()[i]} - <стикер>";
           list += "\n";
         }
-        else if (Program.triggers.Values.ToList()[i].Length > 40)
+        else if (Triggers.triggers.Values.ToList()[i].Length > 40)
         {
           list += "\n";
-          list += $"{Program.triggers.Keys.ToList()[i]} - <Длинное значение>";
+          list += $"{Triggers.triggers.Keys.ToList()[i]} - <Длинное значение>";
           list += "\n";
         }
-        else if (Program.triggers.Values.ToList()[i].Contains("www.") || Program.triggers.Values.ToList()[i].Contains("@gmail.") || Program.triggers.Values.ToList()[i].Contains("@nure.") || Program.triggers.Values.ToList()[i].Contains("tss."))
+        else if (Triggers.triggers.Values.ToList()[i].Contains("www.") || Triggers.triggers.Values.ToList()[i].Contains("@gmail.") || Triggers.triggers.Values.ToList()[i].Contains("@nure.") || Triggers.triggers.Values.ToList()[i].Contains("tss."))
         {
           list += "\n";
-          list += $"{Program.triggers.Keys.ToList()[i]} - <url>";
+          list += $"{Triggers.triggers.Keys.ToList()[i]} - <url>";
           list += "\n";
         }
-        else if (Program.triggers.Values.ToList()[i].Length > 3 && Program.triggers.Values.ToList()[i].Substring(0, 3).Contains("vov"))
+        else if (Triggers.triggers.Values.ToList()[i].Length > 3 && Triggers.triggers.Values.ToList()[i].Substring(0, 3).Contains("vov"))
         {
           list += "\n";
-          list += $"{Program.triggers.Keys.ToList()[i]} - <media>";
+          list += $"{Triggers.triggers.Keys.ToList()[i]} - <media>";
           list += "\n";
         }
         else
         {
           list += "\n";
-          list += $"{Program.triggers.Keys.ToList()[i]} - {Program.triggers.Values.ToList()[i]}";
+          list += $"{Triggers.triggers.Keys.ToList()[i]} - {Triggers.triggers.Values.ToList()[i]}";
           list += "\n";
         }
       }

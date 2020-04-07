@@ -8,6 +8,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 using Newtonsoft.Json;
 using System.Web.Script.Serialization;
 using System.IO;
+using Bot_Fiona;
 
 namespace botfiona
 {
@@ -217,7 +218,7 @@ namespace botfiona
 
     public async void FinishBattle()
     {
-      Program.online = false;
+      BattleManager.online = false;
       Thread.Sleep(1000);
       if (hp[p1] <= 0 && hp[p2] <= 0)
       {
@@ -239,11 +240,11 @@ namespace botfiona
 
     public async void StopBattle()
     {
-      Program.online = false;
+      BattleManager.online = false;
       hp = new Dictionary<string, int>();
       if (index != 0) await bot.DeleteMessageAsync(e.Message.Chat.Id, index);
       await bot.SendTextMessageAsync(Program.chatid, "Бой остановлен.");
-      await bot.DeleteMessageAsync(e.Message.Chat.Id, Program.index1);
+      await bot.DeleteMessageAsync(e.Message.Chat.Id, BattleManager.index1);
       return;
     }
 

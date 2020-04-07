@@ -10,6 +10,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 using Newtonsoft.Json;
 using System.Web.Script.Serialization;
 using System.Threading;
+using Bot_Fiona;
 
 namespace botfiona
 {
@@ -18,10 +19,6 @@ namespace botfiona
     static public TelegramBotClient Bot;
     static public MessageEventArgs ames;
     static public Telegram.Bot.Types.ChatId chatid;
-    static DateTime time1 = new DateTime(2020, 1, 1, 13, 13, 13);
-    static public Dictionary<string, string> triggers = new Dictionary<string, string>();
-    static List<DataItem> tempdataitems = new List<DataItem>(triggers.Count);
-    static string[] commands = new string[] { "список", "Список", "/list", "Удалить", "Триггер", "Фиона", "фиона", "Девочка", "девочка", "/status", "/weather" };
     static List<string> gamersId = new List<string>();
     static string[] quastions = new string[] { "кто", "у кого", "кого" };
     static string[] trues = new string[] { "Да!", "Конечно!", "Без сомнений!", "Лоол, а как же иначе!" };
@@ -30,52 +27,22 @@ namespace botfiona
     static public Dictionary<string, int> mes = new Dictionary<string, int>();
     static Battle battle;
     static RankManager rankManager;
-    static InlineKeyboardMarkup keyboard;
-    static public DateTime w8 = new DateTime();
-    static public bool online = false;
-    static public int index1 = 0;
 
     static void Main(string[] args)
     {
       Bot = new TelegramBotClient("905671296:AAExzN80dNrlGv3KE_R6_6ta-rsi7Fpi7Y0");
       var me = Bot.GetMeAsync().Result;
-      LoadTrigers();
+      Triggers triggers = new Triggers();
+      triggers.LoadTrigers();
       LoadUname();
       LoadMes();
       LoadStory();
       Bot.OnMessage += Get_Mes;
-      Bot.OnCallbackQuery += Bot_OnCallbackQuery;
       Bot.StartReceiving();
       rankManager = new RankManager();
-      /*      personManager = new PersonManager();
-      */
-      foreach (string key in triggers.Keys)
-      {
-        tempdataitems.Add(new DataItem(key, triggers[key].ToString()));
-      }
       Console.ReadKey();
     }
 
-    private static async void Bot_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
-    {
-      var keyboard = e.CallbackQuery.Message.ReplyMarkup;
-      var content = e.CallbackQuery.Data;
-      var message = e.CallbackQuery;
-      index1 = e.CallbackQuery.Message.MessageId;
-      if (e.CallbackQuery.From.FirstName == keyboard.InlineKeyboard.ElementAt(0).ElementAt(0).Text)
-      {
-        await Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id, "Ты и так участвуешь, чучело...");
-        return;
-      }
-      if (e.CallbackQuery.Data.Equals("Второй боец") && battle != null)
-      {
-        battle.SetSecondPlayer(e.CallbackQuery.From.Username);
-        //secondp = e.CallbackQuery.From.Username;
-        keyboard.InlineKeyboard.ElementAt(0).ElementAt(1).Text = e.CallbackQuery.From.FirstName;
-        await Bot.EditMessageTextAsync(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message.MessageId, "Великая битва!", replyMarkup: keyboard);
-        battle.PreStart();
-      }
-    }
 
     public static async void Get_Mes(object sender, MessageEventArgs e)
     {
@@ -84,7 +51,7 @@ namespace botfiona
       if (message.Type == MessageType.Text) ames = e;
       if (message.Type == MessageType.Text && message.Text.Substring(0, 1) == "/")
       {
-        CommandManager commandManager = new CommandManager();
+        CommandManager commandManager = new CommandManager(e);
         commandManager.CheckCommand(message.Text);
 
       }
@@ -121,11 +88,12 @@ namespace botfiona
       {
         Console.WriteLine("No username");
       }
-      
 
+      Triggers trig = new Triggers(message, Bot);
+      trig.FindTrigger();
      
 
-      if (message.Type == MessageType.Text)
+    /*  if (message.Type == MessageType.Text)
       {
         message.Text = message.Text.ToLower();
         if (message.Text.Length > 15)
@@ -154,130 +122,8 @@ namespace botfiona
           await Bot.SendTextMessageAsync(message.Chat.Id, storys);
           storys += "";
         }
-        if (message.Text.Contains("триггер"))
-        {
-          if (message.ReplyToMessage != null)
-          {
-            if (message.ReplyToMessage.Type == MessageType.Text)
-            {
-              if (triggers.ContainsKey(message.Text.Split('*')[1].ToLower()))
-              {
-                await Bot.SendTextMessageAsync(message.Chat, "Такой триггер уже существует :3");
-                await Bot.SendTextMessageAsync(message.Chat, triggers[message.Text.Split('*')[1]]);
-              }
-              else
-              {
-                if (message.ReplyToMessage.Type == MessageType.Sticker)
-                {
-                  var index = message.ReplyToMessage.Sticker.FileId;
-                  string key = message.Text.Split('*')[1];
-                  triggers.Add(key, index);
-                  SaveTriggers();
-                  await Bot.SendTextMessageAsync(message.Chat, "Триггер создан!");
-                  await Bot.SendStickerAsync(message.Chat, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
-                }
-                else if (message.ReplyToMessage.Text.Trim().Length > 0)
-                {
-                  string key = (message.Text.Split('*')[1]);
-                  key = key.Trim();
-                  if (commands.Contains(message.ReplyToMessage.Text))
-                  {
-                    await Bot.SendTextMessageAsync(message.Chat, "Команды нельзя использовать для триггера");
-                  }
-                  else if (commands.Contains(key))
-                  {
-                    await Bot.SendTextMessageAsync(message.Chat, "Команды нельзя использовать для триггера");
-                  }
-                  else
-                  {
-                    triggers.Add(key, message.ReplyToMessage.Text);
-                    SaveTriggers();
-                    await Bot.SendTextMessageAsync(message.Chat, "Триггер создан!");
-                    await Bot.SendStickerAsync(message.Chat, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
-                  }
-                }
-              }
-            }
-            else
-
-            {
-              if (triggers.ContainsKey(message.Text.Split('*')[1].ToLower()))
-              {
-                await Bot.SendTextMessageAsync(message.Chat, "Такой триггер уже существует :3");
-                await Bot.SendTextMessageAsync(message.Chat, triggers[message.Text.Split('*')[1]]);
-              }
-              else
-              {
-                if (message.ReplyToMessage.Type == MessageType.Sticker)
-                {
-                  var index = message.ReplyToMessage.Sticker.FileId;
-                  string key = message.Text.Split('*')[1];
-                  triggers.Add(key, index);
-                  SaveTriggers();
-                  await Bot.SendTextMessageAsync(message.Chat, "Триггер создан!");
-                  await Bot.SendStickerAsync(message.Chat, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
-                }
-
-
-                else if (message.ReplyToMessage.Type == MessageType.Voice || message.ReplyToMessage.Type == MessageType.VideoNote)
-                {
-                  string key = message.Text.Split('*')[1];
-                  triggers.Add(key, "vov" + message.ReplyToMessage.MessageId.ToString());
-                  SaveTriggers();
-                  await Bot.SendTextMessageAsync(message.Chat, "Триггер создан!");
-
-                }
-                else if (message.ReplyToMessage.Type == MessageType.Photo)
-                {
-                  await Bot.SendTextMessageAsync(message.Chat.Id, "Not yet");
-                }
-                else if (message.ReplyToMessage.Text.Trim().Length > 0)
-                {
-                  if (commands.Contains(message.ReplyToMessage.Text))
-                  {
-                    await Bot.SendTextMessageAsync(message.Chat, "Команды нельзя использовать для триггера");
-
-                  }
-                  else
-                  {
-                    string key = message.Text.Split('*')[1];
-                    if (commands.Contains(key))
-                    {
-                      await Bot.SendTextMessageAsync(message.Chat, "Команды нельзя использовать для триггера");
-                    }
-                    else
-                    {
-                      triggers.Add(key, message.ReplyToMessage.Text);
-                      SaveTriggers();
-                      await Bot.SendTextMessageAsync(message.Chat, "Триггер создан!");
-                      await Bot.SendStickerAsync(message.Chat, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
-                    }
-                  }
-                }
-              }
-            }
-          }
-          else
-          {
-            await Bot.SendTextMessageAsync(message.Chat, "Какой-то шрэк забыл прикрепить сообщение");
-            await Bot.SendStickerAsync(message.Chat, "CAADAgADBwAD9OfCJS6YbVaPHbHaFgQ");
-          }
-        }
-        if (message.Text.Contains("удалить"))
-        {
-          if (triggers.ContainsKey(message.Text.Split('*')[1]))
-          {
-            string key = message.Text.Split('*')[1];
-            triggers.Remove(key);
-            SaveTriggers();
-            await Bot.SendTextMessageAsync(message.Chat, "Триггер удален!");
-            await Bot.SendAnimationAsync(message.Chat, "CAADAgADBwADCsj5KxMVV9JlWEjqFgQ");
-          }
-          else
-          {
-            await Bot.SendTextMessageAsync(message.Chat, "Что-то пошло не так");
-          }
-        }
+        
+      
 
         if (message.Text.Length <= 5 && message.Text.Length >= 2 && message.Text.Substring(message.Text.Length - 2).Contains("да") || message.Text == "да") 
         {
@@ -285,53 +131,13 @@ namespace botfiona
           await Bot.SendTextMessageAsync(message.Chat, "Пизда", replyToMessageId: message.MessageId);
         }
 
-      }   
-      if (message.Type == MessageType.Text && triggers.ContainsKey(message.Text))
-      {
-        string er = "ошибка";
-        triggers.TryGetValue(message.Text, out er);
-        if (er.Length > 3)
-        {
-          if (er.Substring(0, 3) == "vov")
-          {
-            er = er.Replace("vov", "");
-            await Bot.ForwardMessageAsync(message.Chat, message.Chat, Convert.ToInt32(er));
-          }
-          else if (er.Contains("CAA"))
-          {
-            await Bot.SendStickerAsync(message.Chat, triggers[message.Text]);
-          }
+      }*/
+     
 
-          else
-          {
-            await Bot.SendTextMessageAsync(message.Chat, er, replyToMessageId: message.MessageId);
-          }
-        }
-      }
+      
 
 
-
-
-      if (message.From.Username != null && message.Text == "/battle" && online == false && message.Chat.Title.Contains("arena"))
-      {
-        Console.WriteLine(1);
-        chatid = message.Chat.Id;
-        w8 = DateTime.Now;
-        online = true;
-        battle = new Battle(Bot, e);
-        battle.SetFirstPlayer(message.From.Username);
-        InlineKeyboardMarkup markup = new InlineKeyboardMarkup(new[]
-        {
-            new[]
-            {
-              InlineKeyboardButton.WithCallbackData(message.From.FirstName),
-              InlineKeyboardButton.WithCallbackData("Второй боец")
-            }
-
-          });
-
-        await Bot.SendTextMessageAsync(message.Chat.Id, "Великая битва!", replyMarkup: markup);
-      }
+      
 
       if (message.Text == "фиона")
       {
@@ -437,45 +243,7 @@ namespace botfiona
 
 
 
-    static void SaveTriggers()
-    {
-      List<DataItem> tempdataitems = new List<DataItem>(triggers.Count);
-      foreach (string key in triggers.Keys)
-      {
-        tempdataitems.Add(new DataItem(key, triggers[key].ToString()));
-      }
-
-      using (FileStream fs = new FileStream("triggers.xml", FileMode.OpenOrCreate))
-      {
-        XmlSerializer serializer = new XmlSerializer(typeof(List<DataItem>));
-        // StringWriter sw = new StringWriter();
-        // XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
-        // ns.Add("","");
-        fs.SetLength(0);
-        serializer.Serialize(fs, tempdataitems);
-      }
-    }
-
-    static void LoadTrigers()
-    {
-      Dictionary<string, string> triggers = new Dictionary<string, string>();
-      XmlSerializer xs = new XmlSerializer(typeof(List<DataItem>));
-
-      using (FileStream fs = new FileStream("triggers.xml", FileMode.OpenOrCreate))
-      {
-        if (fs.Length > 0)
-        {
-          List<DataItem> templist = (List<DataItem>)xs.Deserialize(fs);
-          foreach (DataItem di in templist)
-          {
-            triggers.Add(di.Key, di.Value);
-          }
-        }
-
-      }
-
-      Program.triggers = triggers;
-    }
+   
 
     static void SaveUname()
     {
@@ -489,7 +257,6 @@ namespace botfiona
 
     static void LoadUname()
     {
-      // XML -> JSON
       XmlSerializer xs = new XmlSerializer(typeof(List<string>));
       using (FileStream fs = new FileStream("Unames.xml", FileMode.OpenOrCreate))
       {
