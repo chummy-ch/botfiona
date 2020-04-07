@@ -84,7 +84,7 @@ namespace botfiona
       {
         Console.WriteLine("No username");
       }
-      message.Text = message.Text.ToLower();
+      if(message.Type == MessageType.Text) message.Text = message.Text.ToLower();
       Triggers trig = new Triggers(message, Bot);
       trig.FindTrigger();
 
