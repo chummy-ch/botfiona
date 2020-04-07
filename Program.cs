@@ -19,8 +19,6 @@ namespace botfiona
     static public TelegramBotClient Bot;
     static public MessageEventArgs ames;
     static public Telegram.Bot.Types.ChatId chatid;
-    static List<string> gamersId = new List<string>();
-    static string[] quastions = new string[] { "кто", "у кого", "кого" };
     static string[] trues = new string[] { "Да!", "Конечно!", "Без сомнений!", "Лоол, а как же иначе!" };
     static string[] falses = new string[] { "Нет", "Конечно нет!", "Такого не можут быть!", "Фейк!" };
     static List<string> story = new List<string>();
@@ -33,7 +31,6 @@ namespace botfiona
       var me = Bot.GetMeAsync().Result;
       Triggers triggers = new Triggers();
       triggers.LoadTrigers();
-      LoadUname();
       LoadMes();
       LoadStory();
       Bot.OnMessage += Get_Mes;
@@ -87,7 +84,7 @@ namespace botfiona
       {
         Console.WriteLine("No username");
       }
-
+      message.Text = message.Text.ToLower();
       Triggers trig = new Triggers(message, Bot);
       trig.FindTrigger();
 
@@ -127,73 +124,7 @@ namespace botfiona
       }
 */
 
-      if (message.Text == "/players")
-      {
-        string spis = "Игроки:";
-        int i = 1;
-        foreach (string s in gamersId)
-        {
-          spis += "\n" + i + ". @" + s;
-          i += 1;
-        }
-        await Bot.SendTextMessageAsync(message.Chat.Id, spis);
-      }
-
-      if (message.Type == MessageType.Text && message.Text.Contains("/game"))
-      {
-        if (gamersId.Contains(message.From.Username))
-        {
-          await Bot.SendTextMessageAsync(message.Chat.Id, "Тю, ты что, странный? Ты же уже играшеь!", replyToMessageId: message.MessageId);
-        }
-        else
-        {
-          gamersId.Add(message.From.Username);
-          SaveUname();
-          await Bot.SendTextMessageAsync(message.Chat.Id, "Фига ты крут! Ты в игре!," + message.From.FirstName, replyToMessageId: message.MessageId);
-        }
-      }
-
-      if (message.Type == MessageType.Text && message.Text.Length > 5)
-      {
-        if (message.Type == MessageType.Text && message.Text.Substring(0, 5).Contains(quastions[0]) || message.Text.Substring(0, 5).Contains(quastions[1]) || message.Text.Substring(0, 5).Contains(quastions[2]))
-        {
-          if (message.Text.Contains("?") && message != null)
-          {
-            Random rnd = new Random();
-            int rn = rnd.Next(0, gamersId.Count());
-            if (message.Text.Contains(quastions[0]))
-            {
-
-              if (message.Text.Length > 5)
-              {
-                string mat = message.Text.Substring(4, message.Text.Length - 5);
-                await Bot.SendTextMessageAsync(message.Chat.Id, mat + " @" + gamersId[rn], replyToMessageId: message.MessageId);
-              }
-
-            }
-            else if (message.Text.Contains(quastions[1]))
-            {
-              if (message.Text.Length > 8)
-              {
-                string mat = message.Text.Substring(7, message.Text.Length - 8);
-                await Bot.SendTextMessageAsync(message.Chat.Id, mat + " у" + " @" + gamersId[rn], replyToMessageId: message.MessageId);
-              }
-            }
-            else if (message.Text.Contains(quastions[2]))
-            {
-              if (message.Text.Length > 6)
-              {
-                string mat = message.Text.Substring(5, message.Text.Length - 6);
-                await Bot.SendTextMessageAsync(message.Chat.Id, mat + " @" + gamersId[rn], replyToMessageId: message.MessageId);
-              }
-            }
-          }
-        }
-
-      }
-
      
-
       if (message.Type == MessageType.Text && message.Text.Contains("фиона,") && message.Text.Contains("?") && message.Text.Length > 7)
       {
         string quash = message.Text.Substring(7, message.Text.Length - 8);
@@ -217,28 +148,7 @@ namespace botfiona
 
    
 
-    static void SaveUname()
-    {
-      using (FileStream fs = new FileStream("Unames.xml", FileMode.OpenOrCreate))
-      {
-        XmlSerializer serializer = new XmlSerializer(typeof(List<string>));
-        fs.SetLength(0);
-        serializer.Serialize(fs, gamersId);
-      }
-    }
-
-    static void LoadUname()
-    {
-      XmlSerializer xs = new XmlSerializer(typeof(List<string>));
-      using (FileStream fs = new FileStream("Unames.xml", FileMode.OpenOrCreate))
-      {
-        List<string> templist = (List<string>)xs.Deserialize(fs);
-        foreach (string di in templist)
-        {
-          gamersId.Add(di);
-        }
-      }
-    }
+   
 
     static void SaveMes()
     {
