@@ -55,7 +55,7 @@ namespace Bot_Fiona
 
     public async void DeleteTrigger()
     {
-      if (triggers.ContainsKey(message.Text.Split('*')[1]))
+      if (message.Text.Contains('*') && triggers.ContainsKey(message.Text.Split('*')[1]))
       {
         string key = message.Text.Split('*')[1];
         triggers.Remove(key);
