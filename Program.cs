@@ -20,8 +20,7 @@ namespace botfiona
     static public MessageEventArgs ames;
     static public Telegram.Bot.Types.ChatId chatid;
     static List<string> story = new List<string>();
-    static public Dictionary<string, int> mes = new Dictionary<string, int>();
-    static RankManager rankManager;
+    
 
     static void Main(string[] args)
     {
@@ -29,11 +28,9 @@ namespace botfiona
       var me = Bot.GetMeAsync().Result;
       Triggers triggers = new Triggers();
       triggers.LoadTrigers();
-      LoadMes();
       LoadStory();
       Bot.OnMessage += Get_Mes;
       Bot.StartReceiving();
-      rankManager = new RankManager();
       Console.ReadKey();
     }
 
@@ -43,49 +40,18 @@ namespace botfiona
      
       var message = e.Message;
       if (message.Type == MessageType.Text) ames = e;
+      //commands
       if (message.Type == MessageType.Text && message.Text.Substring(0, 1) == "/")
       {
         CommandManager commandManager = new CommandManager(e);
         commandManager.CheckCommand(message.Text);
 
       }
-      if (message.Text == "rerre")          // доделать список типа Person
-      {
-        Battle.LoadWins();
-        Battle battle = new Battle();
-        string name = message.From.Username;
-        Person p = new Person();
-        p.MakePerson(name, mes[name], Battle.pwins[name]);
-      }
-
-      try
-      {
-        string un = message.From.Username.Trim();
-        if (un.Length > 0 && mes.ContainsKey(un))
-        {
-          mes[message.From.Username] += 1;
-          if (rankManager.CountExists(mes[message.From.Username]))
-          {
-            await Bot.SendTextMessageAsync(message.Chat.Id, string.Format("Поздравляю!🎉 \nВы достигли ранга: {0}",
-              rankManager.GetRank(mes[message.From.Username])), replyToMessageId: message.MessageId);
-          }
-
-        }
-        else
-        {
-          if (un.Length > 0)
-            mes.Add(message.From.Username, 1);
-        }
-        SaveMes();
-      }
-      catch
-      {
-        Console.WriteLine("No username");
-      }
+      //triggers
       if(message.Type == MessageType.Text) message.Text = message.Text.ToLower();
       Triggers trig = new Triggers(message, Bot);
       trig.FindTrigger();
-
+      //other features
       TextManager textManager = new TextManager(message, Bot);
       textManager.Selecter();
 
@@ -135,21 +101,7 @@ namespace botfiona
 
    
 
-    static void SaveMes()
-    {
-      using (StreamWriter writer = File.CreateText("mes.txt"))
-      {
-        var settings = new JsonSerializerSettings { Formatting = Formatting.Indented };
-        JsonSerializer.Create(settings).Serialize(writer, mes);
-      }
-    }
-
-    static void LoadMes()
-    {
-      if (!File.Exists("mes.txt")) return;
-      string json = File.ReadAllText("mes.txt");
-      mes = new JavaScriptSerializer().Deserialize<Dictionary<string, int>>(json);
-    }
+   
 
     static void SaveStory()
     {

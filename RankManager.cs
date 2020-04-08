@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bot_Fiona;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ using Telegram.Bot.Args;
 
 namespace botfiona
 {
-  class RankManager
+  public class RankManager
   {
     private Dictionary<int, string> numRanks;
     private Dictionary<string, string> ranksPics;
@@ -72,7 +73,7 @@ namespace botfiona
 
     public void TopRank()
     {
-      var items = from pair in Program.mes
+      var items = from pair in TextManager.mesCount
                   orderby pair.Value descending
                   select pair;
       string top = "Топ 10:\n";
@@ -89,9 +90,10 @@ namespace botfiona
 
     public async void Status()
     {
+      TextManager textm = new TextManager();
       var message = m.Message;
-      string msg = GetFormattedString(Program.mes[message.From.Username], message.From.Username) + $"\nКоличество побед:  {Battle.GetWins(message.From.Username)}";
-      await Bot.SendPhotoAsync(message.Chat.Id, GetPic(Program.mes[message.From.Username]), msg, replyToMessageId: message.MessageId);
+      string msg = GetFormattedString(TextManager.mesCount[message.From.Username], message.From.Username) + $"\nКоличество побед:  {Battle.GetWins(message.From.Username)}";
+      await Bot.SendPhotoAsync(message.Chat.Id, GetPic(TextManager.mesCount[message.From.Username]), msg, replyToMessageId: message.MessageId);
     }
   }
 

@@ -86,5 +86,7 @@
   "хаха": "vov40028",
   "право": "http://philosophy.nure.ua/osnovi-prava",
   "физика": "http://physic.nure.ua/studentu\nВнизу методички на пз и лабы по физике",
-  "тест": "vadom.cc.ua/test1 vadom.cc.ua/test2"
+  "тест": "vadom.cc.ua/test1 vadom.cc.ua/test2",
+  "друг": "vov52259",
+  "спасибо": "CAACAgIAAx0CQZK7hQACzERejYbkhZzYA5LgrF0XQ2Z9dn5czQACSgADtSkaGbrHdv_9ajmjGAQ"
 }

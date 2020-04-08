@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Telegram.Bot;
-using Telegram.Bot.Types.Enums;
-using Telegram.Bot.Types.ReplyMarkups;
-using Telegram.Bot.Args;
+using botfiona;
+using System.IO;
+using Newtonsoft.Json;
+using System.Web.Script.Serialization;
 
 namespace Bot_Fiona
 {
@@ -14,17 +12,46 @@ namespace Bot_Fiona
   {
     private List<string> messages = new List<string> { "триггер", "удалить" };
     private Telegram.Bot.Types.Message message;
+    public static Dictionary<string, int> mesCount = new Dictionary<string, int>();
     private TelegramBotClient Bot;
 
     public TextManager(Telegram.Bot.Types.Message message, TelegramBotClient Bot)
     {
       this.message = message;
       this.Bot = Bot;
+      LoadMes();
     }
+
+    public TextManager() { }
 
     public async void Selecter()
     {
-      string mes = message.Text; 
+      string mes = message.Text;
+      RankManager rankManager = new RankManager();
+      try
+      {
+        string un = message.From.Username.Trim();
+        if (un.Length > 0 && mesCount.ContainsKey(un))
+        {
+          mesCount[message.From.Username] += 1;
+          if (rankManager.CountExists(mesCount[message.From.Username]))
+          {
+            await Bot.SendTextMessageAsync(message.Chat.Id, string.Format("Поздравляю!🎉 \nВы достигли ранга: {0}",
+              rankManager.GetRank(mesCount[message.From.Username])), replyToMessageId: message.MessageId);
+          }
+
+        }
+        else
+        {
+          if (un.Length > 0)
+            mesCount.Add(message.From.Username, 1);
+        }
+        SaveMes();
+      }
+      catch
+      {
+        Console.WriteLine("No username");
+      }
       switch (mes)
       {
         case string text when text.Contains("триггер"):
@@ -60,6 +87,21 @@ namespace Bot_Fiona
           
       }
 
+    }
+    static void SaveMes()
+    {
+      using (StreamWriter writer = File.CreateText("mes.txt"))
+      {
+        var settings = new JsonSerializerSettings { Formatting = Formatting.Indented };
+        JsonSerializer.Create(settings).Serialize(writer, mesCount);
+      }
+    }
+
+    static void LoadMes()
+    {
+      if (!File.Exists("mes.txt")) return;
+      string json = File.ReadAllText("mes.txt");
+      mesCount = new JavaScriptSerializer().Deserialize<Dictionary<string, int>>(json);
     }
 
 
