@@ -9,12 +9,15 @@ using Formatting = Newtonsoft.Json.Formatting;
 using Telegram.Bot.Args;
 using botfiona;
 using System.Linq;
+using Telegram.Bot.Types.Enums;
 
 namespace Bot_Fiona
 {
   public class MiniGames
   {
     private List<string> gamersId = new List<string>();
+    static string[] trues = new string[] { "Да!", "Конечно!", "Без сомнений!", "Лоол, а как же иначе!" };
+    static string[] falses = new string[] { "Нет", "Конечно нет!", "Такого не можут быть!", "Фейк!" };
     private string[] quastions = new string[] { "у кого-то", "кто-то", "кто", "у кого",  "кого" };
     private TelegramBotClient Bot;
     private Telegram.Bot.Types.Message message;
@@ -66,7 +69,7 @@ namespace Bot_Fiona
       {
         if (message.Text.Substring(0, index).Contains(quastions[i]))
         {
-          index = quastions[i].Length;
+          index = quastions[i].Length + message.Text.IndexOf(quastions[i]);
           if (quastions[i].Contains("у")) y = true;
           break;
         }
@@ -106,6 +109,24 @@ namespace Bot_Fiona
          }
        }*/
 
+    }
+
+    public async void TrueOrFalse()
+    {
+      if (message.Type == MessageType.Text && message.Text.Contains("фиона,") && message.Text.Contains("?") && message.Text.Length > 7)
+      {
+        string quash = message.Text.Substring(7, message.Text.Length - 8);
+        quash = quash.Replace(" ", "");
+        Random rnd = new Random();
+        int rn = rnd.Next(0, 3);
+        if (quash.Length > 0)
+        {
+          if (quash.Length % 2 == 0) await Bot.SendTextMessageAsync(message.Chat.Id, trues[rn], replyToMessageId: message.MessageId);
+          else await Bot.SendTextMessageAsync(message.Chat.Id, falses[rn], replyToMessageId: message.MessageId);
+        }
+        else await Bot.SendStickerAsync(message.Chat.Id, "CAADAgADBwAD9OfCJS6YbVaPHbHaFgQ", replyToMessageId: message.MessageId);
+
+      }
     }
 
     public void SaveUname()

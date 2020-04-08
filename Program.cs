@@ -19,8 +19,6 @@ namespace botfiona
     static public TelegramBotClient Bot;
     static public MessageEventArgs ames;
     static public Telegram.Bot.Types.ChatId chatid;
-    static string[] trues = new string[] { "Да!", "Конечно!", "Без сомнений!", "Лоол, а как же иначе!" };
-    static string[] falses = new string[] { "Нет", "Конечно нет!", "Такого не можут быть!", "Фейк!" };
     static List<string> story = new List<string>();
     static public Dictionary<string, int> mes = new Dictionary<string, int>();
     static RankManager rankManager;
@@ -125,20 +123,7 @@ namespace botfiona
 */
 
      
-      if (message.Type == MessageType.Text && message.Text.Contains("фиона,") && message.Text.Contains("?") && message.Text.Length > 7)
-      {
-        string quash = message.Text.Substring(7, message.Text.Length - 8);
-        quash = quash.Replace(" ", "");
-        Random rnd = new Random();
-        int rn = rnd.Next(0, 3);
-        if (quash.Length > 0)
-        {
-          if (quash.Length % 2 == 0) await Bot.SendTextMessageAsync(message.Chat.Id, trues[rn], replyToMessageId: message.MessageId);
-          else await Bot.SendTextMessageAsync(message.Chat.Id, falses[rn], replyToMessageId: message.MessageId);
-        }
-        else await Bot.SendStickerAsync(message.Chat.Id, "CAADAgADBwAD9OfCJS6YbVaPHbHaFgQ", replyToMessageId: message.MessageId);
-
-      }
+      
 
     }
 

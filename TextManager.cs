@@ -24,7 +24,7 @@ namespace Bot_Fiona
 
     public async void Selecter()
     {
-      string mes = message.Text;
+      string mes = message.Text; 
       switch (mes)
       {
         case string text when text.Contains("триггер"):
@@ -46,7 +46,7 @@ namespace Bot_Fiona
             await Bot.SendStickerAsync(message.Chat, "CAADAgADLAADqWElFNm7GHyxzP9LFgQ");
             await Bot.SendStickerAsync(message.Chat, "CAADAgAD0gEAArMeUCPGE2QnmWBiEhYE");
           break;
-        case string text when text.Substring(message.Text.Length - 2).Contains("да"):
+        case string text when text.Length > 2 && text.Substring(message.Text.Length - 2).Contains("да"):
           if (message.Text.Length <= 5 && message.Text.Length >= 2 )
           {
             if (message == null) return;
@@ -57,6 +57,7 @@ namespace Bot_Fiona
           MiniGames min = new MiniGames(message);
           min.Quastion();
           break;
+          
       }
 
     }
