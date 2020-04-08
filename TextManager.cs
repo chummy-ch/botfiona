@@ -22,7 +22,10 @@ namespace Bot_Fiona
       LoadMes();
     }
 
-    public TextManager() { }
+    public TextManager() 
+    {
+      LoadMes();
+    }
 
     public async void Selecter()
     {

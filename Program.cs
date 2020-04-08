@@ -25,7 +25,6 @@ namespace botfiona
 
     public static async void Get_Mes(object sender, MessageEventArgs e)
     {
-     
       var message = e.Message;
       if (message.Type == MessageType.Text) ames = e;
       //commands

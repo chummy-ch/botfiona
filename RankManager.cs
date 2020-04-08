@@ -87,6 +87,7 @@ namespace botfiona
 
     public async void Status()
     {
+
       TextManager textm = new TextManager();
       var message = m.Message;
       string msg = GetFormattedString(TextManager.mesCount[message.From.Username], message.From.Username) + $"\nКоличество побед:  {Battle.GetWins(message.From.Username)}";
