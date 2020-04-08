@@ -1,16 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.IO;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
-using Telegram.Bot.Types.ReplyMarkups;
-using Telegram.Bot.Args;
 using Newtonsoft.Json;
-using botfiona;
 using System.Web.Script.Serialization;
 
 namespace Bot_Fiona
@@ -23,13 +17,14 @@ namespace Bot_Fiona
     private string[] commands = new string[] { "список", "Список", "/list", "Удалить", "Триггер", "Фиона", "фиона", "Девочка", "девочка", "/status", "/weather" };
     public Triggers()
     {
-
+      LoadTrigers();
     }
 
     public Triggers(Telegram.Bot.Types.Message message, TelegramBotClient Bot)
     {
       this.message = message;
       this.Bot = Bot;
+      LoadTrigers();
     }
 
     public async void FindTrigger()
