@@ -14,7 +14,6 @@ namespace botfiona
 {
   public class Battle
   {
-    Program program = new Program();
     private TelegramBotClient bot;
     private MessageEventArgs e;
     public static Dictionary<string, int> pwins = new Dictionary<string, int>();
