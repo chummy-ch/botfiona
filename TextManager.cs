@@ -57,7 +57,8 @@ namespace Bot_Fiona
       }
       switch (mes)
       {
-        case string text when text.Contains("триггер"):
+        case string text when text.Contains("триггер") && text.Contains("*"):
+          
           Triggers trig = new Triggers(message, Bot);
           trig.AddTrigger();
           break;
