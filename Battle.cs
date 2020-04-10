@@ -158,6 +158,7 @@ namespace botfiona
 
     private int BattleRes(string attack, string deffend, string UNameDeffender)
     {
+      if (hp.Count == 0) return 0;
       if (deffend != attack)
       {
         hp[UNameDeffender] -= atdef[attack];
@@ -184,6 +185,7 @@ namespace botfiona
     {
       string mes = "";
       string UNameAttacker;
+      if(hp.Count == 0) return "конец боя";
       if (hp.ElementAt(0).Key != UNameDeffender) UNameAttacker = hp.ElementAt(0).Key;
       else UNameAttacker = hp.ElementAt(1).Key;
       Random rnd = new Random();
@@ -215,26 +217,26 @@ namespace botfiona
       else return 0;
     }
 
-    public async void FinishBattle()
+    public  void FinishBattle()
     {
       BattleManager.online = false;
       Thread.Sleep(1000);
       if (hp[p1] <= 0 && hp[p2] <= 0)
       {
-        await bot.SendTextMessageAsync(e.Message.Chat.Id, "Ничья!");
+         bot.SendTextMessageAsync(e.Message.Chat.Id, "Ничья!");
       }
       else
       {
         string winner;
         if (hp[p1] <= 0) winner = p2;
         else winner = p1;
-        await bot.SendTextMessageAsync(e.Message.Chat.Id, $"@{winner} победил в этом бою!");
-        await bot.SendStickerAsync(e.Message.Chat.Id, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
+         bot.SendTextMessageAsync(e.Message.Chat.Id, $"@{winner} победил в этом бою!");
+         bot.SendStickerAsync(e.Message.Chat.Id, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
         if (pwins.ContainsKey(winner)) pwins[winner] += 1;
         else pwins.Add(winner, 1);
         SaveWins();
-        hp = new Dictionary<string, int>();
       }
+      hp.Clear();
     }
 
     public async void StopBattle()
