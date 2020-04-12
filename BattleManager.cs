@@ -11,9 +11,10 @@ namespace Bot_Fiona
   {
     private MessageEventArgs e;
     static public bool online = false;
-    public  TelegramBotClient Bot;
-    static Battle battle; 
+    public TelegramBotClient Bot;
+    static Battle battle;
     public static int index1 = 0;
+    private int freshBoard = 0;
 
 
     public BattleManager(MessageEventArgs e)
@@ -44,16 +45,15 @@ namespace Bot_Fiona
 
           });
 
-        await Bot.SendTextMessageAsync(message.Chat.Id, "Великая битва!", replyMarkup: markup);
-      }
-      
+        freshBoard = Bot.SendTextMessageAsync(message.Chat.Id, "Великая битва!", replyMarkup: markup).Result.MessageId;
+          }
+
     }
 
-    private  async void Bot_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
+    private async void Bot_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
     {
+      if (e.CallbackQuery.Message.MessageId != freshBoard) return;
       var keyboard = e.CallbackQuery.Message.ReplyMarkup;
-      var content = e.CallbackQuery.Data;
-      var message = e.CallbackQuery;
       index1 = e.CallbackQuery.Message.MessageId;
       if (e.CallbackQuery.From.FirstName == keyboard.InlineKeyboard.ElementAt(0).ElementAt(0).Text)
       {

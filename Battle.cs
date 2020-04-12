@@ -25,6 +25,7 @@ namespace botfiona
     readonly string def = " 🛡";
     private int x;
     private int index = 0;
+    private int oldbattle = 0;
     private int round = 1;
     private Dictionary<string, int> atdef = new Dictionary<string, int>()
     
@@ -44,13 +45,14 @@ namespace botfiona
     public void SetFirstPlayer(string p)
     {
       p1 = p;
-      hp.Add(p1, 10);
+      hp.Add(p1, 2);
     }
 
     public void SetSecondPlayer(string p)
     {
       p2 = p;
-      hp.Add(p2, 10);
+      if (hp.Count < 2) 
+      hp.Add(p2, 2);
     }
 
     public void PreStart()
