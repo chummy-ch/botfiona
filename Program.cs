@@ -15,8 +15,7 @@ namespace botfiona
 
     static void Main(string[] args)
     {
-      /*Bot = new TelegramBotClient("905671296:AAExzN80dNrlGv3KE_R6_6ta-rsi7Fpi7Y0");*/
-      Bot = new TelegramBotClient(Apikey.key);
+      Bot = new TelegramBotClient(APIData.key);
       var me = Bot.GetMeAsync().Result;
       Bot.OnMessage += Get_Mes;
       Bot.StartReceiving();

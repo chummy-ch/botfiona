@@ -64,7 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccessManager.cs" />
-    <Compile Include="apikey.cs" />
+    <Compile Include="APIData.cs" />
     <Compile Include="Battle.cs" />
     <Compile Include="BattleManager.cs" />
     <Compile Include="CommandManager.cs" />
