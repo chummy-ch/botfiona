@@ -17,7 +17,7 @@ namespace botfiona
     {
       numRanks = new Dictionary<int, string>()
             {
-                {0, "Чел" }, { 150, "Глеб" }, { 800, "Конч" }, { 2000, "Мамонтов" },
+                {0, "Дантес" }, { 150, "Глеб" }, { 800, "Конч" }, { 2000, "Мамонтов" },
                 { 5000, "Харьковчанин" }, { 10000, "Хнурэшник" },
                 { 25000, "Языковая шаболда" }, { 88888, "Болотный барт" },
                 { 100000, "Салтовчанен" }
@@ -25,7 +25,7 @@ namespace botfiona
 
       ranksPics = new Dictionary<string, string>()
             {
-              {"Чел", "http://pushkin.ellink.ru/2018/pushkin/images/fullscreen/pushkin.jpg"}, { "Глеб", "https://i1.rgstatic.net/ii/profile.image/797915803029504-1567249360132_Q512/Glib_Tereshchenko.jpg" } ,
+              {"Дантес", "http://pushkin.ellink.ru/2018/pushkin/images/fullscreen/pushkin.jpg"}, { "Глеб", "https://i1.rgstatic.net/ii/profile.image/797915803029504-1567249360132_Q512/Glib_Tereshchenko.jpg" } ,
               {"Конч", "https://i1.rgstatic.net/ii/profile.image/797915803029504-1567249360132_Q512/Glib_Tereshchenko.jpg" }, {"Мамонтов", "https://nure.ua/wp-content/uploads/Employees_photo/mamontov.jpg"},
               {"Харьковчанин", "http://bardak.kharkov.ua/wp-content/uploads/2017/09/08-09-01-1.jpg"}, {"Хнурэшник", "https://telegra.ph/file/5e7b018be301866334cbd.jpg"},
               {"Языковая шаболда", "https://nure.ua/wp-content/uploads/Employees_photo/LitvinAG.jpg" }

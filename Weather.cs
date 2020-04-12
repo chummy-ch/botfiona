@@ -88,9 +88,9 @@ namespace botfiona
           await Bot.SendStickerAsync(message.Chat, "CAADAgAD8AEAAs7Y6Av_YmkSfuc8BhYE");
           await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
         }
-        else if (cond.Contains("Пасмурно") || cond.Contains("Облачно"))
+        else if (cond.Contains("Пасмурно") || cond.Contains("Облачно") || cond.Contains("Малооблачно"))
         {
-          await Bot.SendStickerAsync(message.Chat, "CAADAgADDwIAAtzyqwflTv80MV32fhYE");
+          await Bot.SendStickerAsync(message.Chat, "CAADAgADDwIAAtzyqwflTv80MV32fhYE"); 
           await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
         }
         else await Bot.SendTextMessageAsync(message.Chat, $"{cond}");
