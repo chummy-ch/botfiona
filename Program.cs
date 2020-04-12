@@ -15,19 +15,20 @@ namespace botfiona
 
     static void Main(string[] args)
     {
-      Bot = new TelegramBotClient("905671296:AAExzN80dNrlGv3KE_R6_6ta-rsi7Fpi7Y0");
+      /*Bot = new TelegramBotClient("905671296:AAExzN80dNrlGv3KE_R6_6ta-rsi7Fpi7Y0");*/
+      Bot = new TelegramBotClient(Apikey.key);
       var me = Bot.GetMeAsync().Result;
       Bot.OnMessage += Get_Mes;
       Bot.StartReceiving();
       Console.ReadKey(); 
     }
 
-
+    
     public static async void Get_Mes(object sender, MessageEventArgs e)
     {
       var message = e.Message;
-      if (message.Type == MessageType.Sticker) Console.WriteLine(message.Sticker.FileId);
       if (message.Type == MessageType.Text) ames = e;
+
       //commands
       if (message.Type == MessageType.Text && message.Text.Substring(0, 1) == "/")
       {
@@ -35,10 +36,12 @@ namespace botfiona
         commandManager.CheckCommand(message.Text);
 
       }
+
       //triggers
       if(message.Type == MessageType.Text) message.Text = message.Text.ToLower();
       Triggers trig = new Triggers(message, Bot);
       trig.FindTrigger();
+
       //other features
       TextManager textManager = new TextManager(message, Bot);
       textManager.Selecter();
