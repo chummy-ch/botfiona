@@ -25,6 +25,7 @@ namespace botfiona
     readonly string def = " 🛡";
     private int x;
     private int index = 0;
+    private int finishBAttleCheck = 0;
     private int freshCallBack = 0;
     private int round = 1;
     private Dictionary<string, int> atdef = new Dictionary<string, int>()
@@ -222,11 +223,14 @@ namespace botfiona
 
     public  void FinishBattle()
     {
+      finishBAttleCheck++;
+      if (finishBAttleCheck != 2) return;
       BattleManager.online = false;
-      Thread.Sleep(1000);
+      Thread.Sleep(300);
       if (hp[p1] <= 0 && hp[p2] <= 0)
       {
-         bot.SendTextMessageAsync(e.Message.Chat.Id, "Ничья!");
+        bot.SendTextMessageAsync(e.Message.Chat.Id, "Ничья!");
+        bot.SendStickerAsync(e.Message.Chat.Id, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
       }
       else
       {
