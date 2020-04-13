@@ -69,6 +69,7 @@
     <Compile Include="BattleManager.cs" />
     <Compile Include="CommandManager.cs" />
     <Compile Include="DataItem.cs" />
+    <Compile Include="Inventory.cs" />
     <Compile Include="ListGen.cs" />
     <Compile Include="MiniGames.cs" />
     <Compile Include="Person.cs" />
