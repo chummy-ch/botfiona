@@ -25,7 +25,7 @@ namespace botfiona
     readonly string def = " 🛡";
     private int x;
     private int index = 0;
-    private int oldbattle = 0;
+    private int freshCallBack = 0;
     private int round = 1;
     private Dictionary<string, int> atdef = new Dictionary<string, int>()
     
@@ -91,12 +91,13 @@ namespace botfiona
       Thread.Sleep(1000);
       bot.SendTextMessageAsync(message.Chat.Id, $"Раунд № {round} ✨ ");
       Thread.Sleep(800);
-      bot.SendTextMessageAsync(message.Chat.Id, "Атака", replyMarkup: choice);
+      freshCallBack = bot.SendTextMessageAsync(message.Chat.Id, "Атака", replyMarkup: choice).Result.MessageId;
       round++;
     }
 
     private void bot_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
     {
+      if (e.CallbackQuery.Message.MessageId != freshCallBack) return;
       var choice = e.CallbackQuery.Message.ReplyMarkup;
       string c = e.CallbackQuery.Data;
       index = e.CallbackQuery.Message.MessageId;
