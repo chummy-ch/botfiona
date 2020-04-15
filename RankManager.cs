@@ -70,6 +70,11 @@ namespace botfiona
 
     public void TopRank()
     {
+      if(TextManager.mesCount.Count == 0)
+      {
+        TextManager man = new TextManager();
+        man.LoadMes();
+      }
       var items = from pair in TextManager.mesCount
                   orderby pair.Value descending
                   select pair;

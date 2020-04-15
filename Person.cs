@@ -24,7 +24,7 @@ namespace botfiona
       this.Mes = mes;
       this.Wins = wins;
       this.Weapon = weapon;
-
+ 
     }
 
     public Person()

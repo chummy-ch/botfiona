@@ -33,24 +33,28 @@ namespace Bot_Fiona
       RankManager rankManager = new RankManager();
       try
       {
-        string un = message.From.Username.Trim();
-        if (un.Length > 0 && mesCount.ContainsKey(un))
+        if (message.Chat.Title == "Болото №4")
         {
-          mesCount[message.From.Username] += 1;
-          if (rankManager.CountExists(mesCount[message.From.Username]))
+          string un = message.From.Username.Trim();
+          if (un.Length > 0 && mesCount.ContainsKey(un))
           {
-            await Bot.SendTextMessageAsync(message.Chat.Id, string.Format("Поздравляю!🎉 \nВы достигли ранга: {0}",
-              rankManager.GetRank(mesCount[message.From.Username])), replyToMessageId: message.MessageId);
-          }
+            mesCount[message.From.Username] += 1;
+            if (rankManager.CountExists(mesCount[message.From.Username]))
+            {
+              await Bot.SendTextMessageAsync(message.Chat.Id, string.Format("Поздравляю!🎉 \nВы достигли ранга: {0}",
+                rankManager.GetRank(mesCount[message.From.Username])), replyToMessageId: message.MessageId);
+            }
 
+          }
+          else
+          {
+            if (un.Length > 0)
+              mesCount.Add(message.From.Username, 1);
+          }
+          SaveMes();
         }
-        else
-        {
-          if (un.Length > 0)
-            mesCount.Add(message.From.Username, 1);
-        }
-        SaveMes();
       }
+        
       catch
       {
         Console.WriteLine("No username");
@@ -97,7 +101,7 @@ namespace Bot_Fiona
       }
 
     }
-    static void SaveMes()
+    public void SaveMes()
     {
       using (StreamWriter writer = File.CreateText("mes.txt"))
       {
@@ -106,7 +110,7 @@ namespace Bot_Fiona
       }
     }
 
-    static void LoadMes()
+    public void LoadMes()
     {
       if (!File.Exists("mes.txt")) return;
       string json = File.ReadAllText("mes.txt");
