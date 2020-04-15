@@ -33,7 +33,8 @@ namespace Bot_Fiona
       RankManager rankManager = new RankManager();
       try
       {
-        if (message.Chat.Title == "Болото №4")
+        long boloto = long.Parse("-1001100135301");
+        if (message.Chat.Id == boloto) 
         {
           string un = message.From.Username.Trim();
           if (un.Length > 0 && mesCount.ContainsKey(un))
