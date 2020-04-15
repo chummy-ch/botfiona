@@ -24,3 +24,4 @@ C:\Users\user\OneDrive\Документы\GitHub\botfiona\bin\Debug\Bot_Fiona.ex
 C:\Users\user\OneDrive\Документы\GitHub\botfiona\bin\Debug\Bot_Fiona.pdb
 C:\Users\user\OneDrive\Документы\GitHub\botfiona\obj\Debug\Bot_Fiona.exe
 C:\Users\user\OneDrive\Документы\GitHub\botfiona\obj\Debug\Bot_Fiona.pdb
+C:\Users\user\OneDrive\Документы\GitHub\botfiona\obj\Debug\botfiona.csproj.CoreCompileInputs.cache

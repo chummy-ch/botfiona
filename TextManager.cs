@@ -84,10 +84,15 @@ namespace Bot_Fiona
             await Bot.SendTextMessageAsync(message.Chat, "Пизда", replyToMessageId: message.MessageId);
           }
           break;
+        case string text when text.Substring(0, 6) == "фиона," && text.Contains("?"):
+          MiniGames trueorfalse = new MiniGames(message);
+          trueorfalse.TrueOrFalse();
+          break;
         case string text when text.Length > 5 && text.Contains("?"):
           MiniGames min = new MiniGames(message);
           min.Quastion();
           break;
+        
           
       }
 
