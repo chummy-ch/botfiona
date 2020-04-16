@@ -12,6 +12,7 @@ namespace botfiona
 
     public ListGen()
     {
+      Triggers trig = new Triggers();
     }
 
     public async void GetList()
@@ -27,22 +28,23 @@ namespace botfiona
           list += $"{Triggers.triggers.Keys.ToList()[i]} - <стикер>";
           list += "\n";
         }
-        else if (Triggers.triggers.Values.ToList()[i].Length > 40)
-        {
-          list += "\n";
-          list += $"{Triggers.triggers.Keys.ToList()[i]} - <Длинное значение>";
-          list += "\n";
-        }
-        else if (Triggers.triggers.Values.ToList()[i].Contains("www.") || Triggers.triggers.Values.ToList()[i].Contains("@gmail.") || Triggers.triggers.Values.ToList()[i].Contains("@nure.") || Triggers.triggers.Values.ToList()[i].Contains("tss."))
+        else if (Triggers.triggers.Values.ToList()[i].Contains(".ua") || Triggers.triggers.Values.ToList()[i].Contains("www.") || Triggers.triggers.Values.ToList()[i].Contains("@gmail.") || Triggers.triggers.Values.ToList()[i].Contains("@nure.") || Triggers.triggers.Values.ToList()[i].Contains("tss."))
         {
           list += "\n";
           list += $"{Triggers.triggers.Keys.ToList()[i]} - <url>";
           list += "\n";
         }
-        else if (Triggers.triggers.Values.ToList()[i].Length > 3 && Triggers.triggers.Values.ToList()[i].Substring(0, 3).Contains("vov"))
+        else if (Triggers.triggers.Values.ToList()[i].Length > 3 && Triggers.triggers.Values.ToList()[i].Substring(0, 3).Contains("vov") || Triggers.triggers.Values.ToList()[i].Contains("AwA")
+          && Triggers.triggers.Values.ToList()[i].Contains("DQA"))
         {
           list += "\n";
           list += $"{Triggers.triggers.Keys.ToList()[i]} - <media>";
+          list += "\n";
+        }
+        else if (Triggers.triggers.Values.ToList()[i].Length > 40)
+        {
+          list += "\n";
+          list += $"{Triggers.triggers.Keys.ToList()[i]} - <Длинное значение>";
           list += "\n";
         }
         else

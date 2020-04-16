@@ -78,7 +78,6 @@
   "смешно": "vov34567",
   "usb": "Никита Стас и Дюша метелкин",
   "голова ⚔️": "Великая битва!",
-  "хаха": "vov40028",
   "право": "http://philosophy.nure.ua/osnovi-prava",
   "физика": "http://physic.nure.ua/studentu\nВнизу методички на пз и лабы по физике",
   "тест": "vadom.cc.ua/test1 vadom.cc.ua/test2",
@@ -91,8 +90,7 @@
   "сергей": "Бл",
   "сер": "Гей",
   "бл": ".......",
-  "я": "DQACAgIAAxkBAAI_Al6YXqbQYM2PuCIN1mSzFU8IcIJTAAI0BwACXj7ASNrirJKT5jmVGAQ",
-  "-": "DQACAgIAAxkBAAI_AV6YYCavzJfX31pR5VNKNPkOgZNtAAIwBwACXj7ASPZcZA3hDVgXGAQ",
   "хах": "DQACAgIAAx0EQZK7hQAC5BVemGQTFfkFvd2CEoAQbGzLKE8HbgACqgQAAt6gUEukLwpveimmLhgE",
-  "тихо": "AwACAgIAAx0EQZK7hQAC5B9emGQyjtLhZi173GHnssAfLpMlJgAC2QMAAnMraUoszEwPPi6RyBgE"
+  "тихо": "AwACAgIAAx0EQZK7hQAC5B9emGQyjtLhZi173GHnssAfLpMlJgAC2QMAAnMraUoszEwPPi6RyBgE",
+  "хаха": "AwACAgIAAx0EQZK7hQAC5ClemGgxjJtqODJPp_dhy4V-dxs-IwACsAUAAnPiMEqQ6uVm771RshgE"
 }
