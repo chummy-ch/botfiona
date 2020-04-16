@@ -16,7 +16,6 @@
   "сессия": "Exam is coming",
   "конечно": "CAADBAADJwEAAmuuXgkUdheOE0evARYE",
   "...": "CAADAgADUAADJDhNDBSBO2EDqFqmFgQ",
-  "хах": "vov20490",
   "ты": "CAADAgADCAADCsj5K97-SxWuxCDXFgQ",
   "бля у": "CAADAgADKQADqWElFB6Y3fp51eZoFgQ",
   "🎩": "CAADAgADOwADSeU1GLzadNSGRgABlxYE",
@@ -63,7 +62,6 @@
   "небесная восьмёрка": "@ghost1331, @grynenko, @Doge8, @VladyslavMartynov, @awdrallyracer, @Madvillain00 , @Mmaksymm, @oleghaleev",
   "куколд": "сосёт @Madvillain00",
   "так блэт": "Опять места делят",
-  "тихо": "vov28035",
   "ааvov": "1395",
   "фиона, завали ебало": "Извини меня, пожалуйста 😢",
   "извинись": "Извини",
@@ -92,5 +90,9 @@
   "владик": "Дряблый кролик @VladyslavMartynov 🐇",
   "сергей": "Бл",
   "сер": "Гей",
-  "бл": "......."
+  "бл": ".......",
+  "я": "DQACAgIAAxkBAAI_Al6YXqbQYM2PuCIN1mSzFU8IcIJTAAI0BwACXj7ASNrirJKT5jmVGAQ",
+  "-": "DQACAgIAAxkBAAI_AV6YYCavzJfX31pR5VNKNPkOgZNtAAIwBwACXj7ASPZcZA3hDVgXGAQ",
+  "хах": "DQACAgIAAx0EQZK7hQAC5BVemGQTFfkFvd2CEoAQbGzLKE8HbgACqgQAAt6gUEukLwpveimmLhgE",
+  "тихо": "AwACAgIAAx0EQZK7hQAC5B9emGQyjtLhZi173GHnssAfLpMlJgAC2QMAAnMraUoszEwPPi6RyBgE"
 }

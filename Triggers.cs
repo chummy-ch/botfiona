@@ -6,6 +6,7 @@ using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
 using Newtonsoft.Json;
 using System.Web.Script.Serialization;
+using Telegram.Bot.Types.InputFiles;
 
 namespace Bot_Fiona
 {
@@ -31,10 +32,18 @@ namespace Bot_Fiona
     {
       if (message.Type == MessageType.Text && triggers.ContainsKey(message.Text))
       {
-        /* string er = "ошибка";
-         triggers.TryGetValue(message.Text, out er);*/
         string er = triggers[message.Text];
-        if (er.Contains("vov") && er.Substring(0, 3) == "vov")
+        if (er.Contains("DQA") && er.Substring(0, 3) == "DQA")
+        {
+          InputOnlineFile inputOnlineFile = new InputOnlineFile(er);
+          await Bot.SendVideoNoteAsync(message.Chat.Id, inputOnlineFile, replyToMessageId: message.MessageId);
+        }
+        else if(er.Contains("AwA") && er.Substring(0,3) == "AwA")
+        {
+          InputOnlineFile inputOnlineFile = new InputOnlineFile(er);
+          await Bot.SendVoiceAsync(message.Chat.Id, inputOnlineFile, replyToMessageId: message.MessageId);
+        }
+        else if (er.Contains("vov") && er.Substring(0, 3) == "vov")
         {
           er = er.Replace("vov", "");
           // Скачивать медиа и отправлять их
@@ -141,17 +150,31 @@ namespace Bot_Fiona
             }
 
 
-            else if (message.ReplyToMessage.Type == MessageType.Voice || message.ReplyToMessage.Type == MessageType.VideoNote)
+            else if (message.ReplyToMessage.Type == MessageType.VideoNote)
             {
               string key = message.Text.Split('*')[1];
-              triggers.Add(key, "vov" + message.ReplyToMessage.MessageId.ToString());
+              string fileName = message.ReplyToMessage.VideoNote.FileId;
+              triggers.Add(key, fileName);
               SaveTriggers();
               await Bot.SendTextMessageAsync(message.Chat, "Триггер создан!");
-
+              await Bot.SendStickerAsync(message.Chat, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
+            }
+            else if(message.ReplyToMessage.Type == MessageType.Voice)
+            {
+              string key = message.Text.Split('*')[1];
+              string fileName = message.ReplyToMessage.Voice.FileId;
+              triggers.Add(key, fileName);
+              SaveTriggers();
+              await Bot.SendTextMessageAsync(message.Chat, "Триггер создан!");
+              await Bot.SendStickerAsync(message.Chat, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
             }
             else if (message.ReplyToMessage.Type == MessageType.Photo)
             {
-              await Bot.SendTextMessageAsync(message.Chat.Id, "Not yet");
+              /*string key = message.Text.Split('*')[1];
+              string fileName = message.ReplyToMessage.Photo.Length.ToString();
+              triggers.Add(key, fileName);
+              SaveTriggers();
+              await Bot.SendTextMessageAsync(message.Chat, "Триггер создан!");*/
             }
             else if (message.ReplyToMessage.Text.Trim().Length > 0)
             {
