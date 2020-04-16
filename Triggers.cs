@@ -31,24 +31,30 @@ namespace Bot_Fiona
     {
       if (message.Type == MessageType.Text && triggers.ContainsKey(message.Text))
       {
-        string er = "ошибка";
-        triggers.TryGetValue(message.Text, out er);
-        if (er.Length > 3)
+        /* string er = "ошибка";
+         triggers.TryGetValue(message.Text, out er);*/
+        string er = triggers[message.Text];
+        if (er.Contains("vov") && er.Substring(0, 3) == "vov")
         {
-          if (er.Substring(0, 3) == "vov")
+          er = er.Replace("vov", "");
+          // Скачивать медиа и отправлять их
+          try
           {
-            er = er.Replace("vov", "");
             await Bot.ForwardMessageAsync(message.Chat, message.Chat, Convert.ToInt32(er));
           }
-          else if (er.Contains("CAA"))
+          catch
           {
-            await Bot.SendStickerAsync(message.Chat, triggers[message.Text]);
+            await Bot.SendTextMessageAsync(message.Chat, "Пока что не могу(", replyToMessageId: message.MessageId);
           }
 
-          else
-          {
-            await Bot.SendTextMessageAsync(message.Chat, er, replyToMessageId: message.MessageId);
-          }
+        }
+        else if (er.Contains("CAA"))
+        {
+          await Bot.SendStickerAsync(message.Chat, triggers[message.Text]);
+        }
+        else
+        {
+          await Bot.SendTextMessageAsync(message.Chat, er, replyToMessageId: message.MessageId);
         }
       }
     }

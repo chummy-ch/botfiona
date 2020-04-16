@@ -46,14 +46,14 @@ namespace botfiona
     public void SetFirstPlayer(string p)
     {
       p1 = p;
-      hp.Add(p1, 2);
+      hp.Add(p1, 10);
     }
 
     public void SetSecondPlayer(string p)
     {
       p2 = p;
       if (hp.Count < 2) 
-      hp.Add(p2, 2);
+      hp.Add(p2, 10);
     }
 
     public void PreStart()
