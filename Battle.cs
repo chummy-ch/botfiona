@@ -24,10 +24,13 @@ namespace botfiona
     readonly string at = "⚔️";
     readonly string def = " 🛡";
     private int x;
-    private int index = 0;
+    private int mesId;
+    private long chatid;
     private int finishBAttleCheck = 0;
-    private int freshCallBack = 0;
+    private int freshBoard;
     private int round = 1;
+    private TimerCallback tm;
+    private Timer timer;
     private Dictionary<string, int> atdef = new Dictionary<string, int>()
     
     {
@@ -43,6 +46,7 @@ namespace botfiona
     {
 
     }
+
     public void SetFirstPlayer(string p)
     {
       p1 = p;
@@ -92,16 +96,17 @@ namespace botfiona
       Thread.Sleep(1000);
       bot.SendTextMessageAsync(message.Chat.Id, $"Раунд № {round} ✨ ");
       Thread.Sleep(800);
-      freshCallBack = bot.SendTextMessageAsync(message.Chat.Id, "Атака", replyMarkup: choice).Result.MessageId;
+      var result = bot.SendTextMessageAsync(message.Chat.Id, "Атака", replyMarkup: choice).Result;
+      freshBoard = result.MessageId;
+      chatid = result.Chat.Id;
       round++;
     }
 
     private void bot_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
     {
-      if (e.CallbackQuery.Message.MessageId != freshCallBack) return;
+      if (e.CallbackQuery.Message.MessageId != freshBoard) return;
       var choice = e.CallbackQuery.Message.ReplyMarkup;
       string c = e.CallbackQuery.Data;
-      index = e.CallbackQuery.Message.MessageId;
       Thread.Sleep(700);
       if (x == 0)
       {
@@ -135,7 +140,7 @@ namespace botfiona
         if (def1.Length > 0 && def2.Length > 0)
         {
           Thread.Sleep(600);
-          bot.DeleteMessageAsync(e.CallbackQuery.Message.Chat.Id, index);
+          bot.DeleteMessageAsync(e.CallbackQuery.Message.Chat.Id, freshBoard);
           int z = BattleRes(act1, def2, p2);
           z = BattleRes(act2, def1, p1) + 1;
           act1 = "";
@@ -177,8 +182,8 @@ namespace botfiona
       if (hp[UNameDeffender] <= 0)
       {
         Thread.Sleep(450);
-        bot.DeleteMessageAsync(e.Message.Chat.Id, index);
-        index = 0;
+        bot.DeleteMessageAsync(e.Message.Chat.Id, freshBoard);
+        freshBoard = 0;
         FinishBattle();
         return 0;
       }
@@ -233,7 +238,7 @@ namespace botfiona
         bot.SendStickerAsync(e.Message.Chat.Id, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
       }
       else
-      {
+      { 
         string winner;
         if (hp[p1] <= 0) winner = p2;
         else winner = p1;
@@ -246,14 +251,14 @@ namespace botfiona
       hp.Clear();
     }
 
-    public async void StopBattle()
+    public  void StopBattle()
     {
       BattleManager.online = false;
-      hp = new Dictionary<string, int>();
-      if (index != 0) await bot.DeleteMessageAsync(e.Message.Chat.Id, index);
-      await bot.SendTextMessageAsync(Program.chatid, "Бой остановлен.");
-      await bot.DeleteMessageAsync(e.Message.Chat.Id, BattleManager.index1);
-      return;
+      hp.Clear();
+      Console.WriteLine(hp.Count);
+      finishBAttleCheck++;
+      freshBoard = 0;
+      bot.DeleteMessageAsync(chatid, freshBoard);
     }
 
     static void SaveWins()

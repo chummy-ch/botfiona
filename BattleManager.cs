@@ -1,5 +1,6 @@
 ﻿using botfiona;
 using System;
+using System.Threading;
 using System.Linq;
 using Telegram.Bot;
 using Telegram.Bot.Args;
@@ -13,8 +14,10 @@ namespace Bot_Fiona
     static public bool online = false;
     public TelegramBotClient Bot;
     static Battle battle;
-    public static int index1 = 0;
-    private int freshBoard = 0;
+    private long chatId;
+    private int freshBoard;
+    private TimerCallback tm;
+    private Timer timer;
 
 
     public BattleManager(MessageEventArgs e)
@@ -26,8 +29,10 @@ namespace Bot_Fiona
     }
 
 
-    public async void PreBattle()
+    public void PreBattle()
     {
+      tm = new TimerCallback(ChechTime);
+      timer = new Timer(tm, 0, 10000, 0);
       var message = e.Message;
       if (message.From.Username != null && online == false/* && message.Chat.Title.Contains("arena")*/)
       {
@@ -44,17 +49,26 @@ namespace Bot_Fiona
             }
 
           });
+        var result = Bot.SendTextMessageAsync(message.Chat.Id, "Великая битва!", replyMarkup: markup).Result;
+        freshBoard = result.MessageId;
+        chatId = result.Chat.Id;
+      }
 
-        freshBoard = Bot.SendTextMessageAsync(message.Chat.Id, "Великая битва!", replyMarkup: markup).Result.MessageId;
-          }
+    }
 
+    private void ChechTime(object obj)
+    {
+      Bot.DeleteMessageAsync(chatId, freshBoard);
+      freshBoard = 0;
+      online = false;
+      timer.Dispose();
     }
 
     private async void Bot_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
     {
       if (e.CallbackQuery.Message.MessageId != freshBoard) return;
+      timer.Dispose();
       var keyboard = e.CallbackQuery.Message.ReplyMarkup;
-      index1 = e.CallbackQuery.Message.MessageId;
       if (e.CallbackQuery.From.FirstName == keyboard.InlineKeyboard.ElementAt(0).ElementAt(0).Text)
       {
         await Program.Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id, "Ты и так участвуешь, чучело...");

@@ -36,10 +36,13 @@ namespace botfiona
           RankManager rank = new RankManager();
           rank.Status();
           break;
+        case "/battle":
+          if (BattleManager.online == true) return;
+          BattleManager battlemanager = new BattleManager(e);
+          battlemanager.PreBattle();
+          break;
         case "/stopb":
-          Battle battle = new Battle();
-          BattleManager.online = false;
-          battle.StopBattle();
+          //make stopb working
           break;
         case "/list":
           ListGen listGen = new ListGen();
@@ -57,10 +60,6 @@ namespace botfiona
           RankManager rankm = new RankManager();
           rankm.TopRank();
           break;
-        case "/battle":
-          BattleManager battlemanager = new BattleManager(e);
-          battlemanager.PreBattle();
-            break;
         case "/players":
           MiniGames min2 = new MiniGames(e.Message);
           min2.GetPlayers();

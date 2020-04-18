@@ -18,6 +18,7 @@ namespace botfiona
     private long id1;
     private int id2;
     private bool status = false;
+    
     private Dictionary<string, string> presents = new Dictionary<string, string>() { { "Рапира x1 ", "01" }, { "Короткий меч x1 ", "04070915" }, { "Сабля x1 ", "051217" }, { "3 💰", "02030608101113141618192021" } };
     InlineKeyboardMarkup roulette = new InlineKeyboardMarkup(new[] { new[] { InlineKeyboardButton.WithCallbackData("PP") } });
     public Dictionary<string, string> totalwin = new Dictionary<string, string>();
@@ -33,6 +34,7 @@ namespace botfiona
 
     private async void bot_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
     {
+      if (e.CallbackQuery.Message.Text != "Roulette") return;
       keyboard = e.CallbackQuery.Message.MessageId;
       if (e.CallbackQuery.Data == "Крутить" && status != true)
       {
