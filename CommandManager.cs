@@ -42,7 +42,7 @@ namespace botfiona
           battlemanager.PreBattle();
           break;
         case "/stopb":
-          //make stopb working
+          Battle.StopBattle();
           break;
         case "/list":
           ListGen listGen = new ListGen();

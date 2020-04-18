@@ -8,14 +8,14 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Bot_Fiona
 {
-  public class BattleManager
+  public class BattleManager : Battle
   {
     private MessageEventArgs e;
     static public bool online = false;
     public TelegramBotClient Bot;
     static Battle battle;
     private long chatId;
-    private int freshBoard;
+    protected static int freshBoard;
     private TimerCallback tm;
     private Timer timer;
 
@@ -59,31 +59,37 @@ namespace Bot_Fiona
     private void ChechTime(object obj)
     {
       Bot.DeleteMessageAsync(chatId, freshBoard);
-      freshBoard = 0;
       online = false;
+      hp.Clear();
       timer.Dispose();
+      Bot.SendTextMessageAsync(chatId, "Долгое ожидание второго бойца, бой остаовлен");
+      freshBoard = 0;
+      chatId = 0;
     }
 
-    private async void Bot_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
+    private void Bot_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
     {
       if (e.CallbackQuery.Message.MessageId != freshBoard) return;
       timer.Dispose();
       var keyboard = e.CallbackQuery.Message.ReplyMarkup;
       if (e.CallbackQuery.From.FirstName == keyboard.InlineKeyboard.ElementAt(0).ElementAt(0).Text)
       {
-        await Program.Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id, "Ты и так участвуешь, чучело...");
+        Program.Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id, "Ты и так участвуешь, чучело...");
         return;
       }
       if (e.CallbackQuery.Data.Equals("Второй боец") && battle != null)
       {
         battle.SetSecondPlayer(e.CallbackQuery.From.Username);
         //secondp = e.CallbackQuery.From.Username;
-        keyboard.InlineKeyboard.ElementAt(0).ElementAt(1).Text = e.CallbackQuery.From.FirstName;
-        await Program.Bot.EditMessageTextAsync(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message.MessageId, "Великая битва!", replyMarkup: keyboard);
+        if (keyboard.InlineKeyboard.ElementAt(0).ElementAt(1).Text != e.CallbackQuery.From.FirstName)
+        {
+          keyboard.InlineKeyboard.ElementAt(0).ElementAt(1).Text = e.CallbackQuery.From.FirstName;
+        }
+        //2 Prestart
+        Bot.EditMessageTextAsync(e.CallbackQuery.Message.Chat.Id, freshBoard, "Великая битва!", replyMarkup: keyboard);
         battle.PreStart();
       }
     }
-
-
   }
 }
+
