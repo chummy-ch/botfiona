@@ -158,7 +158,6 @@ namespace botfiona
       }
     }
 
-
     private InlineKeyboardMarkup KeyboatdToDeffend(InlineKeyboardMarkup choice)
     {
       for (int i = 0; i < 3; i++)
@@ -168,8 +167,7 @@ namespace botfiona
       x += 1;
       return choice;
     }
-
-
+    
     private void  BattleRes(string attack, string deffend, string UNameDeffender)
     {
       if (hp.Count == 0) return;
