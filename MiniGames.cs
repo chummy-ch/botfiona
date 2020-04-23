@@ -61,6 +61,8 @@ namespace Bot_Fiona
     public async void Quastion()
     {
       if (!message.Text.Contains("?") || message == null) return;
+      string word = "";
+      if (message.Text.IndexOf(' ') > 3) word = message.Text.Substring(0, message.Text.IndexOf(' '));
       int index = 5;
       bool y = false;
       if (message.Text.Length > 7) index = 9;
@@ -78,8 +80,13 @@ namespace Bot_Fiona
       Random rnd = new Random();
       int rn = rnd.Next(0, gamersId.Count());
       string mat = message.Text.Substring(index, message.Text.Length - index - 1);
-      if(y == false) await Bot.SendTextMessageAsync(message.Chat.Id, mat + " @" + gamersId[rn], replyToMessageId: message.MessageId);
-      else await Bot.SendTextMessageAsync(message.Chat.Id, "У" + " @" + gamersId[rn], replyToMessageId: message.MessageId);
+      if (y == true) await Bot.SendTextMessageAsync(message.Chat.Id, "У" + " @" + gamersId[rn], replyToMessageId: message.MessageId);
+      else
+      {
+        if (word.Length > 1) mat = word + mat;
+          await Bot.SendTextMessageAsync(message.Chat.Id, mat + " @" + gamersId[rn], replyToMessageId: message.MessageId);
+      }
+     
 
       /* if (message.Text.Contains(quastions[0]))
        {
