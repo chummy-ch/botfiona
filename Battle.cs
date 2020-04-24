@@ -51,14 +51,14 @@ namespace botfiona
     public void SetFirstPlayer(string p)
     {
       p1 = p;
-      hp.Add(p1, 2);
+      hp.Add(p1, 10);
     }
 
     public void SetSecondPlayer(string p)
     {
       p2 = p;
       if (hp.Count < 2) 
-      hp.Add(p2, 2);
+      hp.Add(p2, 10);
     }
 
     public void PreStart()
@@ -238,7 +238,6 @@ namespace botfiona
       finishBAttleCheck++;
       TimerCallback tm = new TimerCallback(TimerFinish);
       Timer timer = new Timer(tm, 0, 4000, 0);
-      Console.WriteLine(finishBAttleCheck);
       if (finishBAttleCheck < 2) return;
       timer.Dispose();
       Thread.Sleep(300);
