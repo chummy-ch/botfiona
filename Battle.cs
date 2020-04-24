@@ -109,7 +109,13 @@ namespace botfiona
 
     private void bot_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
     {
+
       if (e.CallbackQuery.Message.MessageId != freshBoard) return;
+      if (!hp.ContainsKey(e.CallbackQuery.From.Username))
+      {
+        bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id, "Ты не участвуешь");
+        return;
+      }
       var choice = e.CallbackQuery.Message.ReplyMarkup;
       string c = e.CallbackQuery.Data;
       Thread.Sleep(700);
@@ -241,7 +247,8 @@ namespace botfiona
       if (finishBAttleCheck < 2) return;
       timer.Dispose();
       Thread.Sleep(300);
-      if (hp[p1] <= 0 && hp[p2] <= 0)
+
+      if (hp.Count > 0 && hp[p1] <= 0 && hp[p2] <= 0)
       {
         bot.SendTextMessageAsync(e.Message.Chat.Id, "Ничья!");
         Thread.Sleep(300);

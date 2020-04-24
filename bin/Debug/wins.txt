@@ -1,7 +1,7 @@
 {
   "chummych": 29,
-  "Malleficenta": 1,
+  "Malleficenta": 2,
   "grynenko": 1,
-  "debavlad": 7,
+  "debavlad": 8,
   "gendalfiona": 6
 }
