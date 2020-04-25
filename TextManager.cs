@@ -95,7 +95,7 @@ namespace Bot_Fiona
           break;
         case string text when text.Length > 5 && text.Contains("?"):
           MiniGames min = new MiniGames(message);
-          min.Quastion();
+          min.Question();
           break;
         
           

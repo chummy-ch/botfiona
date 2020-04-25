@@ -12,7 +12,7 @@ using Telegram.Bot.Types.Enums;
 
 namespace Bot_Fiona
 {
-  public class MiniGames
+  public class MiniGames 
   {
     private List<string> gamersId = new List<string>();
     static string[] trues = new string[] { "Да!", "Конечно!", "Без сомнений!", "Лоол, а как же иначе!" };
@@ -58,11 +58,10 @@ namespace Bot_Fiona
       }
     }
 
-    public async void Quastion()
+    public async void Question()
     {
       if (!message.Text.Contains("?") || message == null) return;
       string word = "";
-      if (message.Text.IndexOf(' ') > 3) word = message.Text.Substring(0, message.Text.IndexOf(' '));
       int index = 5;
       bool y = false;
       if (message.Text.Length > 7) index = 9;
@@ -76,45 +75,16 @@ namespace Bot_Fiona
         }
         if (i == quastions.Length - 1) return;
       }
-
+      if (message.Text.IndexOf(' ') > 3 && message.Text.IndexOf(' ') < index) word = message.Text.Substring(0, message.Text.IndexOf(' '));
       Random rnd = new Random();
       int rn = rnd.Next(0, gamersId.Count());
-      string mat = message.Text.Substring(index, message.Text.Length - index - 1);
-      if (y == true) await Bot.SendTextMessageAsync(message.Chat.Id, "У" + " @" + gamersId[rn], replyToMessageId: message.MessageId);
+      string question = message.Text.Substring(index, message.Text.Length - index - 1);
+      if (y == true) await Bot.SendTextMessageAsync(message.Chat.Id, "У" + " @" + gamersId[rn] + question, replyToMessageId: message.MessageId);
       else
       {
-        if (word.Length > 1) mat = word + mat;
-          await Bot.SendTextMessageAsync(message.Chat.Id, mat + " @" + gamersId[rn], replyToMessageId: message.MessageId);
+        if (word.Length > 1) question = word + question;
+          await Bot.SendTextMessageAsync(message.Chat.Id, question + " @" + gamersId[rn], replyToMessageId: message.MessageId);
       }
-     
-
-      /* if (message.Text.Contains(quastions[0]))
-       {
-
-         if (message.Text.Length > 5)
-         {
-           string mat = message.Text.Substring(4, message.Text.Length - 5);
-           await Bot.SendTextMessageAsync(message.Chat.Id, mat + " @" + gamersId[rn], replyToMessageId: message.MessageId);
-         }
-
-       }
-       else if (message.Text.Contains(quastions[1]))
-       {
-         if (message.Text.Length > 8)
-         {
-           string mat = message.Text.Substring(7, message.Text.Length - 8);
-           await Bot.SendTextMessageAsync(message.Chat.Id, mat + " у" + " @" + gamersId[rn], replyToMessageId: message.MessageId);
-         }
-       }
-       else if (message.Text.Contains(quastions[2]))
-       {
-         if (message.Text.Length > 6)
-         {
-           string mat = message.Text.Substring(5, message.Text.Length - 6);
-           await Bot.SendTextMessageAsync(message.Chat.Id, mat + " @" + gamersId[rn], replyToMessageId: message.MessageId);
-         }
-       }*/
-
     }
 
     public async void TrueOrFalse()

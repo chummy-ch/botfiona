@@ -3,5 +3,6 @@
   "Malleficenta": 2,
   "grynenko": 1,
   "debavlad": 8,
-  "gendalfiona": 6
+  "gendalfiona": 6,
+  "VladyslavMartynov": 1
 }
