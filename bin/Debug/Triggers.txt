@@ -93,5 +93,7 @@
   "хах": "DQACAgIAAx0EQZK7hQAC5BVemGQTFfkFvd2CEoAQbGzLKE8HbgACqgQAAt6gUEukLwpveimmLhgE",
   "тихо": "AwACAgIAAx0EQZK7hQAC5B9emGQyjtLhZi173GHnssAfLpMlJgAC2QMAAnMraUoszEwPPi6RyBgE",
   "хаха": "AwACAgIAAx0EQZK7hQAC5ClemGgxjJtqODJPp_dhy4V-dxs-IwACsAUAAnPiMEqQ6uVm771RshgE",
-  "пдф": "https://imagetopdf.com"
+  "пдф": "https://imagetopdf.com",
+  "чай": "AgACAgIAAxkDAAJCNF6koEooNoCKM53xbO7slv-7x-zYAAKerTEbnQUhSdLn7rXXlpWSjk-AkS4AAwEAAwIAA3gAAyN_AgABGQQ",
+  "фак ю": "AgACAgIAAx0CQZK7hQAC9MpepKHV_YEx_cS-6dD5rpcV3dxz4AAC568xG3KJKEkpvlHwgqitHln_bZEuAAMBAAMCAAN5AANaggIAARkE"
 }

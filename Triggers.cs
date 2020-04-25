@@ -7,6 +7,7 @@ using Telegram.Bot.Types.Enums;
 using Newtonsoft.Json;
 using System.Web.Script.Serialization;
 using Telegram.Bot.Types.InputFiles;
+using Telegram.Bot.Requests;
 
 namespace Bot_Fiona
 {
@@ -57,9 +58,14 @@ namespace Bot_Fiona
           }
 
         }
-        else if (er.Contains("CAA"))
+        else if (er.Contains("CAA") && er.Substring(0,3) == "CAA")
         {
           await Bot.SendStickerAsync(message.Chat, triggers[message.Text]);
+        }
+        else if(er.Contains("AgA") && er.Substring(0,3) == "AgA")
+        {
+          InputOnlineFile inputOnlineFile = new InputOnlineFile(er);
+          await Bot.SendPhotoAsync(message.Chat.Id, inputOnlineFile, replyToMessageId: message.MessageId);
         }
         else
         {
@@ -170,11 +176,13 @@ namespace Bot_Fiona
             }
             else if (message.ReplyToMessage.Type == MessageType.Photo)
             {
-              /*string key = message.Text.Split('*')[1];
-              string fileName = message.ReplyToMessage.Photo.Length.ToString();
-              triggers.Add(key, fileName);
+              string key = message.Text.Split('*')[1];
+              var replyphoto = message.ReplyToMessage.Photo;
+              var fileid = message.ReplyToMessage.Photo[replyphoto.Length - 1].FileId;
+              triggers.Add(key, fileid);
               SaveTriggers();
-              await Bot.SendTextMessageAsync(message.Chat, "Триггер создан!");*/
+              await Bot.SendTextMessageAsync(message.Chat, "Триггер создан!");
+              await Bot.SendStickerAsync(message.Chat, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
             }
             else if (message.ReplyToMessage.Text.Trim().Length > 0)
             {
