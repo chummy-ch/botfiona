@@ -3,8 +3,6 @@ using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types.Enums;
 using Bot_Fiona;
-using System.IO;
-using Telegram.Bot.Types.InputFiles;
 
 namespace botfiona
 {
@@ -12,7 +10,6 @@ namespace botfiona
   {
     static public TelegramBotClient Bot;
     static public MessageEventArgs ames;
-    static public Telegram.Bot.Types.ChatId chatid;
 
     static void Main(string[] args)
     {
@@ -24,10 +21,13 @@ namespace botfiona
     }
 
 
-    public static async void Get_Mes(object sender, MessageEventArgs e)
+    public static void Get_Mes(object sender, MessageEventArgs e)
     {
       var message = e.Message;
       if (message.Type == MessageType.Text) ames = e;
+
+
+      if (DateTime.Now.Subtract(message.Date).Minutes > 5 && !message.Text.ToLower().Contains("триггер") && !message.Text.ToLower().Contains("удалить")) return;
 
       //commands
       if (message.Type == MessageType.Text && message.Text.Substring(0, 1) == "/")

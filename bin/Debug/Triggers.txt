@@ -75,13 +75,11 @@
   "крутой": "Давид Хачатрян крутой",
   "нужен секс": "vov32208",
   "и": "Ебанулась?)",
-  "смешно": "vov34567",
   "usb": "Никита Стас и Дюша метелкин",
   "голова ⚔️": "Великая битва!",
   "право": "http://philosophy.nure.ua/osnovi-prava",
   "физика": "http://physic.nure.ua/studentu\nВнизу методички на пз и лабы по физике",
   "тест": "vadom.cc.ua/test1 vadom.cc.ua/test2",
-  "друг": "vov52259",
   "спасибо": "CAACAgIAAx0CQZK7hQACzERejYbkhZzYA5LgrF0XQ2Z9dn5czQACSgADtSkaGbrHdv_9ajmjGAQ",
   "нет": "CAACAgIAAx0CQZK7hQAC2PhelWVoYBU9ex0g5pO6GsyRrdeFrwAChwADzcBIGGGHWWZYcw3FGAQ",
   "бля": "Опять Жила",
@@ -95,5 +93,8 @@
   "хаха": "AwACAgIAAx0EQZK7hQAC5ClemGgxjJtqODJPp_dhy4V-dxs-IwACsAUAAnPiMEqQ6uVm771RshgE",
   "пдф": "https://imagetopdf.com",
   "чай": "AgACAgIAAxkDAAJCNF6koEooNoCKM53xbO7slv-7x-zYAAKerTEbnQUhSdLn7rXXlpWSjk-AkS4AAwEAAwIAA3gAAyN_AgABGQQ",
-  "фак ю": "AgACAgIAAx0CQZK7hQAC9MpepKHV_YEx_cS-6dD5rpcV3dxz4AAC568xG3KJKEkpvlHwgqitHln_bZEuAAMBAAMCAAN5AANaggIAARkE"
+  "фак ю": "AgACAgIAAx0CQZK7hQAC9MpepKHV_YEx_cS-6dD5rpcV3dxz4AAC568xG3KJKEkpvlHwgqitHln_bZEuAAMBAAMCAAN5AANaggIAARkE",
+  "смешно": "AwACAgIAAx0EQZK7hQAC91xeppw41BZlrt21D4VrWJkxwCjyDgACawUAAl7q4Uip0KSvDTbOcRkE",
+  "друг": "DQACAgIAAx0EQZK7hQAC92ZeppxpW65H8O2fcNMbCulTKL7TgQACeAYAAg30aUhob-IVj_RkxxkE",
+  "облако": "CAACAgIAAxkDAAJCWV6nBPSCT-CjJex1CIpIk_puEXUuAAIPAgAC3PKrB-VO_zQxXfZ-GQQ"
 }
