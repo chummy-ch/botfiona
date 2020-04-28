@@ -34,42 +34,39 @@ namespace Bot_Fiona
       if (message.Type == MessageType.Text && triggers.ContainsKey(message.Text))
       {
         string er = triggers[message.Text];
-        if (er.Contains("DQA") && er.Substring(0, 3) == "DQA")
-        {
-          InputOnlineFile inputOnlineFile = new InputOnlineFile(er);
-          await Bot.SendVideoNoteAsync(message.Chat.Id, inputOnlineFile, replyToMessageId: message.MessageId);
-        }
-        else if(er.Contains("AwA") && er.Substring(0,3) == "AwA")
-        {
-          InputOnlineFile inputOnlineFile = new InputOnlineFile(er);
-          await Bot.SendVoiceAsync(message.Chat.Id, inputOnlineFile, replyToMessageId: message.MessageId);
-        }
-        else if (er.Contains("vov") && er.Substring(0, 3) == "vov")
-        {
-          er = er.Replace("vov", "");
-          // Скачивать медиа и отправлять их
-          try
-          {
-            await Bot.ForwardMessageAsync(message.Chat, message.Chat, Convert.ToInt32(er));
-          }
-          catch
-          {
-            await Bot.SendTextMessageAsync(message.Chat, "Пока что не могу(", replyToMessageId: message.MessageId);
-          }
 
-        }
-        else if (er.Contains("CAA") && er.Substring(0,3) == "CAA")
+        switch (er)
         {
-          await Bot.SendStickerAsync(message.Chat, triggers[message.Text]);
-        }
-        else if(er.Contains("AgA") && er.Substring(0,3) == "AgA")
-        {
-          InputOnlineFile inputOnlineFile = new InputOnlineFile(er);
-          await Bot.SendPhotoAsync(message.Chat.Id, inputOnlineFile, replyToMessageId: message.MessageId);
-        }
-        else
-        {
-          await Bot.SendTextMessageAsync(message.Chat, er, replyToMessageId: message.MessageId);
+          case string trig when trig.Contains("DQA") && trig.Substring(0, 3) == "DQA":
+            InputOnlineFile inputOnlineFile = new InputOnlineFile(er);
+            await Bot.SendVideoNoteAsync(message.Chat.Id, inputOnlineFile, replyToMessageId: message.MessageId);
+            break;
+          case string trig when trig.Contains("AwA") && trig.Substring(0, 3) == "AwA":
+            InputOnlineFile inputOnlineFile1 = new InputOnlineFile(er);
+            await Bot.SendVoiceAsync(message.Chat.Id, inputOnlineFile1, replyToMessageId: message.MessageId);
+            break;
+          case string trig when trig.Contains("CAA") && trig.Substring(0, 3) == "CAA":
+            await Bot.SendStickerAsync(message.Chat, triggers[message.Text]);
+            break;
+          case string trig when trig.Contains("AgA") && trig.Substring(0, 3) == "AgA":
+            InputOnlineFile inputOnlineFile2 = new InputOnlineFile(er);
+            await Bot.SendPhotoAsync(message.Chat.Id, inputOnlineFile2, replyToMessageId: message.MessageId);
+            break;
+          case string trig when trig.Contains("vov") && trig.Substring(0, 3) == "vov":
+            er = er.Replace("vov", "");
+            // Удалить этот элемент кода
+            try
+            {
+              await Bot.ForwardMessageAsync(message.Chat, message.Chat, Convert.ToInt32(er));
+            }
+            catch
+            {
+              await Bot.SendTextMessageAsync(message.Chat, "Пока что не могу(", replyToMessageId: message.MessageId);
+            }
+            break;
+          default:
+            await Bot.SendTextMessageAsync(message.Chat, er, replyToMessageId: message.MessageId);
+            break;
         }
       }
     }

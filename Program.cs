@@ -27,7 +27,7 @@ namespace botfiona
       if (message.Type == MessageType.Text) ames = e;
 
 
-      if (DateTime.Now.Subtract(message.Date).Minutes > 5 && !message.Text.ToLower().Contains("триггер") && !message.Text.ToLower().Contains("удалить")) return;
+      if (DateTime.Now.Subtract(message.Date).Minutes > 5 || message.Type == MessageType.Text && !message.Text.ToLower().Contains("триггер") && !message.Text.ToLower().Contains("удалить")) return;
 
       //commands
       if (message.Type == MessageType.Text && message.Text.Substring(0, 1) == "/")

@@ -1,4 +1,5 @@
 ﻿using Bot_Fiona;
+using System.Globalization;
 using System.Linq;
 using Telegram.Bot;
 using Telegram.Bot.Args;
@@ -21,37 +22,23 @@ namespace botfiona
       string list = "Команды:";
       for (int i = 0; i < Triggers.triggers.Count; i++)
       {
-
-        if (Triggers.triggers.Values.ToList()[i].Contains("CAA"))
+        switch (Triggers.triggers.Values.ToList()[i])
         {
-          list += "\n";
-          list += $"{Triggers.triggers.Keys.ToList()[i]} - <стикер>";
-          list += "\n";
-        }
-        else if (Triggers.triggers.Values.ToList()[i].Contains(".ua") || Triggers.triggers.Values.ToList()[i].Contains("www.") || Triggers.triggers.Values.ToList()[i].Contains("@gmail.") || Triggers.triggers.Values.ToList()[i].Contains("@nure.") || Triggers.triggers.Values.ToList()[i].Contains("tss."))
-        {
-          list += "\n";
-          list += $"{Triggers.triggers.Keys.ToList()[i]} - <url>";
-          list += "\n";
-        }
-        else if (Triggers.triggers.Values.ToList()[i].Length > 3 && Triggers.triggers.Values.ToList()[i].Substring(0, 3).Contains("vov") || Triggers.triggers.Values.ToList()[i].Contains("AwA")
-          && Triggers.triggers.Values.ToList()[i].Contains("DQA"))
-        {
-          list += "\n";
-          list += $"{Triggers.triggers.Keys.ToList()[i]} - <media>";
-          list += "\n";
-        }
-        else if (Triggers.triggers.Values.ToList()[i].Length > 40)
-        {
-          list += "\n";
-          list += $"{Triggers.triggers.Keys.ToList()[i]} - <Длинное значение>";
-          list += "\n";
-        }
-        else
-        {
-          list += "\n";
-          list += $"{Triggers.triggers.Keys.ToList()[i]} - {Triggers.triggers.Values.ToList()[i]}";
-          list += "\n";
+          case string trig when trig.Contains("CAA"):
+            list += $"\n{Triggers.triggers.Keys.ToList()[i]} - <стикер>\n";
+            break;
+          case string trig when trig.Contains(".ua") || trig.Contains("www.") || trig.Contains(".com") || trig.Contains("tss."):
+            list += $"\n{Triggers.triggers.Keys.ToList()[i]} - <url>\n";
+            break;
+          case string trig when trig.Contains("vov") || trig.Contains("AwA") || trig.Contains("DQA") || trig.Contains("AgA"):
+            list += $"\n{Triggers.triggers.Keys.ToList()[i]} - <media>\n";
+            break;
+          case string trig when trig.Length > 30:
+            list += $"\n{Triggers.triggers.Keys.ToList()[i]} - <Длинное сообщение>\n";
+            break;
+          default:
+            list += $"\n{Triggers.triggers.Keys.ToList()[i]} - {Triggers.triggers.Values.ToList()[i]}\n";
+            break;
         }
       }
       await Bot.SendTextMessageAsync(message.Chat, list);
