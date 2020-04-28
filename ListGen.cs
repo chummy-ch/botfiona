@@ -33,7 +33,7 @@ namespace botfiona
           case string trig when trig.Contains("vov") || trig.Contains("AwA") || trig.Contains("DQA") || trig.Contains("AgA"):
             list += $"\n{Triggers.triggers.Keys.ToList()[i]} - <media>\n";
             break;
-          case string trig when trig.Length > 30:
+          case string trig when trig.Length > 40:
             list += $"\n{Triggers.triggers.Keys.ToList()[i]} - <Длинное сообщение>\n";
             break;
           default:

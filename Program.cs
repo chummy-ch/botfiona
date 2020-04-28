@@ -14,7 +14,6 @@ namespace botfiona
     static void Main(string[] args)
     {
       Bot = new TelegramBotClient(APIData.key);
-      var me = Bot.GetMeAsync().Result;
       Bot.OnMessage += Get_Mes;
       Bot.StartReceiving();
       Console.ReadKey();
@@ -25,9 +24,7 @@ namespace botfiona
     {
       var message = e.Message;
       if (message.Type == MessageType.Text) ames = e;
-
-
-      if (DateTime.Now.Subtract(message.Date).Minutes > 5 || message.Type == MessageType.Text && !message.Text.ToLower().Contains("триггер") && !message.Text.ToLower().Contains("удалить")) return;
+      if (DateTime.Now.Minute - message.Date.Minute > 5 && !message.Text.ToLower().Contains("триггер") && !message.Text.ToLower().Contains("удалить")) return;
 
       //commands
       if (message.Type == MessageType.Text && message.Text.Substring(0, 1) == "/")
