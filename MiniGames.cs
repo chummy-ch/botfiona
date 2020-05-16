@@ -17,7 +17,7 @@ namespace Bot_Fiona
     private List<string> gamersId = new List<string>();
     static string[] trues = new string[] { "Да!", "Конечно!", "Без сомнений!", "Лоол, а как же иначе!" };
     static string[] falses = new string[] { "Нет", "Конечно нет!", "Такого не можут быть!", "Фейк!" };
-    private string[] quastions = new string[] { "у кого-то", "кто-то", "кто", "у кого",  "кого" };
+    private string[] questions = new string[] { "у кого-то", "кто-то", "кто", "у кого",  "кого" };
     private TelegramBotClient Bot;
     private Telegram.Bot.Types.Message message;
 
@@ -65,15 +65,15 @@ namespace Bot_Fiona
       int index = 5;
       bool y = false;
       if (message.Text.Length > 7) index = 9;
-      for (int i = 0; i < quastions.Length; i++)
+      for (int i = 0; i < questions.Length; i++)
       {
-        if (message.Text.Length > index && message.Text.Contains(quastions[i]))
+        if (message.Text.Length > index && message.Text.Contains(questions[i]))
         {
-          index = quastions[i].Length + message.Text.IndexOf(quastions[i]);
-          if (quastions[i].Contains("у")) y = true;
+          index = questions[i].Length + message.Text.IndexOf(questions[i]);
+          if (questions[i].Contains("у")) y = true;
           break;
         }
-        if (i == quastions.Length - 1) return;
+        if (i == questions.Length - 1) return;
       }
       if (message.Text.IndexOf(' ') > 3 && message.Text.IndexOf(' ') < index) word = message.Text.Substring(0, message.Text.IndexOf(' '));
       Random rnd = new Random();

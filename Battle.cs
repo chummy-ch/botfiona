@@ -24,7 +24,6 @@ namespace botfiona
     readonly string at = "⚔️";
     readonly string def = " 🛡";
     private int x;
-    private int mesId;
     private static long chatid;
     private static int finishBAttleCheck = 0;
     private static int freshBoard;

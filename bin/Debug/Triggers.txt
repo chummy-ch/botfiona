@@ -57,7 +57,6 @@
   "(": "Ещё и Настя не хочет признаваться в любви",
   ")": "АХАХХАХАХА СЕМЬЮ ПОЗВАЛ ВСЕ СМЕЮТСЯ СОСЕДИ УСЛЫШАЛИ ТОЖЕ РЖУТ ДАЖЕ НЕСКОЛЬКО ЧЕЛОВЕК УМЕРЛО АХАХАХАХХАХА МЕНТЫ ПРИЕХАЛИ, ПОЖАРНЫЕ, НА РАЙОНЕ КИПИШ ВСЕ ОТ СМЕХА ПОМИРАЮТ, НА ПОХОРОНАХ ВСЕ РЖУТ САМ ПРЕЗИДЕНТ ПРИЕХАЛ ВСЯ СТРАНА РЖЕТ АХАХАХАХАХХА",
   "собрание гарема": "@alina_bogolidova, Ира, @ppineappleee, @sdermann, @grynenko, Дарья Кошкина",
-  "блять": "Спасибо Настя )",
   "бонд вечен": "Бонд жил, Бонд жив, Бонд будет жить!",
   "небесная восьмёрка": "@ghost1331, @grynenko, @Doge8, @VladyslavMartynov, @awdrallyracer, @Madvillain00 , @Mmaksymm, @oleghaleev",
   "куколд": "сосёт @Madvillain00",
@@ -100,5 +99,7 @@
   "варианты": "AgACAgIAAx0CQZK7hQAC_w9eqV0jX70K4cr9JeelmSO_g8W1PQAClq4xG6CNSEk86fA_ydCqJjWueJEuAAMBAAMCAAN5AAOcmQIAARkE",
   "список": "AgACAgIAAx0CQZK7hQAC1WFeqXRNT0Jiyt3MwrTkey_nePHg4wACuK4xG3YukUibF1SOoevRcWSUBpIuAAMBAAMCAAN4AAOKJAACGQQ",
   "дибил": "AwACAgIAAx0CQZK7hQABAQZcXrQVeLlzwuxst1Fg7yABI-3CgEcAAvACAAJT-VFKTPTeJy2PJXkZBA",
-  "прости": "AwACAgIAAx0CQZK7hQABAQcCXrUhM2B7Jk17AkxOb7kqqfjc5XAAAqQFAAIGkahJDR3UrCAt_QcZBA"
+  "прости": "AwACAgIAAx0CQZK7hQABAQcCXrUhM2B7Jk17AkxOb7kqqfjc5XAAAqQFAAIGkahJDR3UrCAt_QcZBA",
+  "блять": "AwACAgIAAx0CQZK7hQABAQcIXrUhcnqy9SCvbxt37QZf0pkQUToAAvcDAAJByqBJDP8MklsrVD8ZBA",
+  "секрет": "AgACAgIAAx0CQZK7hQABAQiFXrazkt8n5elLtr-Kd6hS4yRx1EUAAhStMRsSTLBJLxtxyAuJynkpT8WSLgADAQADAgADeQADc8gBAAEZBA"
 }
