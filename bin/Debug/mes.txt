@@ -1,9 +1,9 @@
 {
-  "sdermann": 4202,
+  "sdermann": 4206,
   "VladyslavMartynov": 2601,
   "grynenko": 2942,
-  "Malleficenta": 5784,
-  "alina_bogolidova": 1098,
+  "Malleficenta": 5785,
+  "alina_bogolidova": 1099,
   "Lenk0v": 2696,
   "awdrallyracer": 98,
   "chummych": 5127,
