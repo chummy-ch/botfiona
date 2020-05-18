@@ -67,9 +67,10 @@ namespace Bot_Fiona
       if (message.Text.Length > 7) index = 9;
       for (int i = 0; i < questions.Length; i++)
       {
-        if (message.Text.Length > index && message.Text.Contains(questions[i]))
+        if (message.Text.Length >= index && message.Text.Contains(questions[i]))
         {
           index = questions[i].Length + message.Text.IndexOf(questions[i]);
+          if (message.Text.IndexOf(questions[i]) != 0 && message.Text.Substring(message.Text.IndexOf(questions[i]) - 1, 1) != " ") return;
           if (questions[i].Contains("у")) y = true;
           break;
         }
