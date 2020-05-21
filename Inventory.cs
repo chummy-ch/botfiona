@@ -8,15 +8,19 @@ namespace Bot_Fiona
 {
   class Inventory
   {
-    public string weapon;
-    public int demage;
-    public bool equip;
 
-    Inventory()
+    public Dictionary<string, string> playersInv = new Dictionary<string, string>();
+
+    public Inventory(string inv, string uname)
+    {
+      if (playersInv.ContainsKey(uname)) playersInv[uname] = inv;
+      else playersInv.Add(uname, inv);
+    }
+
+    public Inventory()
     {
 
     }
-    
 
   }
 }
