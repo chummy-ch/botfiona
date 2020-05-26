@@ -1,8 +1,8 @@
 {
   "chummych": 30,
-  "Malleficenta": 5,
+  "Malleficenta": 6,
   "grynenko": 1,
-  "debavlad": 9,
+  "debavlad": 10,
   "gendalfiona": 6,
   "VladyslavMartynov": 1,
   "Lenk0v": 1
