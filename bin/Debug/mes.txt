@@ -2,7 +2,7 @@
   "sdermann": 4691,
   "VladyslavMartynov": 2897,
   "grynenko": 3175,
-  "Malleficenta": 6265,
+  "Malleficenta": 6268,
   "alina_bogolidova": 1293,
   "Lenk0v": 2976,
   "awdrallyracer": 103,
@@ -22,7 +22,7 @@
   "oleghaleev": 2,
   "maximyss33": 119,
   "vitaliy_lyapota": 8,
-  "hl_vz": 672,
+  "hl_vz": 674,
   "DariaKoshka": 476,
   "SdelaiSebeNik": 6,
   "Discombobulationary": 85

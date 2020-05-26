@@ -8,6 +8,7 @@ using System.Threading;
 using System.IO;
 using Newtonsoft.Json;
 using System.Web.Script.Serialization;
+using Bot_Fiona;
 
 namespace botfiona
 {
@@ -19,9 +20,8 @@ namespace botfiona
     private int id2;
     private bool status = false;
     
-    private Dictionary<string, string> presents = new Dictionary<string, string>() { { "Рапира x1 ", "01" }, { "Короткий меч x1 ", "04070915" }, { "Сабля x1 ", "051217" }, { "3 💰", "02030608101113141618192021" } };
+    public Dictionary<string, string> presents = new Dictionary<string, string>() { { "Рапира x1 ", "01" }, { "Короткий меч x1 ", "04070915" }, { "Сабля x1 ", "051217" }, { "3 💰", "02030608101113141618192021" } };
     InlineKeyboardMarkup roulette = new InlineKeyboardMarkup(new[] { new[] { InlineKeyboardButton.WithCallbackData("PP") } });
-    public Dictionary<string, string> totalwin = new Dictionary<string, string>();
     private Dictionary<string, DateTime> rolls = new Dictionary<string, DateTime>();
     private string namenow;
     private string unamenow;
@@ -30,6 +30,7 @@ namespace botfiona
     private DateTime timeMade; 
     public Roulette()
     {
+      
     }
 
     private async void bot_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
@@ -88,7 +89,7 @@ namespace botfiona
 
     private async void Roll(InlineKeyboardMarkup roulette1)
     {
-      LoadTotalWin();
+
       if (status == true) return;
       status = true;
       int x = 1;
@@ -130,27 +131,15 @@ namespace botfiona
         Thread.Sleep(200 * x);
         roulette1.InlineKeyboard.ElementAt(i).ElementAt(0).Text = roulette1.InlineKeyboard.ElementAt(i).ElementAt(0).Text.Replace("⬅️", "");
       }
-      AddPresent(unamenow, win);
+      Inventory invent = new Inventory();
+      invent.AddPresent(unamenow, win, unamenow);
       await Bot.SendTextMessageAsync(m.Message.Chat.Id, $"@{unamenow} выиграл {presents.ElementAt(win).Key}, поздравляю!");
       Thread.Sleep(3000);
       await Bot.EditMessageTextAsync(id1, id2, "Roulette", replyMarkup: roulette);
       status = false;
     }
 
-    public void Inventory()
-    {
-      LoadTotalWin();
-      string uName = m.Message.From.Username;
-      if (!totalwin.ContainsKey(uName)) return;
-      string[] arr = totalwin[uName].Split(':');
-      string t = "Призы за все время:";
-      for (int i = 0; i < arr.Count(); i++)
-      {
-        t += $"\n{arr[i]}";
-      }
-      Bot.SendTextMessageAsync(m.Message.From.Id, t);
-    }
-
+   
     private void CanRoll()
     {
       if (status == true) return;
@@ -174,76 +163,7 @@ namespace botfiona
       }
     }
 
-    private void AddPresent(string name, int winId)
-    {
-      if (totalwin.ContainsKey(name))
-      {
-        if (totalwin[name].Contains("💰") && presents.ElementAt(winId).Key.Contains("💰"))
-        {
-          int index = totalwin[name].IndexOf("💰");
-          string old = totalwin[name].Substring(index - 4, 5);
-          if (old[0].ToString() == ":")
-          {
-            old = old.Substring(1, 4);
-          }
-          else if (old[1].ToString() == ":")
-          {
-            old = old.Substring(2, 3);
-          }
-          string oldn = old.Substring(0, old.Length - 2);
-          oldn = oldn.Trim();
-          string newn = Convert.ToString(Convert.ToInt32(oldn) + 3);
-          string new1 = old.Replace(oldn.ToString(), newn.ToString());
-          totalwin[name] = totalwin[name].Replace(old, new1);
-        }
-        else if (presents.ElementAt(winId).Key.Contains("💰") && !totalwin[name].Contains("💰"))
-        {
-          string t = totalwin[name];
-          totalwin[name] = t + ":" + presents.ElementAt(winId).Key;
-        }
-        else if (totalwin[name].Contains(presents.ElementAt(winId).Key.Substring(0, 5)) && presents.ElementAt(winId).Key.Contains("x"))
-        {
-          int index = totalwin[name].IndexOf("x") + 1;
-          string test = presents.ElementAt(winId).Key.Substring(0, 3);
-          if (totalwin[name].IndexOf(test) > index)
-          {
-            string ntest = presents.ElementAt(winId).Key;
-            index = totalwin[name].IndexOf(test) + ntest.IndexOf("x") + 1;
-          }
-          string old = totalwin[name].Substring(index - 5, 7);
-          int ind = old.IndexOf("x") + 1;
-          string oldn = old.Substring(ind, 2);
-          oldn = oldn.Trim();
-          int newnubmer = Convert.ToInt32(oldn) + 1;
-          string new1 = old.Replace(oldn.ToString(), newnubmer.ToString());
-          totalwin[name] = totalwin[name].Replace(old, new1);
-        }
-        else if (presents.ElementAt(winId).Key.Contains("x") && !totalwin[name].Contains(presents.ElementAt(winId).Key.Substring(0, 5)))
-        {
-          string t = totalwin[name];
-          totalwin[name] = t + ":" + presents.ElementAt(winId).Key;
-        }
-
-      }
-      else totalwin.Add(unamenow, $":{presents.ElementAt(winId).Key}");
-      SaveTotalWin();
-    }
-
-    private void SaveTotalWin()
-    {
-      using (StreamWriter writer = File.CreateText("TotalWin.txt"))
-      {
-        var settings = new JsonSerializerSettings { Formatting = Formatting.Indented };
-        JsonSerializer.Create(settings).Serialize(writer, totalwin);
-      }
-    }
-
-    private void LoadTotalWin()
-    {
-      if (!File.Exists("TotalWin.txt")) return;
-      string json = File.ReadAllText("TotalWin.txt");
-      totalwin = new JavaScriptSerializer().Deserialize<Dictionary<string, string>>(json);
-    }
+   
 
   }
 }

@@ -12,9 +12,9 @@ namespace botfiona
     private Dictionary<string, string> ranksPics;
     private TelegramBotClient Bot = Program.Bot;
     private MessageEventArgs m = Program.ames;
-
     public RankManager()
     {
+
       numRanks = new Dictionary<int, string>()
             {
                 {0, "Дантес" }, { 150, "Глеб" }, { 800, "Конч" }, { 2000, "Мамонтов" },
@@ -30,6 +30,7 @@ namespace botfiona
               {"Харьковчанин", "http://bardak.kharkov.ua/wp-content/uploads/2017/09/08-09-01-1.jpg"}, {"Хнурэшник", "https://telegra.ph/file/5e7b018be301866334cbd.jpg"},
               {"Языковая шаболда", "https://nure.ua/wp-content/uploads/Employees_photo/LitvinAG.jpg" }
             };
+
     }
 
     public string GetFormattedString(int userMsgCount, string userName)
@@ -98,6 +99,7 @@ namespace botfiona
       string msg = GetFormattedString(TextManager.mesCount[message.From.Username], message.From.Username) + $"\nКоличество побед:  {Battle.GetWins(message.From.Username)}";
       await Bot.SendPhotoAsync(message.Chat.Id, GetPic(TextManager.mesCount[message.From.Username]), msg, replyToMessageId: message.MessageId);
     }
+
   }
 
 }
