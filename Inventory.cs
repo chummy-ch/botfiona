@@ -19,6 +19,7 @@ namespace Bot_Fiona
     private MessageEventArgs m = Program.ames;
     public Dictionary<string, string> totalwin;
     public Dictionary<string, string> weapon;
+    private int freshboard;
 
     public Inventory()
     {
@@ -26,6 +27,7 @@ namespace Bot_Fiona
       LoadTotalWin();
       weapon = new Dictionary<string, string>();
       LoadWeapon();
+      Console.WriteLine(weapon.Count);
     }
 
     public void ChangeWeapon(string w, string uname)
@@ -35,7 +37,13 @@ namespace Bot_Fiona
       SaveWeapon();
     }
 
-
+    private async void bot_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
+    {
+      if (e.CallbackQuery.Message.MessageId != freshboard) return;
+      ChangeWeapon(e.CallbackQuery.Data, e.CallbackQuery.From.Username);
+      await Bot.DeleteMessageAsync(e.CallbackQuery.Message.Chat.Id, freshboard);
+      await Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id, $"Вы выбрали {e.CallbackQuery.Data}");
+    }
 
     public void AddPresent(string uName, int winId, string unamenow)
     {
@@ -95,44 +103,29 @@ namespace Bot_Fiona
 
     public async void Equip(string uName)
     {
-      Console.WriteLine("E");
+      Bot.OnCallbackQuery += bot_OnCallbackQuery;
       if (!totalwin.ContainsKey(uName)) return;
       string[] arr = totalwin[uName].Split(':');
-      /*InlineKeyboardMarkup eq = new InlineKeyboardMarkup(new[]
+      var q = new InlineKeyboardButton[arr.Length - 1];
+      var k = new InlineKeyboardButton[1][];
+      for (int i = 1; i < arr.Length; i++)
       {
-        new[]
+        q[i - 1] = new InlineKeyboardButton
         {
-          InlineKeyboardButton.WithCallbackData("1")
-        }
-      });*/
-      var q = new InlineKeyboardButton[arr.Length];
-      Console.WriteLine(1);
-      var k = new InlineKeyboardMarkup[1];
-      Console.WriteLine(2);
-      Console.WriteLine($".... {arr.Length}");
-      int c = 0;
-      for (int i = 0; i < arr.Length; i++)
-      {
-        Console.WriteLine(3);
-        if(arr.Contains("x"))
-        {
-          c++; 
-          q[i] = new InlineKeyboardButton
-          {
-
-            Text = arr[i],
-            CallbackData = i.ToString()
-          };
-        }
-        
+          Text = arr[i],
+          CallbackData = arr[i],
+        };
       }
-      q.Length = c; 
-      Console.WriteLine(6);
-      var key = new InlineKeyboardMarkup(q);
-      Console.WriteLine(7);
-      await Bot.SendTextMessageAsync(m.Message.From.Id, "pines", replyMarkup: key);
-      Console.WriteLine(8);
+      k[0] = q;
+      var key = new InlineKeyboardMarkup(k);
+      freshboard = Bot.SendTextMessageAsync(m.Message.From.Id, "Ваше оружие", replyMarkup: key).Result.MessageId;
+      await Bot.SendTextMessageAsync(m.Message.From.Id, "Нажмите, чтобы выбрать");
+    }
 
+    public string GetWeapon(string uName)
+    {
+      if (weapon.ContainsKey(uName)) return weapon[uName];
+      else return "";
     }
 
     public void GetInventory()
@@ -152,8 +145,8 @@ namespace Bot_Fiona
     private void LoadWeapon()
     {
 
-      if (!System.IO.File.Exists("Weapon.txt")) return;
-      string json = System.IO.File.ReadAllText("Weapon.txt");
+      if (!System.IO.File.Exists("Weapons.txt")) return;
+      string json = System.IO.File.ReadAllText("Weapons.txt");
       weapon = new JavaScriptSerializer().Deserialize<Dictionary<string, string>>(json);
     }
 

@@ -69,7 +69,6 @@ namespace botfiona
           min.AddPlayer();
           break;
         case "/equip":
-          Console.WriteLine("CM");
           Inventory i = new Inventory();
           i.Equip(e.Message.From.Username);
           break;

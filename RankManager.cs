@@ -96,7 +96,9 @@ namespace botfiona
 
       TextManager textm = new TextManager();
       var message = m.Message;
-      string msg = GetFormattedString(TextManager.mesCount[message.From.Username], message.From.Username) + $"\nКоличество побед:  {Battle.GetWins(message.From.Username)}";
+      Inventory inv = new Inventory();
+      string w = "\nОружие: " + inv.GetWeapon(message.From.Username);
+      string msg = GetFormattedString(TextManager.mesCount[message.From.Username], message.From.Username) + $"\nКоличество побед:  {Battle.GetWins(message.From.Username)}" + w;
       await Bot.SendPhotoAsync(message.Chat.Id, GetPic(TextManager.mesCount[message.From.Username]), msg, replyToMessageId: message.MessageId);
     }
 
