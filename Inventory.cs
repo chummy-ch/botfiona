@@ -27,7 +27,6 @@ namespace Bot_Fiona
       LoadTotalWin();
       weapon = new Dictionary<string, string>();
       LoadWeapon();
-      Console.WriteLine(weapon.Count);
     }
 
     public void ChangeWeapon(string w, string uname)
@@ -50,67 +49,33 @@ namespace Bot_Fiona
       Roulette r = new Roulette();
       if (totalwin.ContainsKey(uName))
       {
-        if (totalwin[uName].Contains("💰") && r.presents.ElementAt(winId).Key.Contains("💰"))
+        if (totalwin[uName].Contains(r.presents.ElementAt(winId).Key)) return;
+        else
         {
-          int index = totalwin[uName].IndexOf("💰");
-          string old = totalwin[uName].Substring(index - 4, 5);
-          if (old[0].ToString() == ":")
-          {
-            old = old.Substring(1, 4);
-          }
-          else if (old[1].ToString() == ":")
-          {
-            old = old.Substring(2, 3);
-          }
-          string oldn = old.Substring(0, old.Length - 2);
-          oldn = oldn.Trim();
-          string newn = Convert.ToString(Convert.ToInt32(oldn) + 3);
-          string new1 = old.Replace(oldn.ToString(), newn.ToString());
-          totalwin[uName] = totalwin[uName].Replace(old, new1);
+          totalwin[uName] = totalwin[uName] + $",{r.presents.ElementAt(winId).Key}";
         }
-        else if (r.presents.ElementAt(winId).Key.Contains("💰") && !totalwin[uName].Contains("💰"))
-        {
-          string t = totalwin[uName];
-          totalwin[uName] = t + ":" + r.presents.ElementAt(winId).Key;
-        }
-        else if (totalwin[uName].Contains(r.presents.ElementAt(winId).Key.Substring(0, 5)) && r.presents.ElementAt(winId).Key.Contains("x"))
-        {
-          int index = totalwin[uName].IndexOf("x") + 1;
-          string test = r.presents.ElementAt(winId).Key.Substring(0, 3);
-          if (totalwin[uName].IndexOf(test) > index)
-          {
-            string ntest = r.presents.ElementAt(winId).Key;
-            index = totalwin[uName].IndexOf(test) + ntest.IndexOf("x") + 1;
-          }
-          string old = totalwin[uName].Substring(index - 5, 7);
-          int ind = old.IndexOf("x") + 1;
-          string oldn = old.Substring(ind, 2);
-          oldn = oldn.Trim();
-          int newnubmer = Convert.ToInt32(oldn) + 1;
-          string new1 = old.Replace(oldn.ToString(), newnubmer.ToString());
-          totalwin[uName] = totalwin[uName].Replace(old, new1);
-        }
-        else if (r.presents.ElementAt(winId).Key.Contains("x") && !totalwin[uName].Contains(r.presents.ElementAt(winId).Key.Substring(0, 5)))
-        {
-          string t = totalwin[uName];
-          totalwin[uName] = t + ":" + r.presents.ElementAt(winId).Key;
-        }
-
       }
-      else totalwin.Add(unamenow, $":{r.presents.ElementAt(winId).Key}");
+      else totalwin.Add(unamenow, $"{r.presents.ElementAt(winId).Key}");
       SaveTotalWin();
     }
 
-    public async void Equip(string uName)
+   
+    public string GetWeapon(string uName)
+    {
+      if (weapon.ContainsKey(uName)) return weapon[uName];
+      else return "";
+    }
+
+    public async void GetInventory(string uName)
     {
       Bot.OnCallbackQuery += bot_OnCallbackQuery;
       if (!totalwin.ContainsKey(uName)) return;
-      string[] arr = totalwin[uName].Split(':');
-      var q = new InlineKeyboardButton[arr.Length - 1];
+      string[] arr = totalwin[uName].Split(',');
+      var q = new InlineKeyboardButton[arr.Length];
       var k = new InlineKeyboardButton[1][];
-      for (int i = 1; i < arr.Length; i++)
+      for (int i = 0; i < arr.Length; i++)
       {
-        q[i - 1] = new InlineKeyboardButton
+        q[i] = new InlineKeyboardButton
         {
           Text = arr[i],
           CallbackData = arr[i],
@@ -120,26 +85,6 @@ namespace Bot_Fiona
       var key = new InlineKeyboardMarkup(k);
       freshboard = Bot.SendTextMessageAsync(m.Message.From.Id, "Ваше оружие", replyMarkup: key).Result.MessageId;
       await Bot.SendTextMessageAsync(m.Message.From.Id, "Нажмите, чтобы выбрать");
-    }
-
-    public string GetWeapon(string uName)
-    {
-      if (weapon.ContainsKey(uName)) return weapon[uName];
-      else return "";
-    }
-
-    public void GetInventory()
-    {
-      string uName = m.Message.From.Username;
-      if (!totalwin.ContainsKey(uName)) return;
-      string[] arr = totalwin[uName].Split(':');
-      string t = "Призы за все время:";
-      for (int i = 0; i < arr.Count(); i++)
-      {
-        t += $"\n{arr[i]}";
-      }
-      Bot.SendTextMessageAsync(m.Message.From.Id, t);
-
     }
 
     private void LoadWeapon()

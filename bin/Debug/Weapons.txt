@@ -1,3 +1,3 @@
 {
-  "chummych": "Рапира x6 "
+  "chummych": "Сабля "
 }

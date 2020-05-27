@@ -17,10 +17,10 @@ namespace botfiona
     private static TelegramBotClient bot;
     private MessageEventArgs e;
     public static Dictionary<string, int> pwins = new Dictionary<string, int>();
-    private string p1 = "", p2 = "";
+    private string p1, p2;
     protected static Dictionary<string, int> hp = new Dictionary<string, int>();
-    private string act1 = "", act2 = "";
-    private string def1 = "", def2 = "";
+    private string act1, act2;
+    private string def1, def2;
     readonly string at = "⚔️";
     readonly string def = " 🛡";
     private int x;
@@ -31,6 +31,7 @@ namespace botfiona
     private int prestartOnline = 0;
     private TimerCallback tm;
     private Timer timer;
+    private string w1, w2;
     private Dictionary<string, int> atdef = new Dictionary<string, int>()
     
     {
@@ -108,7 +109,6 @@ namespace botfiona
 
     private void bot_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
     {
-
       if (e.CallbackQuery.Message.MessageId != freshBoard) return;
       if (!hp.ContainsKey(e.CallbackQuery.From.Username))
       {

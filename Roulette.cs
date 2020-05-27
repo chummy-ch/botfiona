@@ -20,7 +20,7 @@ namespace botfiona
     private int id2;
     private bool status = false;
     
-    public Dictionary<string, string> presents = new Dictionary<string, string>() { { "Рапира x1 ", "01" }, { "Короткий меч x1 ", "04070915" }, { "Сабля x1 ", "051217" }, { "3 💰", "02030608101113141618192021" } };
+    public Dictionary<string, string> presents = new Dictionary<string, string>() { { "Рапира ", "5" }, { "Меч ", "70" }, { "Сабля ", "25" }, { "Щит", "70" }, {"ничего", "30" } };
     InlineKeyboardMarkup roulette = new InlineKeyboardMarkup(new[] { new[] { InlineKeyboardButton.WithCallbackData("PP") } });
     private Dictionary<string, DateTime> rolls = new Dictionary<string, DateTime>();
     private string namenow;
@@ -68,7 +68,7 @@ namespace botfiona
         },
         new[]
         {
-          InlineKeyboardButton.WithCallbackData("Короткий меча") // 5%
+          InlineKeyboardButton.WithCallbackData("Меч") // 5%
         },
         new[]
         {
@@ -76,7 +76,11 @@ namespace botfiona
         },
         new[]
         {
-          InlineKeyboardButton.WithCallbackData("3 💰") // 15%
+          InlineKeyboardButton.WithCallbackData("Щит") // 15%
+        },
+        new[]
+        {
+          InlineKeyboardButton.WithCallbackData("Крендель")
         },
         new[]
         {
@@ -95,24 +99,22 @@ namespace botfiona
       int x = 1;
       int win = 0;
       Random rnd = new Random();
-      int rn = rnd.Next(1, 21);
+      int rn = rnd.Next(1, 100);
 
-      for (int i = 0; i < presents.Count(); i++)
+      if (rn <= 5) win = 0;
+      else if (rn <= 25) win = 2;
+      else if (rn <= 70)
       {
-        for (int j = 0; j < presents.ElementAt(i).Value.Length; j += 2)
-        {
-          string t = presents.ElementAt(i).Value.Substring(j, 2);
-          if (t.Substring(0, 1) == "0") t = t.Remove(0,1);
-          if(t == rn.ToString())
-          {
-            win = i;
-            break;
-          }
-        }
+        rn = rnd.Next(1, 100); ;
+        if (rn <= 50) win = 3;
+        else win = 1;
       }
+      else win = 4;
+
+
       for (int i = 0; i < 3; i++)
       {
-        for (int j = 0; j < 4; j++)
+        for (int j = 0; j < 5; j++)
         {
           if (!roulette1.InlineKeyboard.ElementAt(0).ElementAt(0).Text.Contains("⬅️"))
           {
@@ -138,7 +140,6 @@ namespace botfiona
       await Bot.EditMessageTextAsync(id1, id2, "Roulette", replyMarkup: roulette);
       status = false;
     }
-
    
     private void CanRoll()
     {

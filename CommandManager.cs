@@ -54,7 +54,7 @@ namespace botfiona
           break;
         case "/inv":
           Inventory inv = new Inventory();
-          inv.GetInventory();
+          inv.GetInventory(e.Message.From.Username);
           break;
         case "/ranktop":
           RankManager rankm = new RankManager();
@@ -67,10 +67,6 @@ namespace botfiona
         case "/game":
           MiniGames min = new MiniGames(e.Message);
           min.AddPlayer();
-          break;
-        case "/equip":
-          Inventory i = new Inventory();
-          i.Equip(e.Message.From.Username);
           break;
       }
     }
