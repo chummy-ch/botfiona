@@ -54,7 +54,7 @@ namespace botfiona
     public void SetFirstPlayer(string p)
     {
       p1 = p;
-      hp.Add(p1, 10);
+      hp.Add(p1, 15);
       w1 = GetWeapon(p);
     }
 
@@ -62,7 +62,7 @@ namespace botfiona
     {
       p2 = p;
       if (hp.Count < 2) 
-      hp.Add(p2, 10);
+      hp.Add(p2, 15);
       w2 = GetWeapon(p);
     }
 
