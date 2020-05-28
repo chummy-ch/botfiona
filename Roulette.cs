@@ -9,6 +9,7 @@ using System.IO;
 using Newtonsoft.Json;
 using System.Web.Script.Serialization;
 using Bot_Fiona;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace botfiona
 {
@@ -20,7 +21,7 @@ namespace botfiona
     private int id2;
     private bool status = false;
     
-    public Dictionary<string, string> presents = new Dictionary<string, string>() { { "Рапира ", "5" }, { "Меч ", "70" }, { "Сабля ", "25" }, { "Щит", "70" }, {"ничего", "30" } };
+    public Dictionary<string, string> presents = new Dictionary<string, string>() { { "Рапира", "5" }, { "Меч", "70" }, { "Сабля", "25" }, { "Щит", "70" }, {"ничего", "30" } };
     InlineKeyboardMarkup roulette = new InlineKeyboardMarkup(new[] { new[] { InlineKeyboardButton.WithCallbackData("PP") } });
     private Dictionary<string, DateTime> rolls = new Dictionary<string, DateTime>();
     private string namenow;
@@ -112,7 +113,7 @@ namespace botfiona
       else win = 4;
 
 
-      for (int i = 0; i < 3; i++)
+      for (int i = 0; i < 2; i++)
       {
         for (int j = 0; j < 5; j++)
         {
@@ -133,6 +134,7 @@ namespace botfiona
         Thread.Sleep(200 * x);
         roulette1.InlineKeyboard.ElementAt(i).ElementAt(0).Text = roulette1.InlineKeyboard.ElementAt(i).ElementAt(0).Text.Replace("⬅️", "");
       }
+      if (win == 4) return;
       Inventory invent = new Inventory();
       invent.AddPresent(unamenow, win, unamenow);
       await Bot.SendTextMessageAsync(m.Message.Chat.Id, $"@{unamenow} выиграл {presents.ElementAt(win).Key}, поздравляю!");

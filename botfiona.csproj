@@ -76,6 +76,7 @@
     <Compile Include="Roulette.cs" />
     <Compile Include="TextManager.cs" />
     <Compile Include="Triggers.cs" />
+    <Compile Include="Weapon.cs" />
     <Compile Include="Weather.cs" />
   </ItemGroup>
   <ItemGroup>

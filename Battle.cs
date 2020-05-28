@@ -9,6 +9,9 @@ using Newtonsoft.Json;
 using System.Web.Script.Serialization;
 using System.IO;
 using Bot_Fiona;
+using System.Net.Http.Headers;
+using System.Web.UI.WebControls;
+using System.Security.Cryptography;
 
 namespace botfiona
 {
@@ -19,8 +22,8 @@ namespace botfiona
     public static Dictionary<string, int> pwins = new Dictionary<string, int>();
     private string p1, p2;
     protected static Dictionary<string, int> hp = new Dictionary<string, int>();
-    private string act1, act2;
-    private string def1, def2;
+    private string act1 = "", act2 = "";
+    private string def1 = "", def2 = "";
     readonly string at = "⚔️";
     readonly string def = " 🛡";
     private int x;
@@ -31,7 +34,7 @@ namespace botfiona
     private int prestartOnline = 0;
     private TimerCallback tm;
     private Timer timer;
-    private string w1, w2;
+    private int w1, w2;
     private Dictionary<string, int> atdef = new Dictionary<string, int>()
     
     {
@@ -52,6 +55,7 @@ namespace botfiona
     {
       p1 = p;
       hp.Add(p1, 10);
+      w1 = GetWeapon(p);
     }
 
     public void SetSecondPlayer(string p)
@@ -59,6 +63,20 @@ namespace botfiona
       p2 = p;
       if (hp.Count < 2) 
       hp.Add(p2, 10);
+      w2 = GetWeapon(p);
+    }
+
+    private int GetWeapon(string uname)
+    {
+      Inventory inv = new Inventory();
+      string weapon = "";
+      if (inv.weapon.ContainsKey(uname)) weapon = inv.weapon[uname];
+      if (weapon.Length > 0)
+      {
+        Weapon weap = new Weapon();
+        return weap.weaponDamage[weapon];
+      }
+      else return 0;
     }
 
     public void PreStart()
@@ -176,13 +194,51 @@ namespace botfiona
     private void  BattleRes(string attack, string deffend, string UNameDeffender)
     {
       if (hp.Count == 0) return;
+      int wA;
+      int wD;
+      if(UNameDeffender == p1)
+      {
+        wA = w2;
+        wD = w1;
+      }
+      else
+      {
+        wA = w1;
+        wD = w2;
+      }
       if (deffend != attack)
       {
-        hp[UNameDeffender] -= atdef[attack];
+        int plusDamage = 0;
+        if(wA > 0)
+        {
+          Random rn = new Random();
+          if(rn.Next(1,100) <= 30 )
+          {
+            plusDamage = wA; 
+          }
+        }
+        if(wD < 0)
+        {
+          Random rn = new Random();
+          if(rn.Next(1,100) <= 30)
+          {
+            plusDamage += wD;
+          }
+        }
+        hp[UNameDeffender] -= (atdef[attack] + plusDamage);
         if (hp[UNameDeffender] < 0) hp[UNameDeffender] = 0;
         Thread.Sleep(1000);
-        bot.SendTextMessageAsync(e.Message.Chat.Id, CreatMessage(attack, UNameDeffender));
+        bot.SendTextMessageAsync(e.Message.Chat.Id, CreatMessage(attack, UNameDeffender, plusDamage));
         Thread.Sleep(350);
+      }
+      else
+      {
+        if (wA == 3)
+        {
+          Random rn = new Random();
+          if (rn.Next(1, 100) <= 30) hp[UNameDeffender] -= 1;
+          bot.SendTextMessageAsync(e.Message.Chat.Id, $"{UNameDeffender} получает крит в 1 ❤️");
+        }
       }
       if (hp[UNameDeffender] < 0) hp[UNameDeffender] = 0;
       Thread.Sleep(1000);
@@ -197,29 +253,31 @@ namespace botfiona
       }
     }
 
-    private string CreatMessage(string attack, string UNameDeffender)
+    private string CreatMessage(string attack, string UNameDeffender, int plusDamage)
     {
+      string krit = "";
+      if (plusDamage != 0) krit = "⚡️";
       string mes = "";
       string UNameAttacker;
       if(hp.Count == 0) return "конец боя";
       if (hp.ElementAt(0).Key != UNameDeffender) UNameAttacker = hp.ElementAt(0).Key;
       else UNameAttacker = hp.ElementAt(1).Key;
       Random rnd = new Random();
-      int rn = rnd.Next(1, 4);
+      int rn = rnd.Next(0, 5);
       if (hp[UNameDeffender] < 0) hp[UNameDeffender] = 0;
       switch (rn)
       {
         case 1:
-          mes = $"@{UNameDeffender} пропустил удар в {attack} ";
+          mes = $"@{UNameDeffender} пропустил удар в {krit}{attack} ";
           break;
         case 3:
-          mes = $"@{UNameDeffender} не защититил {attack} и потерял {atdef[attack]} hp";
+          mes = $"@{UNameDeffender} не защититил {krit}{attack} и потерял {atdef[attack] + plusDamage} hp";
           break;
         case 2:
-          mes = $"@{UNameAttacker} пробил защиту противника и нанес удар в {attack}";
+          mes = $"@{UNameAttacker} пробил защиту противника и нанес удар в {krit}{attack}";
           break;
         case 4:
-          mes = $"@{UNameAttacker} обманом ударил @{UNameDeffender} в {attack} и отнял {atdef[attack]} hp";
+          mes = $"@{UNameAttacker} обманом ударил @{UNameDeffender} в {krit}{attack} и отнял {atdef[attack] + plusDamage} hp";
           break;
       }
       Thread.Sleep(250);
