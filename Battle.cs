@@ -304,24 +304,31 @@ namespace botfiona
       if (finishBAttleCheck < 2) return;
       timer.Dispose();
       Thread.Sleep(300);
-
-      if (hp.Count > 0 && hp[p1] <= 0 && hp[p2] <= 0)
+      try
       {
-        bot.SendTextMessageAsync(e.Message.Chat.Id, "Ничья!");
-        Thread.Sleep(300);
-        bot.SendStickerAsync(e.Message.Chat.Id, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
+        if (hp.Count > 0 && hp[p1] <= 0 && hp[p2] <= 0)
+        {
+          bot.SendTextMessageAsync(e.Message.Chat.Id, "Ничья!");
+          Thread.Sleep(300);
+          bot.SendStickerAsync(e.Message.Chat.Id, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
+        }
+        else
+        {
+          string winner;
+          if (hp[p1] <= 0) winner = p2;
+          else winner = p1;
+          bot.SendTextMessageAsync(e.Message.Chat.Id, $"@{winner} победил в этом бою!");
+          Thread.Sleep(300);
+          bot.SendStickerAsync(e.Message.Chat.Id, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
+          if (pwins.ContainsKey(winner)) pwins[winner] += 1;
+          else pwins.Add(winner, 1);
+          SaveWins();
+        }
       }
-      else
-      { 
-        string winner;
-        if (hp[p1] <= 0) winner = p2;
-        else winner = p1;
-         bot.SendTextMessageAsync(e.Message.Chat.Id, $"@{winner} победил в этом бою!");
-        Thread.Sleep(300);
-         bot.SendStickerAsync(e.Message.Chat.Id, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
-        if (pwins.ContainsKey(winner)) pwins[winner] += 1;
-        else pwins.Add(winner, 1);
-        SaveWins();
+      catch
+      {
+        hp.Clear();
+        BattleManager.online = false;
       }
       hp.Clear();
       BattleManager.online = false;
