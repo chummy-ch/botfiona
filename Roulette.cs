@@ -133,8 +133,11 @@ namespace botfiona
       }
       for (int i = 0; i <= win; i++)
       {
-        roulette1.InlineKeyboard.ElementAt(i).ElementAt(0).Text = roulette1.InlineKeyboard.ElementAt(i).ElementAt(0).Text + "⬅️";
-        await Bot.EditMessageTextAsync(id1, id2, "Roulette", replyMarkup: roulette1);
+        if(roulette1.InlineKeyboard.ElementAt(i).ElementAt(0).Text != roulette1.InlineKeyboard.ElementAt(i).ElementAt(0).Text + "⬅️")
+        {
+          roulette1.InlineKeyboard.ElementAt(i).ElementAt(0).Text = roulette1.InlineKeyboard.ElementAt(i).ElementAt(0).Text + "⬅️";
+          await Bot.EditMessageTextAsync(id1, id2, "Roulette", replyMarkup: roulette1);
+        }
         Thread.Sleep(200 * x);
         roulette1.InlineKeyboard.ElementAt(i).ElementAt(0).Text = roulette1.InlineKeyboard.ElementAt(i).ElementAt(0).Text.Replace("⬅️", "");
       }
