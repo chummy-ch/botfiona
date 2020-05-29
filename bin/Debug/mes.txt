@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "sdermann": 4771,
   "VladyslavMartynov": 2961,
   "grynenko": 3240,
@@ -15,15 +16,33 @@
   "yurec4": 282,
   "ppineappleee": 58,
   "Mmaksymm": 314,
+=======
+  "sdermann": 4714,
+  "VladyslavMartynov": 2901,
+  "grynenko": 3183,
+  "Malleficenta": 6342,
+  "alina_bogolidova": 1299,
+  "Lenk0v": 2995,
+  "awdrallyracer": 103,
+  "chummych": 5868,
+  "debavlad": 13182,
+  "Yurambolo": 1531,
+  "Doge8": 456,
+  "Madvillain00": 2272,
+  "Yu_172": 518,
+  "yurec4": 280,
+  "ppineappleee": 56,
+  "Mmaksymm": 308,
+>>>>>>> parent of cbbcba9... crash fix in roulette
   "gendalfiona": 24,
   "ghost1331": 85,
-  "avojjarot": 310,
-  "ir_ock": 813,
+  "avojjarot": 306,
+  "ir_ock": 804,
   "oleghaleev": 2,
   "maximyss33": 119,
   "vitaliy_lyapota": 8,
-  "hl_vz": 691,
-  "DariaKoshka": 481,
+  "hl_vz": 682,
+  "DariaKoshka": 476,
   "SdelaiSebeNik": 6,
-  "Discombobulationary": 94
+  "Discombobulationary": 86
 }

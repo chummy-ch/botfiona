@@ -118,11 +118,7 @@ namespace botfiona
           if (!roulette1.InlineKeyboard.ElementAt(0).ElementAt(0).Text.Contains("⬅️"))
           {
             roulette1.InlineKeyboard.ElementAt(j).ElementAt(0).Text = roulette1.InlineKeyboard.ElementAt(j).ElementAt(0).Text + "⬅️";
-            try
-            {
-              await Bot.EditMessageTextAsync(id1, id2, "Roulette", replyMarkup: roulette1);
-            }
-            catch { }
+            await Bot.EditMessageTextAsync(id1, id2, "Roulette", replyMarkup: roulette1);
           }
           Thread.Sleep(500 * x);
           roulette1.InlineKeyboard.ElementAt(j).ElementAt(0).Text = roulette1.InlineKeyboard.ElementAt(j).ElementAt(0).Text.Replace("⬅️", "");
