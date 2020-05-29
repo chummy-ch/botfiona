@@ -1,6 +1,7 @@
 {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   "sdermann": 4771,
   "VladyslavMartynov": 2961,
   "grynenko": 3240,
@@ -34,6 +35,15 @@
   "Lenk0v": 2995,
   "awdrallyracer": 103,
 >>>>>>> parent of cbbcba9... crash fix in roulette
+=======
+  "sdermann": 4714,
+  "VladyslavMartynov": 2901,
+  "grynenko": 3183,
+  "Malleficenta": 6342,
+  "alina_bogolidova": 1299,
+  "Lenk0v": 2995,
+  "awdrallyracer": 103,
+>>>>>>> parent of cbbcba9... crash fix in roulette
   "chummych": 5868,
   "debavlad": 13182,
   "Yurambolo": 1531,
@@ -44,6 +54,9 @@
   "ppineappleee": 56,
   "Mmaksymm": 308,
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of cbbcba9... crash fix in roulette
+=======
 >>>>>>> parent of cbbcba9... crash fix in roulette
 =======
 >>>>>>> parent of cbbcba9... crash fix in roulette
