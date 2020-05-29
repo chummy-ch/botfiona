@@ -9,6 +9,8 @@ using System.IO;
 using Newtonsoft.Json;
 using System.Web.Script.Serialization;
 using Bot_Fiona;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Telegram.Bot.Types;
 
 namespace botfiona
 {
@@ -18,15 +20,16 @@ namespace botfiona
     private MessageEventArgs m = Program.ames;
     private long id1;
     private int id2;
-    
-    public Dictionary<string, string> presents = new Dictionary<string, string>() { { "Рапира", "5" }, { "Меч", "70" }, { "Сабля", "25" }, { "Щит", "70" }, {"ничего", "30" } };
+    private bool status = false;
+
+    public Dictionary<string, string> presents = new Dictionary<string, string>() { { "Рапира", "5" }, { "Меч", "70" }, { "Сабля", "25" }, { "Щит", "70" }, { "ничего", "30" } };
     InlineKeyboardMarkup roulette = new InlineKeyboardMarkup(new[] { new[] { InlineKeyboardButton.WithCallbackData("PP") } });
     private Dictionary<string, DateTime> rolls = new Dictionary<string, DateTime>();
     private string namenow;
     private string unamenow;
     private bool online = false;
     private int keyboard = 0;
-    private DateTime timeMade; 
+    private DateTime timeMade;
     public Roulette()
     {
       LoadRollsTime();
@@ -34,30 +37,29 @@ namespace botfiona
 
     private async void bot_OnCallbackQuery(object sender, CallbackQueryEventArgs e)
     {
-      if (e.CallbackQuery.Message.Text != "Roulette" ) return;
-      if (online == true)
-      {
-        await Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id, $"Сейчас крутит {namenow}");
-        return;
-      }
+      if (e.CallbackQuery.Message.Text != "Roulette") return;
       keyboard = e.CallbackQuery.Message.MessageId;
-      if (e.CallbackQuery.Data == "Крутить" && online != true)
+      if (e.CallbackQuery.Data == "Крутить" && status != true)
       {
-        online = true;
         namenow = e.CallbackQuery.From.FirstName;
         unamenow = e.CallbackQuery.From.Username;
         id1 = e.CallbackQuery.Message.Chat.Id;
         id2 = e.CallbackQuery.Message.MessageId;
         await Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id, "Удачи!");
-        if (CanRoll() == true) Roll(roulette);
-        SaveRollsTime();
+        CanRoll();
       }
+      else if (status == true) await Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id, $"Сейчас крутит {namenow}");
       else await Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id, "Не хитри! Нажми кнопку <Крутить>");
     }
 
+    /* public void CheckRoll()
+     {
+       if (online == true) return;
+       if (DateTime.Now.Subtract(timeMade).TotalMinutes < 3)
+     }
+ */
     public void CreateRoll()
     {
-      if (online == true) return;
       Bot.OnCallbackQuery += bot_OnCallbackQuery;
       var message = m.Message;
       roulette = new InlineKeyboardMarkup(new[]
@@ -87,14 +89,14 @@ namespace botfiona
           InlineKeyboardButton.WithCallbackData("🎰Крутить🎰", "Крутить")
         }
       });
-      var result = Bot.SendTextMessageAsync(message.From.Id, "Roulette", replyMarkup: roulette).Result;
-      keyboard = result.MessageId;
+      keyboard = Bot.SendTextMessageAsync(message.From.Id, "Roulette", replyMarkup: roulette).Result.MessageId;
+      online = true;
     }
 
     private async void Roll(InlineKeyboardMarkup roulette1)
     {
-      if (online == true) return;
-      online = true;
+      if (status == true) return;
+      status = true;
       int x = 1;
       int win = 0;
       Random rnd = new Random();
@@ -118,7 +120,11 @@ namespace botfiona
           if (!roulette1.InlineKeyboard.ElementAt(0).ElementAt(0).Text.Contains("⬅️"))
           {
             roulette1.InlineKeyboard.ElementAt(j).ElementAt(0).Text = roulette1.InlineKeyboard.ElementAt(j).ElementAt(0).Text + "⬅️";
-            await Bot.EditMessageTextAsync(id1, id2, "Roulette", replyMarkup: roulette1);
+            try
+            {
+              await Bot.EditMessageTextAsync(id1, id2, "Roulette", replyMarkup: roulette1);
+            }
+            catch { }
           }
           Thread.Sleep(500 * x);
           roulette1.InlineKeyboard.ElementAt(j).ElementAt(0).Text = roulette1.InlineKeyboard.ElementAt(j).ElementAt(0).Text.Replace("⬅️", "");
@@ -127,51 +133,48 @@ namespace botfiona
       }
       for (int i = 0; i <= win; i++)
       {
-        if(roulette1.InlineKeyboard.ElementAt(i).ElementAt(0).Text != roulette1.InlineKeyboard.ElementAt(i).ElementAt(0).Text + "⬅️")
-        {
-          roulette1.InlineKeyboard.ElementAt(i).ElementAt(0).Text = roulette1.InlineKeyboard.ElementAt(i).ElementAt(0).Text + "⬅️";
-          await Bot.EditMessageTextAsync(id1, id2, "Roulette", replyMarkup: roulette1);
-        }
+        roulette1.InlineKeyboard.ElementAt(i).ElementAt(0).Text = roulette1.InlineKeyboard.ElementAt(i).ElementAt(0).Text + "⬅️";
+        await Bot.EditMessageTextAsync(id1, id2, "Roulette", replyMarkup: roulette1);
         Thread.Sleep(200 * x);
         roulette1.InlineKeyboard.ElementAt(i).ElementAt(0).Text = roulette1.InlineKeyboard.ElementAt(i).ElementAt(0).Text.Replace("⬅️", "");
       }
       if (win == 4)
       {
-       await Bot.SendTextMessageAsync(id1, "Приходите в следующий раз");
-       await  Bot.DeleteMessageAsync(id1, keyboard);
+        await Bot.SendTextMessageAsync(m.Message.Chat.Id, "Приходите в следующий раз");
         return;
       }
       Inventory invent = new Inventory();
       invent.AddPresent(unamenow, win, unamenow);
-      await Bot.SendTextMessageAsync(id1, $"@{unamenow} выиграл {presents.ElementAt(win).Key}, поздравляю!");
+      await Bot.SendTextMessageAsync(m.Message.Chat.Id, $"@{unamenow} выиграл {presents.ElementAt(win).Key}, поздравляю!");
       Thread.Sleep(3000);
       await Bot.EditMessageTextAsync(id1, id2, "Roulette", replyMarkup: roulette);
-      online = false;
-      await Bot.DeleteMessageAsync(id1, keyboard);  
+      status = false;
+      await Bot.DeleteMessageAsync(m.Message.From.Id, keyboard);
     }
-   
-    private bool CanRoll()
+
+    private async void CanRoll()
     {
-      if (online == true) return false;
+      if (status == true) return;
       if (rolls.ContainsKey(unamenow))
       {
         if (DateTime.Now.Subtract(rolls[unamenow]).TotalHours >= 8)
         {
+          Roll(roulette);
           rolls[unamenow] = DateTime.Now;
-          return true;
         }
         else
         {
-          Bot.SendTextMessageAsync(id1, "Крутить можно раз в 8 часов :3");
-          Bot.DeleteMessageAsync(id1, keyboard);
-          return false;
+          await Bot.SendTextMessageAsync(m.Message.From.Id, "Крутить можно раз в 8 часов :3");
+          await Bot.DeleteMessageAsync(m.Message.From.Id, keyboard);
+          return;
         }
       }
       else
       {
         rolls.Add(unamenow, DateTime.Now);
-          return true;
+        Roll(roulette);
       }
+      SaveRollsTime();
     }
 
 
