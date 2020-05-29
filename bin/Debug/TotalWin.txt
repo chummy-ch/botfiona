@@ -1,4 +1,5 @@
 {
-  "chummych": "Сабля,Щит,Меч",
-  "debavlad": "Меч"
+  "chummych": "Сабля,Щит,Меч,Рапира",
+  "debavlad": "Меч",
+  "gendalfiona": "Меч,Щит,Сабля"
 }

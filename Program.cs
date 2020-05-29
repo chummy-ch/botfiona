@@ -41,11 +41,7 @@ namespace botfiona
       //other features
       TextManager textManager = new TextManager(message, Bot);
       textManager.Selecter();
-
-      
     }
-
   }
-
 }
 
