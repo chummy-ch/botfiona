@@ -25,3 +25,4 @@ C:\Users\user\OneDrive\Документы\GitHub\botfiona\bin\Debug\Bot_Fiona.pd
 C:\Users\user\OneDrive\Документы\GitHub\botfiona\obj\Debug\Bot_Fiona.exe
 C:\Users\user\OneDrive\Документы\GitHub\botfiona\obj\Debug\Bot_Fiona.pdb
 C:\Users\user\OneDrive\Документы\GitHub\botfiona\obj\Debug\botfiona.csproj.CoreCompileInputs.cache
+C:\Users\user\OneDrive\Документы\GitHub\botfiona\bin\Debug\Newtonsoft.Json.dll

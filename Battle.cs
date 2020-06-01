@@ -236,8 +236,11 @@ namespace botfiona
         if (wA == 3)
         {
           Random rn = new Random();
-          if (rn.Next(1, 100) <= 30) hp[UNameDeffender] -= 1;
-          bot.SendTextMessageAsync(e.Message.Chat.Id, $"{UNameDeffender} получает крит в 1 ❤️");
+          if (rn.Next(1, 100) <= 30)
+          {
+            hp[UNameDeffender] -= 1;
+            bot.SendTextMessageAsync(e.Message.Chat.Id, $"{UNameDeffender} получает крит в 1 ❤️");
+          }
         }
       }
       if (hp[UNameDeffender] < 0) hp[UNameDeffender] = 0;

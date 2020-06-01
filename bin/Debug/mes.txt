@@ -1,74 +1,24 @@
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-  "sdermann": 4771,
-  "VladyslavMartynov": 2961,
-  "grynenko": 3240,
-  "Malleficenta": 6381,
-  "alina_bogolidova": 1312,
-  "Lenk0v": 3038,
-  "awdrallyracer": 103,
-  "chummych": 5990,
-  "debavlad": 13209,
-  "Yurambolo": 1551,
-  "Doge8": 472,
-  "Madvillain00": 2333,
-  "Yu_172": 526,
-  "yurec4": 282,
+  "sdermann": 4915,
+  "VladyslavMartynov": 3103,
+  "grynenko": 3301,
+  "RusKunchik": 6569,
+  "alina_bogolidova": 1356,
+  "Lenk0v": 3174,
+  "awdrallyracer": 121,
+  "chummych": 6400,
+  "debavlad": 13288,
+  "Yurambolo": 1583,
+  "Doge8": 491,
+  "Madvillain00": 2466,
+  "Yu_172": 571,
+  "yurec4": 285,
   "ppineappleee": 58,
-  "Mmaksymm": 314,
-=======
-  "sdermann": 4714,
-  "VladyslavMartynov": 2901,
-  "grynenko": 3183,
-  "Malleficenta": 6342,
-  "alina_bogolidova": 1299,
-  "Lenk0v": 2995,
-  "awdrallyracer": 103,
-=======
-  "sdermann": 4714,
-  "VladyslavMartynov": 2901,
-  "grynenko": 3183,
-  "Malleficenta": 6342,
-  "alina_bogolidova": 1299,
-  "Lenk0v": 2995,
-  "awdrallyracer": 103,
->>>>>>> parent of cbbcba9... crash fix in roulette
-=======
-  "sdermann": 4714,
-  "VladyslavMartynov": 2901,
-  "grynenko": 3183,
-  "Malleficenta": 6342,
-  "alina_bogolidova": 1299,
-  "Lenk0v": 2995,
-  "awdrallyracer": 103,
->>>>>>> parent of cbbcba9... crash fix in roulette
-  "chummych": 5868,
-  "debavlad": 13182,
-  "Yurambolo": 1531,
-  "Doge8": 456,
-  "Madvillain00": 2272,
-  "Yu_172": 518,
-  "yurec4": 280,
-  "ppineappleee": 56,
-  "Mmaksymm": 308,
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> parent of cbbcba9... crash fix in roulette
-=======
->>>>>>> parent of cbbcba9... crash fix in roulette
-=======
->>>>>>> parent of cbbcba9... crash fix in roulette
-  "gendalfiona": 24,
-  "ghost1331": 85,
-  "avojjarot": 306,
-  "ir_ock": 804,
-  "oleghaleev": 2,
-  "maximyss33": 119,
-  "vitaliy_lyapota": 8,
-  "hl_vz": 682,
-  "DariaKoshka": 476,
-  "SdelaiSebeNik": 6,
-  "Discombobulationary": 86
+  "Mmaksymm": 316,
+  "DariaKoshka": 18,
+  "Discombobulationary": 2,
+  "ir_ock": 2817,
+  "hl_vz": 37,
+  "avojjarot": 3,
+  "ghost1331": 1
 }
