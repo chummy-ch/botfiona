@@ -64,6 +64,10 @@ namespace Bot_Fiona
               await Bot.SendTextMessageAsync(message.Chat, "Пока что не могу(", replyToMessageId: message.MessageId);
             }
             break;
+          case string trig when trig.Contains("BAA") && trig.Substring(0, 3) == "BAA":
+            InputOnlineFile inputOnlineFile3 = new InputOnlineFile(er);
+            await Bot.SendVideoAsync(message.Chat.Id, inputOnlineFile3, replyToMessageId: message.MessageId);
+            break;
           default:
             await Bot.SendTextMessageAsync(message.Chat, er, replyToMessageId: message.MessageId);
             break;
@@ -142,6 +146,7 @@ namespace Bot_Fiona
           }
           else
           {
+            string fileName = "";
             if (message.ReplyToMessage.Type == MessageType.Sticker)
             {
               var index = message.ReplyToMessage.Sticker.FileId;
@@ -151,32 +156,23 @@ namespace Bot_Fiona
               await Bot.SendTextMessageAsync(message.Chat, "Триггер создан!");
               await Bot.SendStickerAsync(message.Chat, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
             }
-
-
-            else if (message.ReplyToMessage.Type == MessageType.VideoNote)
-            {
-              string key = message.Text.Split('*')[1];
-              string fileName = message.ReplyToMessage.VideoNote.FileId;
-              triggers.Add(key, fileName);
-              SaveTriggers();
-              await Bot.SendTextMessageAsync(message.Chat, "Триггер создан!");
-              await Bot.SendStickerAsync(message.Chat, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
-            }
-            else if(message.ReplyToMessage.Type == MessageType.Voice)
-            {
-              string key = message.Text.Split('*')[1];
-              string fileName = message.ReplyToMessage.Voice.FileId;
-              triggers.Add(key, fileName);
-              SaveTriggers();
-              await Bot.SendTextMessageAsync(message.Chat, "Триггер создан!");
-              await Bot.SendStickerAsync(message.Chat, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
-            }
+            else if (message.ReplyToMessage.Type == MessageType.Video)    fileName = message.ReplyToMessage.Video.FileId;
+            else if (message.ReplyToMessage.Type == MessageType.VideoNote)  fileName = message.ReplyToMessage.VideoNote.FileId;
+            else if (message.ReplyToMessage.Type == MessageType.Voice)  fileName = message.ReplyToMessage.Voice.FileId;
             else if (message.ReplyToMessage.Type == MessageType.Photo)
             {
               string key = message.Text.Split('*')[1];
               var replyphoto = message.ReplyToMessage.Photo;
               var fileid = message.ReplyToMessage.Photo[replyphoto.Length - 1].FileId;
               triggers.Add(key, fileid);
+              SaveTriggers();
+              await Bot.SendTextMessageAsync(message.Chat, "Триггер создан!");
+              await Bot.SendStickerAsync(message.Chat, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
+            }
+            if (fileName.Length > 0)
+            {
+              string key = message.Text.Split('*')[1];
+              triggers.Add(key, fileName);
               SaveTriggers();
               await Bot.SendTextMessageAsync(message.Chat, "Триггер создан!");
               await Bot.SendStickerAsync(message.Chat, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");

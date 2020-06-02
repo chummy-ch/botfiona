@@ -3,6 +3,7 @@ using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types.Enums;
 using Bot_Fiona;
+using System.Runtime.InteropServices;
 
 namespace botfiona
 {
@@ -13,6 +14,7 @@ namespace botfiona
 
     static void Main(string[] args)
     {
+
       Bot = new TelegramBotClient(APIData.key);
       Bot.OnMessage += Get_Mes;
       Bot.StartReceiving();
