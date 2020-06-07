@@ -1,5 +1,8 @@
 {
   "chummych": "Сабля,Щит,Меч,Рапира",
   "debavlad": "Меч,Сабля",
-  "gendalfiona": "Меч,Щит,Сабля"
+  "gendalfiona": "Меч,Щит,Сабля",
+  "RusKunchik": "Сабля",
+  "etzh_sun_tzu": "Меч",
+  "VladyslavMartynov": "Щит"
 }
