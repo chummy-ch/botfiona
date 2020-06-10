@@ -82,13 +82,6 @@ namespace Bot_Fiona
             await Bot.SendStickerAsync(message.Chat, "CAADAgADLAADqWElFNm7GHyxzP9LFgQ");
             await Bot.SendStickerAsync(message.Chat, "CAADAgAD0gEAArMeUCPGE2QnmWBiEhYE");
           break;
-        case string text when text.Length > 2 && text.Substring(message.Text.Length - 2).Contains("да"):
-          if (message.Text.Length <= 5 && message.Text.Length >= 2 )
-          {
-            if (message == null) return;
-            await Bot.SendTextMessageAsync(message.Chat, "Пизда", replyToMessageId: message.MessageId);
-          }
-          break;
         case string text when text.Length > 8 && text.Substring(0, 6) == "фиона," && text.Contains("?"):
           MiniGames trueorfalse = new MiniGames(message);
           trueorfalse.TrueOrFalse();

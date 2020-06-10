@@ -4,5 +4,6 @@
   "gendalfiona": "Меч,Щит,Сабля",
   "RusKunchik": "Сабля",
   "etzh_sun_tzu": "Меч",
-  "VladyslavMartynov": "Щит"
+  "VladyslavMartynov": "Щит",
+  "Lenk0v": "Щит"
 }
