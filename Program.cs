@@ -26,7 +26,12 @@ namespace botfiona
     {
       var message = e.Message;
       if (message.Type == MessageType.Text) ames = e;
-      if (DateTime.Now.Minute - message.Date.Minute > 0 && message.Type == MessageType.Text && !message.Text.Contains("удалить") && !message.Text.Contains("триггер") ) return;
+
+      TextManager text = new TextManager(message, Bot);
+      text.Counter();
+
+      if (DateTime.Now.Minute - message.Date.Minute > 0 && message.Type == MessageType.Text && !message.Text.Contains("удалить") && !message.Text.Contains("триггер")) return;
+
       //commands
       if (message.Type == MessageType.Text && message.Text.Substring(0, 1) == "/")
       {
@@ -41,8 +46,7 @@ namespace botfiona
       trig.FindTrigger();
 
       //other features
-      TextManager textManager = new TextManager(message, Bot);
-      textManager.Selecter();
+      text.Selecter();
     }
   }
 }

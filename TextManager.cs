@@ -27,14 +27,14 @@ namespace Bot_Fiona
       LoadMes();
     }
 
-    public async void Selecter()
+    public async void Counter()
     {
       string mes = message.Text;
       RankManager rankManager = new RankManager();
       try
       {
         long boloto = long.Parse("-1001100135301");
-        if (message.Chat.Id == boloto) 
+        if (message.Chat.Id == boloto)
         {
           string un = message.From.Username.Trim();
           if (un.Length > 0 && mesCount.ContainsKey(un))
@@ -55,11 +55,17 @@ namespace Bot_Fiona
           SaveMes();
         }
       }
-        
+
       catch
       {
         Console.WriteLine("No username");
       }
+    }
+
+    public async void Selecter()
+    {
+      String mes = message.Text;
+      
       switch (mes)
       {
         case string text when text.Contains("триггер") && text.Contains("*"):
