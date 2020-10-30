@@ -112,5 +112,6 @@
   "антон": ".... @Lenk0v",
   "чел ты": "1999 это 20 ст",
   "ира": "@ir_ock (Ир очка)",
-   "автомат": "AgACAgIAAx0CQZK7hQABAURNXucxejbksmqqyzlGxHFRNwQ6T-8AAuiuMRvR9UFLsTjZkqZXkbEq8BmVLgADAQADAgADeAADNmkAAhoE"
+  "автомат": "AgACAgIAAx0CQZK7hQABAURNXucxejbksmqqyzlGxHFRNwQ6T-8AAuiuMRvR9UFLsTjZkqZXkbEq8BmVLgADAQADAgADeAADNmkAAhoE",
+  "брат": "CgACAgIAAxkBAAJGSl-btuN0HpLSKGPxfFmBaiTNa7eEAAKXBwACBrPISvf9J-uW6ISkGwQ"
 }

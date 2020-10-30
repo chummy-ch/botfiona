@@ -34,6 +34,7 @@ namespace Bot_Fiona
       if (message.Type == MessageType.Text && triggers.ContainsKey(message.Text))
       {
         string er = triggers[message.Text];
+        
 
         switch (er)
         {
@@ -51,6 +52,10 @@ namespace Bot_Fiona
           case string trig when trig.Contains("AgA") && trig.Substring(0, 3) == "AgA":
             InputOnlineFile inputOnlineFile2 = new InputOnlineFile(er);
             await Bot.SendPhotoAsync(message.Chat.Id, inputOnlineFile2, replyToMessageId: message.MessageId);
+            break;
+          case string trig when trig.Contains("CgA") && trig.Substring(0, 3) == "CgA":
+            InputOnlineFile inputOnlineFile4 = new InputOnlineFile(er);
+            await Bot.SendDocumentAsync(message.Chat.Id, inputOnlineFile4, replyToMessageId: message.MessageId);
             break;
           case string trig when trig.Contains("vov") && trig.Substring(0, 3) == "vov":
             er = er.Replace("vov", "");
@@ -96,6 +101,7 @@ namespace Bot_Fiona
     {
       if (message.ReplyToMessage != null)
       {
+        Console.WriteLine(message.ReplyToMessage.Document.FileId);
         if (message.ReplyToMessage.Type == MessageType.Text)
         {
           if (triggers.ContainsKey(message.Text.Split('*')[1].ToLower()))
@@ -156,9 +162,10 @@ namespace Bot_Fiona
               await Bot.SendTextMessageAsync(message.Chat, "Триггер создан!");
               await Bot.SendStickerAsync(message.Chat, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
             }
-            else if (message.ReplyToMessage.Type == MessageType.Video)    fileName = message.ReplyToMessage.Video.FileId;
-            else if (message.ReplyToMessage.Type == MessageType.VideoNote)  fileName = message.ReplyToMessage.VideoNote.FileId;
-            else if (message.ReplyToMessage.Type == MessageType.Voice)  fileName = message.ReplyToMessage.Voice.FileId;
+            else if (message.ReplyToMessage.Type == MessageType.Document) fileName = message.ReplyToMessage.Document.FileId;
+            else if (message.ReplyToMessage.Type == MessageType.Video) fileName = message.ReplyToMessage.Video.FileId;
+            else if (message.ReplyToMessage.Type == MessageType.VideoNote) fileName = message.ReplyToMessage.VideoNote.FileId;
+            else if (message.ReplyToMessage.Type == MessageType.Voice) fileName = message.ReplyToMessage.Voice.FileId;
             else if (message.ReplyToMessage.Type == MessageType.Photo)
             {
               string key = message.Text.Split('*')[1];
