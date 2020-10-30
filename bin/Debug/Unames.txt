@@ -14,5 +14,7 @@
   "grynenko",
   "Mmaksymm",
   "Madvillain00",
-  "ss_onya"
+  "ss_onya",
+  "Yu_172",
+  "RusKunchik"
 ]

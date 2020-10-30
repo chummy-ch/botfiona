@@ -101,7 +101,6 @@ namespace Bot_Fiona
     {
       if (message.ReplyToMessage != null)
       {
-        Console.WriteLine(message.ReplyToMessage.Document.FileId);
         if (message.ReplyToMessage.Type == MessageType.Text)
         {
           if (triggers.ContainsKey(message.Text.Split('*')[1].ToLower()))
@@ -184,7 +183,7 @@ namespace Bot_Fiona
               await Bot.SendTextMessageAsync(message.Chat, "Триггер создан!");
               await Bot.SendStickerAsync(message.Chat, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
             }
-            else if (message.ReplyToMessage.Text.Trim().Length > 0)
+            else if (message.Type == MessageType.Text && message.ReplyToMessage.Text.Trim().Length > 0)
             {
               if (commands.Contains(message.ReplyToMessage.Text))
               {

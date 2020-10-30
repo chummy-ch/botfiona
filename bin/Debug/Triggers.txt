@@ -113,5 +113,6 @@
   "чел ты": "1999 это 20 ст",
   "ира": "@ir_ock (Ир очка)",
   "автомат": "AgACAgIAAx0CQZK7hQABAURNXucxejbksmqqyzlGxHFRNwQ6T-8AAuiuMRvR9UFLsTjZkqZXkbEq8BmVLgADAQADAgADeAADNmkAAhoE",
-  "брат": "CgACAgIAAxkBAAJGSl-btuN0HpLSKGPxfFmBaiTNa7eEAAKXBwACBrPISvf9J-uW6ISkGwQ"
+  "брат": "CgACAgIAAxkBAAJGSl-btuN0HpLSKGPxfFmBaiTNa7eEAAKXBwACBrPISvf9J-uW6ISkGwQ",
+  "пизда": "CAACAgIAAx0CQZK7hQABAXNQX5vjOt-0qct3hEdWyyyiJVfvd40AApEAA6Tr4yRSrygXbjsyJxsE"
 }
