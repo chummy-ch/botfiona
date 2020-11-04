@@ -75,7 +75,6 @@
   "спасибо": "CAACAgIAAx0CQZK7hQACzERejYbkhZzYA5LgrF0XQ2Z9dn5czQACSgADtSkaGbrHdv_9ajmjGAQ",
   "нет": "CAACAgIAAx0CQZK7hQAC2PhelWVoYBU9ex0g5pO6GsyRrdeFrwAChwADzcBIGGGHWWZYcw3FGAQ",
   "бля": "Опять Жила",
-  "влад": "Лучший кодер всея Болото @debavlad 💻",
   "владик": "Дряблый кролик @VladyslavMartynov 🐇",
   "сергей": "Бл",
   "сер": "Гей",
@@ -114,5 +113,8 @@
   "ира": "@ir_ock (Ир очка)",
   "автомат": "AgACAgIAAx0CQZK7hQABAURNXucxejbksmqqyzlGxHFRNwQ6T-8AAuiuMRvR9UFLsTjZkqZXkbEq8BmVLgADAQADAgADeAADNmkAAhoE",
   "брат": "CgACAgIAAxkBAAJGSl-btuN0HpLSKGPxfFmBaiTNa7eEAAKXBwACBrPISvf9J-uW6ISkGwQ",
-  "пизда": "CAACAgIAAx0CQZK7hQABAXNQX5vjOt-0qct3hEdWyyyiJVfvd40AApEAA6Tr4yRSrygXbjsyJxsE"
+  "пизда": "CAACAgIAAx0CQZK7hQABAXNQX5vjOt-0qct3hEdWyyyiJVfvd40AApEAA6Tr4yRSrygXbjsyJxsE",
+  "зайди отметиться": "CgACAgIAAx0CQZK7hQABAXOyX5vmL4EvE6UTmwKF3QWadUnf-9UAAhAGAAJng5BK8dHgs2-HJPkbBA",
+  "скиньте тест по физре": "CgACAgIAAx0CQZK7hQABAXO6X5vmXYNpSVgQJ4aS2WfHp79BOm0AAncHAAK5q8FK9eVq0a6SlQkbBA",
+  "влад": "Лучший кодер всея Болото  @shakenesad 💻"
 }

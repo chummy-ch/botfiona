@@ -1,6 +1,6 @@
 [
   "chummych",
-  "debavlad",
+  "shakenesad",
   "sdermann",
   "Lenk0v",
   "yurec4",

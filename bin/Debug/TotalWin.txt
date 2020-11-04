@@ -1,6 +1,6 @@
 {
   "chummych": "Сабля,Щит,Меч,Рапира",
-  "debavlad": "Меч,Сабля",
+  "shakenesad": "Меч,Сабля",
   "gendalfiona": "Меч,Щит,Сабля",
   "RusKunchik": "Сабля",
   "etzh_sun_tzu": "Меч",
