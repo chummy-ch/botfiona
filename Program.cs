@@ -29,8 +29,7 @@ namespace botfiona
 
       TextManager text = new TextManager(message, Bot);
       text.Counter();
-
-      if (DateTime.Now.Subtract(message.Date).TotalMinutes <= 130 && message.Type == MessageType.Text && !message.Text.Contains("удалить") && !message.Text.Contains("триггер")) return;
+      if (DateTime.Now.Subtract(message.Date).TotalMinutes >= 130 && message.Type == MessageType.Text && !message.Text.Contains("удалить") && !message.Text.Contains("триггер")) return;
       //commands
       if (message.Type == MessageType.Text && message.Text.Substring(0, 1) == "/")
       {
