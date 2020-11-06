@@ -116,5 +116,7 @@
   "пизда": "CAACAgIAAx0CQZK7hQABAXNQX5vjOt-0qct3hEdWyyyiJVfvd40AApEAA6Tr4yRSrygXbjsyJxsE",
   "зайди отметиться": "CgACAgIAAx0CQZK7hQABAXOyX5vmL4EvE6UTmwKF3QWadUnf-9UAAhAGAAJng5BK8dHgs2-HJPkbBA",
   "скиньте тест по физре": "CgACAgIAAx0CQZK7hQABAXO6X5vmXYNpSVgQJ4aS2WfHp79BOm0AAncHAAK5q8FK9eVq0a6SlQkbBA",
-  "влад": "Лучший кодер всея Болото  @shakenesad 💻"
+  "влад": "Лучший кодер всея Болото  @shakenesad 💻",
+  "олег": "Крыса",
+  "кирил": "AgACAgIAAx0CQZK7hQABAXlCX6UEK2YmHli0i4a34CmoqGBLBfcAAv2yMRu5iClJ7HrhlX5xGqXESV2aLgADAQADAgADeAADk3QAAh4E"
 }

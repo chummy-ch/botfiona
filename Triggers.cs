@@ -183,7 +183,7 @@ namespace Bot_Fiona
               await Bot.SendTextMessageAsync(message.Chat, "Триггер создан!");
               await Bot.SendStickerAsync(message.Chat, "CAADAgADBgADCsj5K2VYWFJWqNsGFgQ");
             }
-            else if (message.Type == MessageType.Text && message.ReplyToMessage.Text.Trim().Length > 0)
+            else if (message.Type == MessageType.Text && message.ReplyToMessage.Type == MessageType.Text && message.ReplyToMessage.Text.Trim().Length > 0)
             {
               if (commands.Contains(message.ReplyToMessage.Text))
               {
