@@ -2765,33 +2765,6 @@
             <param name="credentials">The credentials to use for authenticating the web request</param>
             <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         </member>
-        <member name="P:HtmlAgilityPack.HtmlWeb.BrowserTimeout">
-            <summary>Gets or sets the web browser timeout.</summary>
-            
-        </member>
-        <member name="P:HtmlAgilityPack.HtmlWeb.BrowserDelay">
-            <summary>Gets or sets the web browser delay.</summary>
-        </member>
-        <member name="M:HtmlAgilityPack.HtmlWeb.LoadFromBrowser(System.String)">
-            <summary>Loads HTML using a WebBrowser and Application.DoEvents.</summary>
-            <exception cref="T:System.Exception">Thrown when an exception error condition occurs.</exception>
-            <param name="url">The requested URL, such as "http://html-agility-pack.net/".</param>
-            <returns>A new HTML document.</returns>
-        </member>
-        <member name="M:HtmlAgilityPack.HtmlWeb.LoadFromBrowser(System.String,System.Func{System.String,System.Boolean})">
-            <summary>Loads HTML using a WebBrowser and Application.DoEvents.</summary>
-            <exception cref="T:System.Exception">Thrown when an exception error condition occurs.</exception>
-            <param name="url">The requested URL, such as "http://html-agility-pack.net/".</param>
-            <param name="isBrowserScriptCompleted">(Optional) Check if the browser script has all been run and completed.</param>
-            <returns>A new HTML document.</returns>
-        </member>
-        <member name="M:HtmlAgilityPack.HtmlWeb.LoadFromBrowser(System.String,System.Func{System.Object,System.Boolean})">
-            <summary>Loads HTML using a WebBrowser and Application.DoEvents.</summary>
-            <exception cref="T:System.Exception">Thrown when an exception error condition occurs.</exception>
-            <param name="url">The requested URL, such as "http://html-agility-pack.net/".</param>
-            <param name="isBrowserScriptCompleted">(Optional) Check if the browser script has all been run and completed.</param>
-            <returns>A new HTML document.</returns>
-        </member>
         <member name="M:HtmlAgilityPack.HtmlWeb.CreateInstance(System.String,System.String,System.Xml.Xsl.XsltArgumentList,System.Type)">
             <summary>
             Creates an instance of the given type from the specified Internet resource.
