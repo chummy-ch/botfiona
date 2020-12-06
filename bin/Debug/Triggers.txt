@@ -76,7 +76,6 @@
   "нет": "CAACAgIAAx0CQZK7hQAC2PhelWVoYBU9ex0g5pO6GsyRrdeFrwAChwADzcBIGGGHWWZYcw3FGAQ",
   "бля": "Опять Жила",
   "владик": "Дряблый кролик @VladyslavMartynov 🐇",
-  "сергей": "Бл",
   "сер": "Гей",
   "бл": ".......",
   "хах": "DQACAgIAAx0EQZK7hQAC5BVemGQTFfkFvd2CEoAQbGzLKE8HbgACqgQAAt6gUEukLwpveimmLhgE",
@@ -117,6 +116,11 @@
   "зайди отметиться": "CgACAgIAAx0CQZK7hQABAXOyX5vmL4EvE6UTmwKF3QWadUnf-9UAAhAGAAJng5BK8dHgs2-HJPkbBA",
   "скиньте тест по физре": "CgACAgIAAx0CQZK7hQABAXO6X5vmXYNpSVgQJ4aS2WfHp79BOm0AAncHAAK5q8FK9eVq0a6SlQkbBA",
   "влад": "Лучший кодер всея Болото  @shakenesad 💻",
-  "олег": "Крыса",
-  "кирил": "AgACAgIAAx0CQZK7hQABAXlCX6UEK2YmHli0i4a34CmoqGBLBfcAAv2yMRu5iClJ7HrhlX5xGqXESV2aLgADAQADAgADeAADk3QAAh4E"
+  "кирил": "AgACAgIAAx0CQZK7hQABAXlCX6UEK2YmHli0i4a34CmoqGBLBfcAAv2yMRu5iClJ7HrhlX5xGqXESV2aLgADAQADAgADeAADk3QAAh4E",
+  "быстрее": "CAACAgIAAx0CQZK7hQABAX-aX65mlU7MntulRAm3K6eObIr6qPMAAicAA6OPCxSWwxrQwHISsh4E",
+  "пните": "пиньте",
+  "ты долбоеб": "Чувак",
+  "сергей": "EL @Madvillain00 ☠️👻🦾🦾💰💷💶💶💵💵💸💸💸🔫🔫💣💣🧨🧨⚰️⚰️⚰️⚰️⚰️⚰️⚰️",
+  "f": "CgACAgIAAx0CQZK7hQABAYi6X7eQM7qJsBJdmwugf6vLTWpui-gAAokCAALTmFhJMCMYkEYciLYeBA",
+  "12": "AwACAgIAAx0CQZK7hQABAYmeX7eq1vZv598obVy-RC4l662_NaUAAjgNAAL0S8BJ5D7Vtzz9U3YeBA"
 }
