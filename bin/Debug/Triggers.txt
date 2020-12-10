@@ -94,7 +94,6 @@
   "блять": "AwACAgIAAx0CQZK7hQABAQcIXrUhcnqy9SCvbxt37QZf0pkQUToAAvcDAAJByqBJDP8MklsrVD8ZBA",
   "вышка": "DQACAgIAAx0CQZK7hQABARJoXsKxQ-aNj1Z0fvSREuS_GJZBPK8AAk8GAALRCBBK4AABRTAemaY7GQQ",
   "дай пизды": "улица Курчатова 3а, подьезд 2, квартиру скажу когда будешь под подьездом",
-  "сессия": "AwACAgIAAx0CQZK7hQABARb6XsbOsqNdWdR3O0v6FCqtL9TMYB4AAh8MAAKZuoEJIvIhMZ_SAmkZBA",
   "про": "вокация",
   "?": "Не понял",
   "кушать": "DQACAgIAAx0CQZK7hQABARm4XsbVvWyk16nVLYE8C3Z398P89ScAAmQGAAKFNzhKioChnGpo2oUZBA",
@@ -122,5 +121,7 @@
   "ты долбоеб": "Чувак",
   "сергей": "EL @Madvillain00 ☠️👻🦾🦾💰💷💶💶💵💵💸💸💸🔫🔫💣💣🧨🧨⚰️⚰️⚰️⚰️⚰️⚰️⚰️",
   "f": "CgACAgIAAx0CQZK7hQABAYi6X7eQM7qJsBJdmwugf6vLTWpui-gAAokCAALTmFhJMCMYkEYciLYeBA",
-  "12": "AwACAgIAAx0CQZK7hQABAYmeX7eq1vZv598obVy-RC4l662_NaUAAjgNAAL0S8BJ5D7Vtzz9U3YeBA"
+  "12": "AwACAgIAAx0CQZK7hQABAYmeX7eq1vZv598obVy-RC4l662_NaUAAjgNAAL0S8BJ5D7Vtzz9U3YeBA",
+  "сессия": "CgACAgIAAx0CQZK7hQABAZgBX9HV3q5ptNqoDHBxV1nyx_pazWUAAtkIAAKlh5FKhlH1A3zksCQeBA",
+  "ура": "CgACAgIAAx0CQZK7hQABAZlWX9IjQf6gvqF23Mx0rVg2RHbfC50AAqYJAAKlh5FK1L_AKs0NHJ8eBA"
 }

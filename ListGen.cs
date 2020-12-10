@@ -51,12 +51,12 @@ namespace botfiona
 
     public string GetInteractiveList()
     {
-      int index = page * 10;
+      int index =page * 10;
       if(index > Triggers.triggers.Count)
       {
         index = --page * 10;
       }
-      string list = "Команды:\n";
+      string list = "№" + (page + 1) + "\nКоманды:\n";
       int len = index + 10;
       if (len > Triggers.triggers.Count) len = Triggers.triggers.Count;
       for(int i = index; i < len; i++)
