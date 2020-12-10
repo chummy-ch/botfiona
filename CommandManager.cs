@@ -14,7 +14,7 @@ namespace botfiona
 
   public class CommandManager
   {
-    private List<string> commands = new List<string>() { "/weather", "/status", "/battle", "/stopb", "/list", "/roulette", "/inv", "/ranktop", "/battle", "/players", "/game", "/equip" };
+    private List<string> commands = new List<string>() { "/weather", "/status", "/battle", "/stopb", "/list", "/roulette", "/inv", "/ranktop", "/battle", "/players", "/game", "/equip", "/test" };
     public MessageEventArgs e;
 
     public CommandManager(MessageEventArgs e)
@@ -45,8 +45,8 @@ namespace botfiona
           Battle.StopBattle();
           break;
         case "/list":
-          ListGen listGen = new ListGen();
-          listGen.GetList();
+          ListGen list = new ListGen();
+          list.CreateList();
           break;
         case "/roulette":
           Roulette roulette = new Roulette();
@@ -67,6 +67,10 @@ namespace botfiona
         case "/game":
           MiniGames min = new MiniGames(e.Message);
           min.AddPlayer();
+          break;
+        case "/test":
+         /* ListGen list = new ListGen();
+          list.CreateList();*/
           break;
       }
     }
