@@ -21,7 +21,7 @@ namespace botfiona
       Bot.OnCallbackQuery += bot_OnCallbackQuery;
     }
 
-    public async void GetList()
+    /*public async void GetList()
     {
       var message = m.Message;
       string list = "Команды:";
@@ -47,36 +47,39 @@ namespace botfiona
         }
       }
       await Bot.SendTextMessageAsync(message.Chat, list);
-    }
+    }*/
 
     public string GetInteractiveList()
     {
-      int index =page * 10;
+      int index = page * 10;
       if(index > Triggers.triggers.Count)
       {
         index = --page * 10;
       }
-      string list = "№" + (page + 1) + "\nКоманды:\n";
+     
+      string list = "#" + (page + 1) + "\n*Команды*:\n";
       int len = index + 10;
       if (len > Triggers.triggers.Count) len = Triggers.triggers.Count;
       for(int i = index; i < len; i++)
       {
-        switch (Triggers.triggers.Values.ToList()[i])
+        string key = $"*{Triggers.triggers.Keys.ToList()[i]}*";
+        string value = $"_{Triggers.triggers.Values.ToList()[i]}_";
+        switch (value)
         {
           case string trig when trig.Contains("CAA"):
-            list += $"\n{Triggers.triggers.Keys.ToList()[i]} - <стикер>\n";
+            list += $"\n{key} - _<sticker>_\n";
             break;
           case string trig when trig.Contains(".ua") || trig.Contains("www.") || trig.Contains(".com") || trig.Contains("tss."):
-            list += $"\n{Triggers.triggers.Keys.ToList()[i]} - <url>\n";
+            list += $"\n{key} - _<url>_\n";
             break;
           case string trig when trig.Contains("vov") || trig.Contains("AwA") || trig.Contains("DQA") || trig.Contains("AgA"):
-            list += $"\n{Triggers.triggers.Keys.ToList()[i]} - <media>\n";
+            list += $"\n{key} - _<media>_\n";
             break;
           case string trig when trig.Length > 40:
-            list += $"\n{Triggers.triggers.Keys.ToList()[i]} - <Длинное сообщение>\n";
+            list += $"\n{key} - _<long message>_\n";
             break;
           default:
-            list += $"\n{Triggers.triggers.Keys.ToList()[i]} - {Triggers.triggers.Values.ToList()[i]}\n";
+            list += $"\n{key} - {value}\n";
             break;
         }
       }
@@ -97,7 +100,7 @@ namespace botfiona
           InlineKeyboardButton.WithCallbackData(">>"),
         }
       });
-      var result = Bot.SendTextMessageAsync(message.Chat.Id, list, replyMarkup: listButtons).Result;
+      var result = Bot.SendTextMessageAsync(message.Chat.Id, list, replyMarkup: listButtons, parseMode: Telegram.Bot.Types.Enums.ParseMode.Markdown).Result;
       freshBoard = result.MessageId;
     }
 
@@ -110,7 +113,7 @@ namespace botfiona
       else if (e.CallbackQuery.Data == ">>") page += 2;
       if (page < 0) page = 0;
       else if (page > Triggers.triggers.Count / 10) page = Triggers.triggers.Count / 10;
-      Bot.EditMessageTextAsync(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message.MessageId, GetInteractiveList(), replyMarkup: e.CallbackQuery.Message.ReplyMarkup);
+      Bot.EditMessageTextAsync(e.CallbackQuery.Message.Chat.Id, e.CallbackQuery.Message.MessageId, GetInteractiveList(), replyMarkup: e.CallbackQuery.Message.ReplyMarkup, parseMode: Telegram.Bot.Types.Enums.ParseMode.Markdown);
       Bot.AnswerCallbackQueryAsync(e.CallbackQuery.Id, e.CallbackQuery.Data);
     }
   }

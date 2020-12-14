@@ -69,8 +69,8 @@ namespace botfiona
           min.AddPlayer();
           break;
         case "/test":
-         /* ListGen list = new ListGen();
-          list.CreateList();*/
+          Test test = new Test();
+          test.testing();
           break;
       }
     }
