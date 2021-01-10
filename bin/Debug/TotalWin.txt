@@ -5,5 +5,6 @@
   "RusKunchik": "Сабля",
   "etzh_sun_tzu": "Меч",
   "VladyslavMartynov": "Щит",
-  "Lenk0v": "Щит"
+  "Lenk0v": "Щит",
+  "ir_ock": "Сабля"
 }

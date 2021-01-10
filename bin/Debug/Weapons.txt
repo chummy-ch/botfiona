@@ -1,5 +1,6 @@
 {
   "chummych": "Рапира",
   "shakenesad": "Меч",
-  "gendalfiona": "Сабля"
+  "gendalfiona": "Сабля",
+  "ir_ock": "Сабля"
 }

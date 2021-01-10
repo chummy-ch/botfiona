@@ -71,7 +71,6 @@
   "голова ⚔️": "Великая битва!",
   "право": "http://philosophy.nure.ua/osnovi-prava",
   "физика": "http://physic.nure.ua/studentu\nВнизу методички на пз и лабы по физике",
-  "тест": "vadom.cc.ua/test1 vadom.cc.ua/test2",
   "спасибо": "CAACAgIAAx0CQZK7hQACzERejYbkhZzYA5LgrF0XQ2Z9dn5czQACSgADtSkaGbrHdv_9ajmjGAQ",
   "нет": "CAACAgIAAx0CQZK7hQAC2PhelWVoYBU9ex0g5pO6GsyRrdeFrwAChwADzcBIGGGHWWZYcw3FGAQ",
   "бля": "Опять Жила",
@@ -105,7 +104,6 @@
   "бондарев": "volodymyr.bondariev@nure.ua",
   "жепка": "BAACAgIAAxkBAAJE2V7Wid8Z0Vz615PJYThkG1uweVVAAAL9BwACweuxSsneU9fdFdfIGgQ",
   "нужен секс": "DQACAgIAAxkDAAJE8l7Wjw53_wkzsLL790IpNoNKF4gFAAKYBAACv1eASZUFrrpxNOaKGgQ",
-  "антон": ".... @Lenk0v",
   "чел ты": "1999 это 20 ст",
   "ира": "@ir_ock (Ир очка)",
   "автомат": "AgACAgIAAx0CQZK7hQABAURNXucxejbksmqqyzlGxHFRNwQ6T-8AAuiuMRvR9UFLsTjZkqZXkbEq8BmVLgADAQADAgADeAADNmkAAhoE",
@@ -123,5 +121,10 @@
   "12": "AwACAgIAAx0CQZK7hQABAYmeX7eq1vZv598obVy-RC4l662_NaUAAjgNAAL0S8BJ5D7Vtzz9U3YeBA",
   "сессия": "CgACAgIAAx0CQZK7hQABAZgBX9HV3q5ptNqoDHBxV1nyx_pazWUAAtkIAAKlh5FKhlH1A3zksCQeBA",
   "ура": "CgACAgIAAx0CQZK7hQABAZlWX9IjQf6gvqF23Mx0rVg2RHbfC50AAqYJAAKlh5FK1L_AKs0NHJ8eBA",
-  ")": "CgACAgIAAx0CQZK7hQABAZpQX9MPfLN7K2YlIvnzpEULrEiXWWYAAjAJAALryqBKVwiI8Y6KmEoeBA"
+  ")": "CgACAgIAAx0CQZK7hQABAZpQX9MPfLN7K2YlIvnzpEULrEiXWWYAAjAJAALryqBKVwiI8Y6KmEoeBA",
+  "лол": "AwACAgIAAx0CQZK7hQABAZ6pX9nIotr18UtNROH8s0DnXhHo_04AAksLAALWfslKNTbr33SSI00eBA",
+  "1": "/start",
+  "физра": "https://sites.google.com/view/anonymoustests/%D1%82%D0%B5%D1%81%D1%82%D1%8B-%D1%84%D0%B8%D0%B7%D0%BA%D1%83%D0%BB%D1%8C%D1%82%D1%83%D1%80%D0%B0?authuser=0",
+  "антон": "хрен с пи",
+  "лизь": "CgACAgIAAx0CQZK7hQABAaZmX-SMoOdu5OWgbZ0DLzqFBflFzEgAAqMJAAJB3rFKIUkYzBDNfy8eBA"
 }
